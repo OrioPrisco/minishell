@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ms_error_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/06/22 18:01:12 by dpentlan         ###   ########.fr       */
+/*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
+/*   Updated: 2023/06/22 18:01:29 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <readline/readline.h>
-# include "../libft/includes/libft.h"
-# include "ft_printf.h"
-
-//	ms_prompt_utils.c
-int	prompt_loop(char **env);
-
-//	ms_error_utils.c
-int	ms_error(char *message);
-
-#endif
+int	ms_error(char *message)
+{
+	if (message)
+		perror(message);
+	else
+		ft_putstr_fd("Error:", 1);
+	exit(EXIT_FAILURE);
+}
