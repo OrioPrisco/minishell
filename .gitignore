@@ -1,0 +1,7 @@
+objs/
+minishell
+compile_commands.json
+*.swp
+*.swo
+.gdb_history
+.nfs*
