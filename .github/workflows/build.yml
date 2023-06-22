@@ -1,0 +1,21 @@
+name: Build
+
+on:
+  push:
+    branches: [ "master", "drew", "orio" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+    - name: Make libft
+      run: make -C libft
+    - name: Make minishell
+      run: make
