@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ms_prompt_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/06/22 16:39:42 by dpentlan         ###   ########.fr       */
+/*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
+/*   Updated: 2023/06/22 16:41:23 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-// ms_prompt_utils.c
-int	prompt_loop(char **env);
-
-#endif
+int	prompt_loop(char **env)
+{
+	if (env) {}
+	return (0);
+}
