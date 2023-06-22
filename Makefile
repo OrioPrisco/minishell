@@ -6,14 +6,13 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/06/22 13:47:56 by OrioPrisco       ###   ########.fr        #
+#    Updated: 2023/06/22 14:09:42 by dpentlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC				=	cc
 
-SRC				=	
-	=	
+SRC				=	minishell.c
 
 NAME			=	minishell
 
