@@ -1,10 +1,6 @@
 name: Build
 
-on:
-  push:
-    branches: [ "master", "drew", "orio" ]
-  pull_request:
-    branches: [ "master" ]
+on: [push, pull_request]
 
 jobs:
   build:
