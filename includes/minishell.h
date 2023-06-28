@@ -17,6 +17,14 @@
 # include "../libft/includes/libft.h"
 # include "ft_printf.h"
 
+//	command struct
+typedef struct s_command
+{
+	char	*s_com;
+	char	**args;
+		
+}				t_command;
+
 //	ms_prompt_utils.c
 int	prompt_loop(char **env);
 
