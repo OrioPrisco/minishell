@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/06/22 18:00:34 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/06/28 17:11:17 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ CC				=	cc
 SRC				=	minishell.c \
 					ms_prompt_utils.c \
 					ms_error_utils.c \
+					split_to_tokens.c \
 
 NAME			=	minishell
 
