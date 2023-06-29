@@ -21,6 +21,31 @@ int	is_identifier_char(int i)
 	return (c == '_' || ft_isalnum(i));
 }
 
+const char	*token_type_to_str(t_token_type token)
+{
+	if (token == T_SPACE)
+		return ("SPACE");
+	if (token == T_Q_STR)
+		return ("Q_STR");
+	if (token == T_DQ_STR)
+		return ("T_DQ_STR");
+	if (token == T_STR)
+		return ("STR");
+	if (token == T_END)
+		return ("END");
+	if (token == T_REDIRECT_STDOUT)
+		return (">");
+	if (token == T_REDIRECT_STDIN)
+		return ("<");
+	if (token == T_HEREDOC)
+		return ("<<");
+	if (token == T_REDIRECT_STDOUT_APPEND)
+		return (">>");
+	if (token == T_PIPE)
+		return ("|");
+	return ("UNKNOWN");
+}
+
 //about whitespace :
 // bash treats things separated by \n as separate commands, unless quoted.
 //  whoever calls this function should make sure that there are no unquoted \n
@@ -83,8 +108,8 @@ int main()
 	tokens = split_to_tokens(readline("minishell>"));
 	while (tokens->type != T_END)
 	{
-		ft_printf("token : %c, str : %s\n",
-			tokens->type, tokens->opt_str?tokens->opt_str:"(null)");
+		ft_printf("%s : %s\n", token_type_to_str(tokens->type),
+			tokens->opt_str?tokens->opt_str:"(null)");
 		tokens++;
 	}
 }
