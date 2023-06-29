@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/06/29 14:16:27 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/06/29 16:04:54 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,54 +60,37 @@ t_token	*split_to_tokens(const char *str)
 {
 	t_token	*output;
 	size_t	i;
-	char	*end_token;
+	t_token	curr;
 
 	output = ft_calloc(sizeof(*output), 100); // TODO : do not hardcode output size. Use vector ? also check malloc error
 	i = 0;
 	while (*str)
 	{
 		if (ft_isspace(*str)) //TODO : check how bash handles white space chars. a\nb acts like a;b
-		{
-			output[i++] = (t_token){NULL, T_SPACE};
-			str = ft_next_non_space(str);
-		}
+			curr = (t_token){{str, ft_next_non_space(str) - str}, T_SPACE};
 		else if (*str == '$')
-		{
-			end_token = ft_next_non_match(str + 1, is_identifier_char);
-			output[i++] = (t_token){ft_substr(str, 0, end_token - str), T_STR}; // TODO : check malloc error
-			str = end_token;
-		}
+			curr = (t_token){{str, ft_next_non_match(str + 1, is_identifier_char) - str},
+				T_STR};
 		else if (ft_strchr("\"\'", *str))
-		{
-			end_token = ft_strchrnul(str + 1, *str) - 1;
-			output[i++] = (t_token){ft_substr(str, 1, end_token - str), *str}; // TODO : check malloc error
-			str = end_token + 2;// check for unterminated quote / dquote
-		}
+			curr = (t_token){{str + 1, ft_strchrnul(str + 1, *str) - str}, *str}; // check for untermnated quote ?
 		else if (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2))
-		{
-			output[i++] = (t_token){NULL, *str + 1};
-			str += 2;
-		}
+			curr = (t_token){{str, 2}, *(str) + 1};
 		else if (ft_strchr("<>|", *str))
-		{
-			output[i++] = (t_token){NULL, *str};
-			str++;
-		}
+			curr = (t_token){{str, 1}, *str};
 		else
-		{
-			end_token = ft_strpbrknul(str, "$\'\" \t\n\v\f\r<>|");
-			output[i++] = (t_token){ft_substr(str, 0, end_token - str), T_STR}; // TODO : check malloc error
-			str = end_token;
-		}
-		// errour out in case of unknown character
+			curr = (t_token){{str,
+				ft_strpbrknul(str, "$\'\" \t\n\v\f\r<>|") - str}, T_STR};
+		// error out in case of unknown character ?
+		output[i++] = curr;
+		str = curr.strview.start + curr.strview.size;
 	}
-	output[i] = (t_token){NULL, T_END};
+	output[i] = (t_token){{str, 0}, T_END};
 	return (output);
 }
 
 /*
 #include <readline/readline.h>
-#include "ft_printf.h"
+#include <stdio.h>
 
 int main()
 {
@@ -115,8 +98,8 @@ int main()
 	tokens = split_to_tokens(readline("minishell>"));
 	while (tokens->type != T_END)
 	{
-		ft_printf("%s : %s\n", token_type_to_str(tokens->type),
-			tokens->opt_str?tokens->opt_str:"(null)");
+		printf("%s : %.*s\n", token_type_to_str(tokens->type),
+			(int)tokens->strview.size, tokens->strview.start);
 		tokens++;
 	}
 }

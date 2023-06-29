@@ -6,12 +6,14 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/06/29 14:02:21 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/06/29 16:05:14 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENS_H
 # define TOKENS_H
+
+# include "stringview.h"
 
 // explicit values are used in code and shouldn't be changed
 typedef enum e_token_type {
@@ -28,7 +30,7 @@ typedef enum e_token_type {
 }	t_token_type;
 
 typedef struct s_token {
-	char			*opt_str;
+	t_stringview	strview;
 	t_token_type	type;
 }	t_token;
 
