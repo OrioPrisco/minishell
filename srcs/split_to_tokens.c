@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/06/29 16:04:54 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/06/29 17:42:11 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ const char	*token_type_to_str(t_token_type token)
 // \r
 //using stringviews instead of coppying strings would reduce mallocs
 // memory footprint and simplify error handling
+//output tokens may be nonsensical, like unterminated quote tokens, or redirect tokens at the end of the list
 t_token	*split_to_tokens(const char *str)
 {
 	t_token	*output;
@@ -72,7 +73,7 @@ t_token	*split_to_tokens(const char *str)
 			curr = (t_token){{str, ft_next_non_match(str + 1, is_identifier_char) - str},
 				T_STR};
 		else if (ft_strchr("\"\'", *str))
-			curr = (t_token){{str + 1, ft_strchrnul(str + 1, *str) - str}, *str}; // check for untermnated quote ?
+			curr = (t_token){{str, 1 + ft_strchrnul(str + 1, *str) - str}, *str};
 		else if (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2))
 			curr = (t_token){{str, 2}, *(str) + 1};
 		else if (ft_strchr("<>|", *str))
