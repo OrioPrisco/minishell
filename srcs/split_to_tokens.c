@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/06/28 17:55:47 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/06/29 14:16:27 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ int	is_identifier_char(int i)
 }
 
 //about whitespace :
-// bash treates things separates by \n as separate commands, unless quoted.
+// bash treats things separated by \n as separate commands, unless quoted.
 //  whoever calls this function should make sure that there are no unquoted \n
 //  because i sure don't
 // space and tabs are treated the same
 // \v
 // \f
 // \r
+//using stringviews instead of coppying strings would reduce mallocs
+// memory footprint and simplify error handling
 t_token	*split_to_tokens(const char *str)
 {
 	t_token	*output;
