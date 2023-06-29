@@ -83,15 +83,22 @@ t_token	*split_to_tokens(const char *str)
 			output[i++] = (t_token){ft_substr(str, 1, end_token - str), *str}; // TODO : check malloc error
 			str = end_token + 2;// check for unterminated quote / dquote
 		}
+		else if (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2))
+		{
+			output[i++] = (t_token){NULL, *str + 1};
+			str += 2;
+		}
+		else if (ft_strchr("<>|", *str))
+		{
+			output[i++] = (t_token){NULL, *str};
+			str++;
+		}
 		else
 		{
-			end_token = ft_strpbrknul(str, "$\'\" \t\n\v\f\r");
+			end_token = ft_strpbrknul(str, "$\'\" \t\n\v\f\r<>|");
 			output[i++] = (t_token){ft_substr(str, 0, end_token - str), T_STR}; // TODO : check malloc error
 			str = end_token;
 		}
-		// handle >> / <<
-		// handle > / <
-		// handle |
 		// errour out in case of unknown character
 	}
 	output[i] = (t_token){NULL, T_END};
