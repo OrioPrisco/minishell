@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/06/29 17:42:11 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/06/30 12:01:54 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,24 @@ const char	*token_type_to_str(t_token_type token)
 	return ("UNKNOWN");
 }
 
+//TODO : check how bash handles white space chars. a\nb acts like a;b
+// error out in case of unknown character ?
+static t_token	get_one_token(const char *str)
+{
+	if (ft_isspace(*str))
+		return ((t_token){{str, ft_next_non_space(str) - str}, T_SPACE});
+	else if (*str == '$')
+		return ((t_token){{str,
+				ft_next_non_match(str + 1, is_identifier_char) - str}, T_STR});
+	else if (ft_strchr("\"\'", *str))
+		return ((t_token){{str, 1 + ft_strchrnul(str + 1, *str) - str}, *str});
+	else if (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2))
+		return ((t_token){{str, 2}, *(str) + 1});
+	else if (ft_strchr("<>|", *str))
+		return ((t_token){{str, 1}, *str});
+	return ((t_token){{str, ft_strpbrknul(str, "$\'\" \t\n\v\f\r<>|") - str}, T_STR});
+}
+
 //about whitespace :
 // bash treats things separated by \n as separate commands, unless quoted.
 //  whoever calls this function should make sure that there are no unquoted \n
@@ -67,21 +85,7 @@ t_token	*split_to_tokens(const char *str)
 	i = 0;
 	while (*str)
 	{
-		if (ft_isspace(*str)) //TODO : check how bash handles white space chars. a\nb acts like a;b
-			curr = (t_token){{str, ft_next_non_space(str) - str}, T_SPACE};
-		else if (*str == '$')
-			curr = (t_token){{str, ft_next_non_match(str + 1, is_identifier_char) - str},
-				T_STR};
-		else if (ft_strchr("\"\'", *str))
-			curr = (t_token){{str, 1 + ft_strchrnul(str + 1, *str) - str}, *str};
-		else if (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2))
-			curr = (t_token){{str, 2}, *(str) + 1};
-		else if (ft_strchr("<>|", *str))
-			curr = (t_token){{str, 1}, *str};
-		else
-			curr = (t_token){{str,
-				ft_strpbrknul(str, "$\'\" \t\n\v\f\r<>|") - str}, T_STR};
-		// error out in case of unknown character ?
+		curr = get_one_token(str);
 		output[i++] = curr;
 		str = curr.strview.start + curr.strview.size;
 	}
