@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/06/22 18:01:12 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/06/30 11:56:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 # define MINISHELL_H
 
 # include <readline/readline.h>
+# include <readline/history.h>
 # include "../libft/includes/libft.h"
 # include "ft_printf.h"
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <unistd.h>
 
 //	command struct
 typedef struct s_command
@@ -30,5 +34,8 @@ int	prompt_loop(char **env);
 
 //	ms_error_utils.c
 int	ms_error(char *message);
+
+//	ms_history.c
+int	add_com_to_history(char *str_input);
 
 #endif

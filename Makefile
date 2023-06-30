@@ -15,6 +15,7 @@ CC				=	cc
 SRC				=	minishell.c \
 					ms_prompt_utils.c \
 					ms_error_utils.c \
+					ms_history.c \
 
 NAME			=	minishell
 
