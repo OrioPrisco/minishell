@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/06/29 16:05:14 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/04 16:23:32 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,8 @@ typedef struct s_token {
 	t_stringview	strview;
 	t_token_type	type;
 }	t_token;
+
+int			is_identifier_char(int c);
+const char	*token_type_to_str(t_token_type type);
 
 #endif
