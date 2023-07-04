@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/04 10:22:31 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/04 19:26:43 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@
  *     Place string at the end of the history list. The associated data field 
  *     (if any) is set to NULL. ))
  */
-int	load_in_history(void)
+
+bool	load_in_history(void)
 {
 	char	*history_fn;
 
@@ -52,7 +53,7 @@ int	load_in_history(void)
 // need history_fn to equal $HOME/.msh_history. would like a clean way to 
 // access $HOME.
 
-int	add_com_to_history(char *str)
+bool	add_com_to_history(char *str)
 {
 	int		history_fd;
 	char	*history_fn;

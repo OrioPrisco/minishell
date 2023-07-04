@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/04 10:42:20 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/04 19:39:23 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 //	command struct
 typedef struct s_command
@@ -35,7 +36,7 @@ int	prompt_loop(char **env);
 int	ms_error(char *message);
 
 //	history.c
-int	load_in_history(void);
-int	add_com_to_history(char *str_input);
+bool	load_in_history(void);
+bool	add_com_to_history(char *str_input);
 
 #endif
