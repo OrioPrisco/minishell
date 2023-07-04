@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/06/30 12:01:54 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/07/04 16:16:04 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ const char	*token_type_to_str(t_token_type token)
 		return ("|");
 	return ("UNKNOWN");
 }
+#include "vector.h"
 
 //TODO : check how bash handles white space chars. a\nb acts like a;b
 // error out in case of unknown character ?
@@ -72,25 +73,26 @@ static t_token	get_one_token(const char *str)
 // \v
 // \f
 // \r
-//using stringviews instead of coppying strings would reduce mallocs
-// memory footprint and simplify error handling
-//output tokens may be nonsensical, like unterminated quote tokens, or redirect tokens at the end of the list
+//output tokens may be nonsensical, like unterminated quote tokens
+// or redirect tokens at the end of the list
+//ideal return type would probably be optional<t_vector>
 t_token	*split_to_tokens(const char *str)
 {
-	t_token	*output;
-	size_t	i;
-	t_token	curr;
+	t_vector	vec_token;
+	t_token		curr;
 
-	output = ft_calloc(sizeof(*output), 100); // TODO : do not hardcode output size. Use vector ? also check malloc error
-	i = 0;
+	vector_init(&vec_token, sizeof(t_token));
 	while (*str)
 	{
 		curr = get_one_token(str);
-		output[i++] = curr;
+		if (vector_append(&vec_token, &curr))
+			return (vector_clear(&vec_token), NULL);
 		str = curr.strview.start + curr.strview.size;
 	}
-	output[i] = (t_token){{str, 0}, T_END};
-	return (output);
+	curr = (t_token){{str, 0}, T_END};
+	if (vector_append(&vec_token, &curr))
+		return (vector_clear(&vec_token), NULL);
+	return (vec_token.data);
 }
 
 /*
