@@ -6,15 +6,16 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/06/22 18:00:34 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/07/04 10:39:44 by dpentlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC				=	cc
 
 SRC				=	minishell.c \
-					ms_prompt_utils.c \
-					ms_error_utils.c \
+					prompt_utils.c \
+					error_utils.c \
+					history.c \
 
 NAME			=	minishell
 
