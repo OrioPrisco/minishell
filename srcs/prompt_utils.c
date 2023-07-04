@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_prompt_utils.c                                  :+:      :+:    :+:   */
+/*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/03 18:46:39 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:43:00 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	init_prompt_loop(void)
 {
-	load_in_history(void);
+	load_in_history();
 	return (0);
 }
 
@@ -22,7 +22,7 @@ int	prompt_loop(char **env)
 {
 	char	*str_input;
 
-	init_prompt_loop(void);
+	init_prompt_loop();
 	if (env)
 	{
 	}
