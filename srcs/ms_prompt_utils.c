@@ -6,22 +6,30 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/06/30 14:33:21 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/03 18:46:39 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	init_prompt_loop(void)
+{
+	load_in_history(void);
+	return (0);
+}
+
 int	prompt_loop(char **env)
 {
 	char	*str_input;
 
+	init_prompt_loop(void);
 	if (env)
 	{
 	}
 	str_input = readline("> ");
 	if (!str_input)
 		ms_error("malloc");
+	add_com_to_history(str_input);
 	add_history(str_input);
 	ft_printf("%s\n", str_input);
 	free(str_input);

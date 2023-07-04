@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/06/30 11:56:08 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:23:10 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct s_command
 {
 	char	*s_com;
 	char	**args;
-		
 }				t_command;
 
 //	ms_prompt_utils.c
