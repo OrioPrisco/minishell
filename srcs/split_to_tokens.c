@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/04 16:16:04 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/04 17:11:59 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 #include "tokens.h"
 #include "vector.h"
 
-//TODO : check how bash handles white space chars. a\nb acts like a;b
 //about whitespace :
-// bash treats things separated by \n as separate commands, unless quoted.
-//  whoever calls this function should make sure that there are no unquoted \n
-//  because i sure don't
-// space and tabs are treated the same
-// \v is printed correctly, but doesn't count as whitespace
-// \f same as above
-// \r treated as a newline
+// bash treats things separated by \n or \r as separate commands, unless quoted.
+//  whoever calls this function should make sure that there
+//  are no unquoted \n or \r, because i sure don't
+// space and tabs are treated as whitespace
+// \v and \f are printed correctly, but do not count as whitespace
 //error out in case of unknown character ?
 static t_token	get_one_token(const char *str)
 {
