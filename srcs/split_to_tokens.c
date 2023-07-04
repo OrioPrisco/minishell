@@ -15,11 +15,19 @@
 #include "vector.h"
 
 //TODO : check how bash handles white space chars. a\nb acts like a;b
-// error out in case of unknown character ?
+//about whitespace :
+// bash treats things separated by \n as separate commands, unless quoted.
+//  whoever calls this function should make sure that there are no unquoted \n
+//  because i sure don't
+// space and tabs are treated the same
+// \v is printed correctly, but doesn't count as whitespace
+// \f same as above
+// \r treated as a newline
+//error out in case of unknown character ?
 static t_token	get_one_token(const char *str)
 {
-	if (ft_isspace(*str))
-		return ((t_token){{str, ft_next_non_space(str) - str}, T_SPACE});
+	if (ft_strchr("\t ", *str))
+		return ((t_token){{str, ft_strpbrknul(str, "\t ") - str}, T_SPACE});
 	else if (*str == '$')
 		return ((t_token){{str,
 				ft_next_non_match(str + 1, is_identifier_char) - str}, T_STR});
@@ -32,14 +40,6 @@ static t_token	get_one_token(const char *str)
 	return ((t_token){{str, ft_strpbrknul(str, "$\'\" \t\n\v\f\r<>|") - str}, T_STR});
 }
 
-//about whitespace :
-// bash treats things separated by \n as separate commands, unless quoted.
-//  whoever calls this function should make sure that there are no unquoted \n
-//  because i sure don't
-// space and tabs are treated the same
-// \v
-// \f
-// \r
 //output tokens may be nonsensical, like unterminated quote tokens
 // or redirect tokens at the end of the list
 //ideal return type would probably be optional<t_vector>
