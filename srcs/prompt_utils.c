@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 09:44:52 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:39:38 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	init_prompt_loop(void)
 	load_in_history();
 	sig_return = signal(SIGINT, &sigint_handler);
 	if (sig_return == SIG_ERR)
-		ms_error("signal error");
+		msh_error("signal error");
 	sig_return = signal(SIGQUIT, &sigquit_handler);
 	if (sig_return == SIG_ERR)
-		ms_error("signal error");
+		msh_error("signal error");
 	return (0);
 }
 
@@ -41,10 +41,7 @@ int	prompt_loop(char **env)
 	}
 	str_input = readline("> ");
 	if (!str_input)
-	{
-		ft_printf("return from readline was %d\n", str_input);
-		ms_error("malloc");
-	}
+		msh_exit();
 	add_com_to_history(str_input);
 	add_history(str_input);
 	ft_printf("%s\n", str_input);

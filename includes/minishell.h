@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 09:35:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/05 10:40:34 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ typedef struct s_command
 int		prompt_loop(char **env);
 
 //	error_utils.c
-int		ms_error(char *message);
+void	msh_error(char *message);
+void	msh_exit(void);
 
 //	history.c
 bool	load_in_history(void);
