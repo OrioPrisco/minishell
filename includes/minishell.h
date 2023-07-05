@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/04 19:42:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/05 09:35:15 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <signal.h>
 
 //	command struct
 typedef struct s_command
@@ -38,5 +39,9 @@ int		ms_error(char *message);
 //	history.c
 bool	load_in_history(void);
 bool	add_com_to_history(char *str_input);
+
+//	signal_utils.c
+void	sigint_handler(int signum);
+void	sigquit_handler(int signum);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/07/04 10:39:44 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/07/05 08:04:20 by dpentlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC				=	minishell.c \
 					prompt_utils.c \
 					error_utils.c \
 					history.c \
+					signal_utils.c \
 
 NAME			=	minishell
 
