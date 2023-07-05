@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 11:11:40 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:54:48 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ bool	add_com_to_history(char *str)
 	int		history_fd;
 	char	*history_fn;
 
+	if (!ft_strncmp(str, "\n", ft_strlen(str)))
+		return (1);
 	history_fn = "/home/drew/.msh_history";
 	history_fd = open(history_fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (history_fd < 2)

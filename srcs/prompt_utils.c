@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 11:13:05 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:59:05 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 /*	
 **	signal returns pointer to most recent function call by signal.
 **	returns SIG_ERR in case of error and errno is set.
+**	
+**	NOTE: you may want to use sigaction rather than signal if you need specific
+**	information about the process that is running. The struct with sigaction
+**	provides more information than the signal function.
 **/
 
 int	init_prompt_loop(void)
@@ -51,7 +55,6 @@ int	prompt_loop(char **env)
 			msh_exit();
 		add_com_to_history(str_input);
 		add_history(str_input);
-		ft_printf("%s\n", str_input);
 		free(str_input);
 	}
 	return (0);
