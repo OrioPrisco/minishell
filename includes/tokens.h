@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/04 16:23:32 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/05 16:03:04 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ typedef struct s_token {
 
 int			is_identifier_char(int c);
 const char	*token_type_to_str(t_token_type type);
+char		*next_non_identifier(const char *str);
+t_token		*split_to_tokens(const char *str);
 
 #endif
