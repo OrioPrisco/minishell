@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 10:40:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:11:40 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,22 @@
 
 bool	load_in_history(void)
 {
+	int		history_fd;
 	char	*history_fn;
+	char	*gnl_line;
 
-	if (history_fn)
+	history_fn = "/home/drew/.msh_history";
+	history_fd = open(history_fn, O_RDONLY);
+	if (history_fd < 2)
+		return (1);
+	gnl_line = get_next_line(history_fd);
+	while (gnl_line)
 	{
+		ft_printf("adding: %s", gnl_line);
+		add_history(gnl_line);
+		gnl_line = get_next_line(history_fd);
 	}
+	close(history_fd);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 10:40:34 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:06:04 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/includes/libft.h"
+# include "../libft/includes/get_next_line.h"
 # include "ft_printf.h"
 # include <sys/stat.h>
 # include <fcntl.h>

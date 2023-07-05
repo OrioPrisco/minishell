@@ -6,11 +6,16 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 10:39:38 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:13:05 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*	
+**	signal returns pointer to most recent function call by signal.
+**	returns SIG_ERR in case of error and errno is set.
+**/
 
 int	init_prompt_loop(void)
 {
@@ -39,12 +44,15 @@ int	prompt_loop(char **env)
 	if (env)
 	{
 	}
-	str_input = readline("> ");
-	if (!str_input)
-		msh_exit();
-	add_com_to_history(str_input);
-	add_history(str_input);
-	ft_printf("%s\n", str_input);
-	free(str_input);
+	while (1)
+	{
+		str_input = readline("> ");
+		if (!str_input)
+			msh_exit();
+		add_com_to_history(str_input);
+		add_history(str_input);
+		ft_printf("%s\n", str_input);
+		free(str_input);
+	}
 	return (0);
 }
