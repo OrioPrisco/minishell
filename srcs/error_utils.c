@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 15:35:18 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:46:43 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static int	free_command_vector(t_vector *com_list)
 		i++;
 	}
 	free(com_list->data);
-	free(com_list);
 	return (0);
 }
 

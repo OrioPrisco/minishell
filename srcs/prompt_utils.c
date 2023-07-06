@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 15:35:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:46:47 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,18 @@ static int	init_prompt_loop(char **env)
 int	prompt_loop(char **env)
 {
 	char		*str_input;
-	t_vector	*com_list;
+	t_vector	com_list;
 
 	init_prompt_loop(env);
-	com_list = (t_vector *)malloc(sizeof(t_vector) * 1);
-	if (!com_list)
-		msh_error("malloc");
-	com_list = vector_init(com_list, sizeof(char *));
+	vector_init(&com_list, sizeof(char *));
 	while (1)
 	{
 		str_input = readline("> ");
 		if (!str_input)
-			msh_exit(env, com_list);
+			msh_exit(env, &com_list);
 		if (*str_input)
 		{
-			vector_append(com_list, &str_input);
+			vector_append(&com_list, &str_input);
 			add_history(str_input);
 		}
 	}
