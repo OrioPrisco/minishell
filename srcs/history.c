@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 16:12:41 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 17:26:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ bool	load_in_history(char **env)
 **	vector to see if we have a \n then add one if needed to the history file.
 **/
 
-static int	history_newline_check(t_vector *com_list, int history_fd, int i)
+static bool	history_newline_check(t_vector *com_list, int history_fd, int i)
 {
 	if (!ft_strchr(((char **)com_list->data)[i], '\n'))
 	{
