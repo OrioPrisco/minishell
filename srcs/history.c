@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 18:01:08 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:10:58 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 **/
 
 static char	*history_file_path(char **env, const char *env_var,
-							   const char *h_fn)
+						const char *h_fn)
 {
 	int		i;
 	char	*ret_path;
@@ -105,6 +105,10 @@ bool	load_in_history(char **env)
 **	readline sometimes adds a \n at the of the string if the user arrows through
 **	the history, for this reason, we have to check the end of the string in the
 **	vector to see if we have a \n then add one if needed to the history file.
+**	
+**	NOTE:	check this function performs correctly after adding here_doc or other
+**			things that may contain newlines.
+**	
 **/
 
 static bool	history_newline_check(t_vector *com_list, int history_fd, int i)
