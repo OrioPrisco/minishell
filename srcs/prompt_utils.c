@@ -6,32 +6,58 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/04 10:43:00 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 17:22:20 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	init_prompt_loop(void)
+/*	
+**	signal returns pointer to most recent function call by signal.
+**	returns SIG_ERR in case of error and errno is set.
+**	
+**	NOTE: you may want to use sigaction rather than signal if you need specific
+**	information about the process that is running. The struct with sigaction
+**	provides more information than the signal function.
+**/
+
+static int	init_prompt_loop(char **env)
 {
-	load_in_history();
+	void	(*sig_return)(int);
+
+	load_in_history(env);
+	sig_return = signal(SIGINT, &sigint_handler);
+	if (sig_return == SIG_ERR)
+		msh_error("signal error");
+	sig_return = signal(SIGQUIT, &sigquit_handler);
+	if (sig_return == SIG_ERR)
+		msh_error("signal error");
 	return (0);
 }
 
+/*	
+**	readline returns NULL for both Ctrl-d and for EOF (redirection?)
+**		how do we differenciate?
+**/
+
 int	prompt_loop(char **env)
 {
-	char	*str_input;
+	char		*str_input;
+	t_vector	com_list;
 
-	init_prompt_loop();
-	if (env)
+	init_prompt_loop(env);
+	vector_init(&com_list, sizeof(char *));
+	while (1)
 	{
+		str_input = readline("> ");
+		if (!str_input)
+			msh_exit(env, &com_list);
+		if (*str_input)
+		{
+			if (vector_append(&com_list, &str_input))
+				msh_error("malloc");
+			add_history(str_input);
+		}
 	}
-	str_input = readline("> ");
-	if (!str_input)
-		ms_error("malloc");
-	add_com_to_history(str_input);
-	add_history(str_input);
-	ft_printf("%s\n", str_input);
-	free(str_input);
 	return (0);
 }
