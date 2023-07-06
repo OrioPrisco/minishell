@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 15:55:47 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:12:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,15 @@ static char	*history_file_path(char **env, char *env_var, char *h_fn)
 	char	*ret_path;
 	char	*home;
 
-	i = 0;
+	i = -1;
 	ret_path = 0;
 	home = 0;
-	while (env[i])
+	while (env[++i])
 	{
 		home = ft_strnstr(env[i], env_var, ft_strlen(env_var));
 		if (home)
 		{
-			home += ft_strlen(env_var) + 1;
-			home = ft_strdup(home);
+			home = ft_strdup(&home[ft_strlen(env_var) + 1]);
 			if (home[ft_strlen(home)] != '/')
 			{
 				ret_path = ft_strjoin(home, "/");
@@ -45,7 +44,6 @@ static char	*history_file_path(char **env, char *env_var, char *h_fn)
 			free(home);
 			return (ret_path);
 		}
-		i++;
 	}
 	return (0);
 }
