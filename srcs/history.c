@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 17:42:21 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:01:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,10 @@ bool	load_in_history(char **env)
 
 static bool	history_newline_check(t_vector *com_list, int history_fd, int i)
 {
-	if (!ft_strchr(((char **)com_list->data)[i], '\n'))
+	char	*str;
+
+	str = ((char **)com_list->data)[i];
+	if (str[ft_strlen(str)] != '\n')
 	{
 		if (write(history_fd, "\n", 1) < 0)
 		{
