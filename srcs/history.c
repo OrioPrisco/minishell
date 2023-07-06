@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 18:16:58 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:33:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ bool	load_in_history(char **env)
 	while (gnl_line)
 	{
 		if (ft_strchr(gnl_line, '\n'))
-			gnl_line[ft_strlen(gnl_line)] = 0;
+			gnl_line[ft_strlen(gnl_line) - 1] = 0;
 		add_history(gnl_line);
 		free(gnl_line);
 		gnl_line = get_next_line(history_fd);
@@ -113,7 +113,7 @@ bool	load_in_history(char **env)
 
 static bool	history_newline_check(const char *str, int history_fd)
 {
-	if (str[ft_strlen(str)] != '\n')
+	if (str[ft_strlen(str)] != '\n' && *str)
 	{
 		if (write(history_fd, "\n", 1) < 0)
 		{
