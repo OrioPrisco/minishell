@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 11:54:48 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 14:57:46 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,37 +53,60 @@ bool	load_in_history(void)
 	gnl_line = get_next_line(history_fd);
 	while (gnl_line)
 	{
-		ft_printf("adding: %s", gnl_line);
+		if (ft_strchr(gnl_line, '\n'))
+			gnl_line[ft_strlen(gnl_line)] = 0;
 		add_history(gnl_line);
+		free(gnl_line);
 		gnl_line = get_next_line(history_fd);
 	}
 	close(history_fd);
 	return (0);
 }
 
-// need history_fn to equal $HOME/.msh_history. would like a clean way to 
-// access $HOME.
 
-bool	add_com_to_history(char *str)
+/*	
+**	readline sometimes adds a \n at the of the string if the user arrows through
+**	the history, for this reason, we have to check the end of the string in the
+**	vector to see if we have a \n then add one if needed to the history file.
+**/
+
+static int	history_newline_check(t_vector *com_list, int history_fd, int i)
 {
-	int		history_fd;
-	char	*history_fn;
+	if (!ft_strchr(((char **)com_list->data)[i], '\n'))
+	{
+		if (write(history_fd, "\n", 1) < 0)
+		{
+			close(history_fd);
+			msh_error("write");
+		}
+	}
+	return (0);
+}
 
-	if (!ft_strncmp(str, "\n", ft_strlen(str)))
-		return (1);
+/*
+**	need history_fn to equal $HOME/.msh_history. would like a clean way to 
+**	access $HOME.
+*/
+
+bool	save_history(t_vector *com_list)
+{
+	char	*history_fn;
+	int		history_fd;
+	size_t	i;
+
 	history_fn = "/home/drew/.msh_history";
 	history_fd = open(history_fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
-	if (history_fd < 2)
-		msh_error("open");
-	if (write(history_fd, str, ft_strlen(str)) < 0)
+	i = 0;
+	while (i < com_list->size)
 	{
-		close(history_fd);
-		msh_error("write");
-	}
-	if (write(history_fd, "\n", 2) < 0)
-	{
-		close(history_fd);
-		msh_error("write");
+		if (write(history_fd, ((char **)com_list->data)[i],
+			ft_strlen(((char **)com_list->data)[i])) < 0)
+		{
+			close(history_fd);
+			msh_error("write");
+		}
+		history_newline_check(com_list, history_fd, i);
+		i++;
 	}
 	close(history_fd);
 	return (0);

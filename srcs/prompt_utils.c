@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 11:59:05 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 14:42:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,31 @@ int	init_prompt_loop(void)
 }
 
 /*	
-**	realine returns NULL for both Ctrl-d and for EOF (redirection?)
+**	readline returns NULL for both Ctrl-d and for EOF (redirection?)
 **		how do we differenciate?
 **/
 
 int	prompt_loop(char **env)
 {
-	char	*str_input;
+	char		*str_input;
+	t_vector	*com_list;
 
+	(void)env;
 	init_prompt_loop();
-	if (env)
-	{
-	}
+	com_list = (t_vector *)malloc(sizeof(t_vector) * 1);
+	if (!com_list)
+		msh_error("malloc");
+	com_list = vector_init(com_list, sizeof(char *));
 	while (1)
 	{
 		str_input = readline("> ");
 		if (!str_input)
-			msh_exit();
-		add_com_to_history(str_input);
-		add_history(str_input);
-		free(str_input);
+			msh_exit(com_list);
+		if (*str_input)
+		{
+			vector_append(com_list, &str_input);
+			add_history(str_input);
+		}
 	}
 	return (0);
 }
