@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 14:57:46 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:01:21 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ bool	load_in_history(void)
 	close(history_fd);
 	return (0);
 }
-
 
 /*	
 **	readline sometimes adds a \n at the of the string if the user arrows through
