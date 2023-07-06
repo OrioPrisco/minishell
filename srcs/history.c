@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 17:26:09 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 17:28:10 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 **		Pointer to malloced string for history file path.
 **/
 
-static char	*history_file_path(char **env, char *env_var, char *h_fn)
+static char	*history_file_path(char **env, const char *env_var,
+							   const char *h_fn)
 {
 	int		i;
 	char	*ret_path;
