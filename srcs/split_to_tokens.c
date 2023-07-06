@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/05 16:56:00 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/06 16:06:16 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,24 @@ static t_token	get_one_token(const char *str)
 
 //output tokens may be nonsensical, like unterminated quote tokens
 // or redirect tokens at the end of the list
-//ideal return type would probably be optional<t_vector>
-t_token	*split_to_tokens(const char *str)
+//returns 0 and populates the vector
+//or returns 1 and a freed vector
+bool	split_to_tokens(const char *str, t_vector *vec_token)
 {
-	t_vector	vec_token;
 	t_token		curr;
 
-	vector_init(&vec_token, sizeof(t_token));
+	vector_init(vec_token, sizeof(t_token));
 	while (*str)
 	{
 		curr = get_one_token(str);
-		if (vector_append(&vec_token, &curr))
-			return (vector_clear(&vec_token), NULL);
+		if (vector_append(vec_token, &curr))
+			return (vector_clear(vec_token), NULL);
 		str = curr.strview.start + curr.strview.size;
 	}
 	curr = (t_token){{str, 0}, T_END};
-	if (vector_append(&vec_token, &curr))
-		return (vector_clear(&vec_token), NULL);
-	return (vec_token.data);
+	if (vector_append(vec_token, &curr))
+		return (vector_clear(vec_token), NULL);
+	return (0);
 }
 
 /*
@@ -64,13 +64,18 @@ t_token	*split_to_tokens(const char *str)
 
 int main()
 {
-	t_token	*tokens;
-	tokens = split_to_tokens(readline("minishell>"));
-	while (tokens->type != T_END)
+	t_vector	vec_token;
+	size_t		i;
+	t_token		*token;
+
+	i = 0;
+	split_to_tokens(readline("minishell>"), &vec_token);
+	while (i < vec_token.size)
 	{
-		printf("%s : %.*s\n", token_type_to_str(tokens->type),
-			(int)tokens->strview.size, tokens->strview.start);
-		tokens++;
+		token = ((t_token *)vec_token.data) + i;
+		printf("%s : %.*s\n", token_type_to_str(token->type),
+			(int)token->strview.size, token->strview.start);
+		i++;
 	}
 }
 */
