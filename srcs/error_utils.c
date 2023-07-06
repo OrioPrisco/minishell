@@ -6,13 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 14:12:25 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:35:18 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	free_command_vector(t_vector *com_list)
+static int	free_command_vector(t_vector *com_list)
 {
 	size_t	i;
 
@@ -36,9 +36,9 @@ void	msh_error(char *message)
 	exit(EXIT_FAILURE);
 }
 
-void	msh_exit(t_vector *com_list)
+void	msh_exit(char **env, t_vector *com_list)
 {
-	save_history(com_list);
+	save_history(env, com_list);
 	free_command_vector(com_list);
 	ft_putstr_fd("exit\n", 1);
 	exit(EXIT_SUCCESS);

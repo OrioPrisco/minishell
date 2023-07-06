@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 14:42:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:35:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 **	provides more information than the signal function.
 **/
 
-int	init_prompt_loop(void)
+static int	init_prompt_loop(char **env)
 {
 	void	(*sig_return)(int);
 
-	load_in_history();
+	load_in_history(env);
 	sig_return = signal(SIGINT, &sigint_handler);
 	if (sig_return == SIG_ERR)
 		msh_error("signal error");
@@ -45,8 +45,7 @@ int	prompt_loop(char **env)
 	char		*str_input;
 	t_vector	*com_list;
 
-	(void)env;
-	init_prompt_loop();
+	init_prompt_loop(env);
 	com_list = (t_vector *)malloc(sizeof(t_vector) * 1);
 	if (!com_list)
 		msh_error("malloc");
@@ -55,7 +54,7 @@ int	prompt_loop(char **env)
 	{
 		str_input = readline("> ");
 		if (!str_input)
-			msh_exit(com_list);
+			msh_exit(env, com_list);
 		if (*str_input)
 		{
 			vector_append(com_list, &str_input);

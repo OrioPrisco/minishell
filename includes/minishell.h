@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 10:24:33 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:54:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,20 @@
 # include <stdbool.h>
 # include <signal.h>
 
-//	command struct
-typedef struct s_command
-{
-	char	*s_com;
-	char	**args;
-}				t_command;
+//	Defines
+# define HISTORY_FILE_PATH "HOME"
+# define HISTORY_FILE_NAME ".msh_history"
 
 //	prompt_utils.c
 int		prompt_loop(char **env);
 
 //	error_utils.c
 void	msh_error(char *message);
-void	msh_exit(t_vector *com_list);
+void	msh_exit(char **env, t_vector *com_list);
 
 //	history.c
-bool	save_history(t_vector *com_list);
-bool	load_in_history(void);
+bool	save_history(char **env, t_vector *com_list);
+bool	load_in_history(char **env);
 
 //	signal_utils.c
 void	sigint_handler(int signum);

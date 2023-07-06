@@ -6,11 +6,49 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 15:01:21 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:55:47 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*	
+**	TAKES
+**		env, env variable name, history_filename
+**	RETURNS
+**		Pointer to malloced string for history file path.
+**/
+
+static char	*history_file_path(char **env, char *env_var, char *h_fn)
+{
+	int		i;
+	char	*ret_path;
+	char	*home;
+
+	i = 0;
+	ret_path = 0;
+	home = 0;
+	while (env[i])
+	{
+		home = ft_strnstr(env[i], env_var, ft_strlen(env_var));
+		if (home)
+		{
+			home += ft_strlen(env_var) + 1;
+			home = ft_strdup(home);
+			if (home[ft_strlen(home)] != '/')
+			{
+				ret_path = ft_strjoin(home, "/");
+				free(home);
+				home = ret_path;
+			}
+			ret_path = ft_strjoin(home, h_fn);
+			free(home);
+			return (ret_path);
+		}
+		i++;
+	}
+	return (0);
+}
 
 /*
  * From online manuals: https://tiswww.case.edu/php/chet/readline/readline.html
@@ -40,14 +78,15 @@
  *     (if any) is set to NULL. ))
  */
 
-bool	load_in_history(void)
+bool	load_in_history(char **env)
 {
 	int		history_fd;
 	char	*history_fn;
 	char	*gnl_line;
 
-	history_fn = "/home/drew/.msh_history";
+	history_fn = history_file_path(env, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
 	history_fd = open(history_fn, O_RDONLY);
+	free(history_fn);
 	if (history_fd < 2)
 		return (1);
 	gnl_line = get_next_line(history_fd);
@@ -87,14 +126,15 @@ static int	history_newline_check(t_vector *com_list, int history_fd, int i)
 **	access $HOME.
 */
 
-bool	save_history(t_vector *com_list)
+bool	save_history(char **env, t_vector *com_list)
 {
 	char	*history_fn;
 	int		history_fd;
 	size_t	i;
 
-	history_fn = "/home/drew/.msh_history";
+	history_fn = history_file_path(env, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
 	history_fd = open(history_fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	free(history_fn);
 	i = 0;
 	while (i < com_list->size)
 	{
