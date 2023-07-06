@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 17:37:31 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 17:40:52 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	free_command_vector(t_vector *com_list)
 	vector_clear(com_list);
 }
 
-void	msh_error(char *message)
+void	msh_error(const char *message)
 {
 	if (message)
 		perror(message);
