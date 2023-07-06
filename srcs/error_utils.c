@@ -6,13 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 16:46:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 17:24:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	free_command_vector(t_vector *com_list)
+static void	free_command_vector(t_vector *com_list)
 {
 	size_t	i;
 
@@ -23,7 +23,6 @@ static int	free_command_vector(t_vector *com_list)
 		i++;
 	}
 	free(com_list->data);
-	return (0);
 }
 
 void	msh_error(char *message)
