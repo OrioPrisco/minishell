@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/07/06 15:07:18 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/07/06 15:08:20 by dpentlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SUBMODULES		=	libft/.git\
 					libft/ftprintf/.git\
 					libft/getnextline/.git\
 
-LFLAGS			=	-Llibft -lreadline -lftprintf -lvector -lft
+LFLAGS			=	-Llibft -lreadline -lftprintf -lvector -lgetnextline -lft
 
 DEPENDS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.d,$(SRC))
 OBJS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.o,$(SRC))
