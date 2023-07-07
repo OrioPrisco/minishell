@@ -6,11 +6,26 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 15:13:02 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/07 16:59:07 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	check_for_redirects(t_token *tokens, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (tokens[i].type == T_REDIRECT_STDOUT
+			|| tokens[i].type == T_REDIRECT_STDOUT_APPEND)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 /*	
 **	tokens is pointer to token space
@@ -22,14 +37,21 @@ int	single_command(t_token *tokens, int size)
 {
 	t_vector	vec_fds;
 	t_fds		*fds;
+	int			ret;
 
+	fds = 0;
+	ret = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
-	fds = open_redirects(tokens, size, &vec_fds);
-	if (!fds)
-		ft_printf("either no files opened, or error opening...\n");
+	if (check_for_redirects(tokens, size))
+	{
+		ret = open_redirects(tokens, size, &vec_fds);
+		if (ret)
+			return (free_redirects_all(fds, vec_fds.size), ret);
+		fds = vec_fds.data;
+	}
 	print_open_redirects(fds, vec_fds.size);
-	free_redirects_fn(fds, vec_fds.size);
-	free(fds);
+	close_open_redirects(fds, vec_fds.size);
+	free_redirects_all(fds, vec_fds.size);
 	return (0);
 }
 
@@ -46,10 +68,11 @@ int	single_command(t_token *tokens, int size)
 int	tree_crawler(t_token *tokens)
 {
 	int	i;
+	int	ret;
 
 	i = 0;
 	while (tokens[i].type != T_END)
 		i++;
-	single_command(tokens, i);
-	return (0);
+	ret = single_command(tokens, i);
+	return (ret);
 }
