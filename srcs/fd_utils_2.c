@@ -1,32 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filedescriptors.h                                  :+:      :+:    :+:   */
+/*   fd_utils_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 15:28:40 by dpentlan         ###   ########.fr       */
+/*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
+/*   Updated: 2023/07/07 15:28:11 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILEDESCRIPTORS_H
-# define FILEDESCRIPTORS_H
+#include "minishell.h"
 
-# include "tokens.h"
-# include "stringview.h"
-
-typedef struct s_fds
+void	free_redirects_fn(t_fds *fds, int size)
 {
-	int				fd;
-	char			*fn;
-}			t_fds;
+	int	i;
 
-//	fd_utils.c
-t_fds	*open_redirects(t_token *tokens, int size, t_vector *fds);
+	i = 0;
+	while (i < size)
+	{
+		free(fds[i].fn);
+		i++;
+	}
+}
 
-//	fd_utils_2.c
-void	free_redirects_fn(t_fds *fds, int size);
-void	print_open_redirects(t_fds *fds, int size);
+/*	
+**	mostly for debugging to view fds vector data
+**	
+**/
 
-#endif
+void	print_open_redirects(t_fds *fds, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		ft_printf("#%d: fd: %d, fn: %s\n", (i + 1), fds[i].fd, fds[i].fn);
+		i++;
+	}
+}
