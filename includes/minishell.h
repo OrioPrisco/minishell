@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 17:54:35 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/07 08:08:21 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <signal.h>
+# include "stringview.h"
+# include "tokens.h"
 
 //	Defines
 # define HISTORY_FILE_PATH "HOME"

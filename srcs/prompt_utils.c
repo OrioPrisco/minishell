@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 17:22:20 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/07 08:11:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	prompt_loop(char **env)
 {
 	char		*str_input;
 	t_vector	com_list;
+	t_token		*tokens;
 
 	init_prompt_loop(env);
 	vector_init(&com_list, sizeof(char *));
@@ -52,6 +53,8 @@ int	prompt_loop(char **env)
 		str_input = readline("> ");
 		if (!str_input)
 			msh_exit(env, &com_list);
+		tokens = split_to_tokens(str_input);
+		tokenize_input(tokens);
 		if (*str_input)
 		{
 			if (vector_append(&com_list, &str_input))

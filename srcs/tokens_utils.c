@@ -6,12 +6,24 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/05 16:54:27 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/07 08:12:40 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
 #include "libft.h"
+#include "minishell.h"
+
+int	tokenize_input(t_token *tokens)
+{
+	while (tokens->type != T_END)
+	{
+		printf("%s : %.*s\n", token_type_to_str(tokens->type),
+			(int)tokens->strview.size, tokens->strview.start);
+		tokens++;
+	}
+	return (0);
+}
 
 //returns whether a character is alphanumeric or _
 //careful, identifier cannot start with a digit.
