@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/06 16:06:16 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/07 15:52:35 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int main()
 
 	i = 0;
 	split_to_tokens(readline("minishell>"), &vec_token);
+	if (process_quotes(&vec_token))
+		return (1);
 	while (i < vec_token.size)
 	{
 		token = ((t_token *)vec_token.data) + i;
