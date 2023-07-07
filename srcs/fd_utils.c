@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 17:37:25 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/07 17:57:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*get_fn_from_tokens(const char *fn)
 	int		i;
 
 	i = 0;
+	if (!fn)
+		return (0);
 	fn_trimmed = ft_strdup(fn);
 	if (!fn_trimmed)
 		return (0);

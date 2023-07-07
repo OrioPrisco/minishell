@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 15:18:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/07 17:57:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	prompt_loop(char **env)
 			msh_exit(env, &com_list);
 		tokens = split_to_tokens(str_input);
 		print_tokens(tokens);
-		tree_crawler(tokens);
+		ft_printf("return: %d\n", tree_crawler(tokens));
 		free(tokens);
 		if (*str_input)
 		{
