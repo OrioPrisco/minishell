@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/07 15:17:48 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/07 17:43:56 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef enum e_token_type {
 	T_HEREDOC = '<' + 1,
 	T_REDIRECT_STDOUT_APPEND = '>' + 1,
 	T_PIPE = '|',
+	T_VAR,
 }	t_token_type;
 
 typedef struct s_token {

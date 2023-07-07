@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/07 15:52:35 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/07 17:45:10 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_token	get_one_token(const char *str)
 	if (ft_strchr("\t ", *str))
 		return ((t_token){{str, ft_strspn(str, "\t ")}, T_SPACE});
 	else if (*str == '$')
-		return ((t_token){{str, next_non_identifier(str) - str}, T_STR});
+		return ((t_token){{str, next_non_identifier(str) - str}, T_VAR});
 	else if (ft_strchr("\"\'", *str))
 		return ((t_token){{str, 1 + ft_strchrnul(str + 1, *str) - str}, *str});
 	else if (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2))
