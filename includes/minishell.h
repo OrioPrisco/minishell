@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 08:08:21 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/07 12:33:16 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <signal.h>
 # include "stringview.h"
 # include "tokens.h"
+# include "filedescriptors.h"
 
 //	Defines
 # define HISTORY_FILE_PATH "HOME"
@@ -45,5 +46,8 @@ bool	load_in_history(char **env);
 //	signal_utils.c
 void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
+
+//	ast_utils.c
+int		tree_crawler(t_token *tokens);
 
 #endif
