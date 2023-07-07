@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 13:52:10 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/07 15:13:02 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	single_command(t_token *tokens, int size)
 	fds = open_redirects(tokens, size, &vec_fds);
 	if (!fds)
 		ft_printf("either no files opened, or error opening...\n");
+	print_open_redirects(fds, vec_fds.size);
+	free_redirects_fn(fds, vec_fds.size);
 	free(fds);
 	return (0);
 }
