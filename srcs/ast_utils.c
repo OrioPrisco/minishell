@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 16:59:07 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 09:18:29 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ int	single_command(t_token *tokens, int size)
 	if (check_for_redirects(tokens, size))
 	{
 		ret = open_redirects(tokens, size, &vec_fds);
-		if (ret)
-			return (free_redirects_all(fds, vec_fds.size), ret);
 		fds = vec_fds.data;
+		if (ret)
+			return (close_open_redirects(fds, vec_fds.size),
+				ret);
 	}
 	print_open_redirects(fds, vec_fds.size);
 	close_open_redirects(fds, vec_fds.size);
-	free_redirects_all(fds, vec_fds.size);
 	return (0);
 }
 

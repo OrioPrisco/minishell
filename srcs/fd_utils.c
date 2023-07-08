@@ -6,20 +6,21 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 17:57:06 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 09:19:42 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_fn_from_tokens(const char *fn)
+static char	*get_fn_from_tokens(const char *fn)
 {
 	char	*fn_trimmed;
 	int		i;
 
 	i = 0;
-	if (!fn)
-		return (0);
+	fn_trimmed = 0;
+	// if (!fn)
+	// 	return (0);
 	fn_trimmed = ft_strdup(fn);
 	if (!fn_trimmed)
 		return (0);
@@ -35,10 +36,11 @@ char	*get_fn_from_tokens(const char *fn)
 	return (fn_trimmed);
 }
 
-int	open_redir_stdout(t_fds *fds, const char *fn)
+static int	open_redir_stdout(t_fds *fds, const char *fn)
 {
 	char	*fn_trimmed;
 
+	fn_trimmed = 0;
 	fn_trimmed = get_fn_from_tokens(fn);
 	if (!fn_trimmed)
 		return (1);
@@ -49,10 +51,11 @@ int	open_redir_stdout(t_fds *fds, const char *fn)
 	return (0);
 }
 
-int	open_redir_stdout_append(t_fds *fds, const char *fn)
+static int	open_redir_stdout_append(t_fds *fds, const char *fn)
 {
 	char	*fn_trimmed;
 
+	fn_trimmed = 0;
 	fn_trimmed = get_fn_from_tokens(fn);
 	if (!fn_trimmed)
 		return (1);
@@ -63,7 +66,7 @@ int	open_redir_stdout_append(t_fds *fds, const char *fn)
 	return (0);
 }
 
-bool	redir_token_found(t_fds *current, char *fn_start, t_vector *vec_fds,
+static int	redir_token_found(t_fds *current, char *fn_start, t_vector *vec_fds,
 					t_token *tokens)
 {
 	int	(*redir)(t_fds *, const char *);
@@ -95,21 +98,24 @@ int	open_redirects(t_token *tokens, int size, t_vector *vec_fds)
 {
 	t_fds		current;
 	int			i;
+	int			ret;
 
 	i = 0;
+	ret = 0;
 	while (i < size)
 	{
 		ft_bzero(&current, sizeof(t_fds));
 		if ((tokens[i].type == T_REDIRECT_STDOUT
 				|| tokens[i].type == T_REDIRECT_STDOUT_APPEND)
-			&& i == size)
+			&& (i == size - 1 || i == size - 2))
 			return (2);
-		if (tokens[i].type == T_REDIRECT_STDOUT
+		else if (tokens[i].type == T_REDIRECT_STDOUT
 			|| tokens[i].type == T_REDIRECT_STDOUT_APPEND)
 		{
-			if (redir_token_found(&current, (char *)tokens[i + 2].strview.start,
-					vec_fds, &tokens[i]))
-				return (1);
+			ret = redir_token_found(&current, (char *)tokens[i + 2].strview.start,
+					vec_fds, &tokens[i]);
+			if (ret)
+				return (ret);
 		}
 		i++;
 	}
