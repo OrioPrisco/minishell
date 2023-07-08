@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 09:15:46 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 09:48:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ void	print_open_redirects(t_fds *fds, int size)
 	}
 }
 
+/*	
+**	NOTE!!! This function manually closes fds and frees strings etc.
+**	This should use vector clear and vector pop conditionally based on if
+**	the fd_cloexec flag is on or not.
+**	
+**/
+
 int	close_open_redirects(t_fds *fds, int size)
 {
 	if (fds)
@@ -42,8 +49,6 @@ int	close_open_redirects(t_fds *fds, int size)
 		free(fds);
 		fds = 0;
 	}
-	else
-		ft_printf("no fds!\n");
 	return (0);
 }
 
@@ -52,7 +57,7 @@ int	close_open_redirects(t_fds *fds, int size)
 **	
 **/
 
-void	dup_to_lgett(t_vector *vec_fds, t_fds *current)
+void	dup_to_lget(t_vector *vec_fds, t_fds *current)
 {
 	size_t	i;
 	int		greatest;

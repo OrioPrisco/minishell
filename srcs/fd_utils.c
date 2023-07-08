@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 09:19:42 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 09:29:50 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int	redir_token_found(t_fds *current, char *fn_start, t_vector *vec_fds,
 	}
 	else
 		return (vector_clear(vec_fds), ret);
-	dup_to_lgett(vec_fds, current);
+	dup_to_lget(vec_fds, current);
 	return (0);
 }
 
