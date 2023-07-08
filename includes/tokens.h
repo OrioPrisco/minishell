@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/07 17:51:07 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/08 23:06:56 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ char		*next_non_identifier(const char *str);
 bool		split_to_tokens(const char *str, t_vector *vec_token);
 bool		process_quotes(t_vector *vec_token);
 bool		split_dquoted_tokens(t_vector *vec_token);
+void		expand_vars(t_vector *vec_token, char **envp);
 
 #endif

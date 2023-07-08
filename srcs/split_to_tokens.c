@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/07 17:51:26 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/08 23:10:02 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,21 @@ bool	split_to_tokens(const char *str, t_vector *vec_token)
 /*
 #include <readline/readline.h>
 #include <stdio.h>
+#include "env_var.h"
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
 	t_vector	vec_token;
 	size_t		i;
 	t_token		*token;
 
+	(void)argc;
+	(void)argv;
 	i = 0;
 	split_to_tokens(readline("minishell>"), &vec_token);
 	if (process_quotes(&vec_token) || split_dquoted_tokens(&vec_token))
 		return (1);
+	expand_vars(&vec_token, envp);
 	while (i < vec_token.size)
 	{
 		token = ((t_token *)vec_token.data) + i;
