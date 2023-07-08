@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 22:07:34 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 22:24:59 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	dup_to_lget(t_vector *vec_fds, t_fds *current)
 
 	i = 0;
 	ret = 0;
-	greatest = 1022;
+	greatest = 10;
 	while (i < vec_fds->size)
 	{
 		if (((t_fds *)vec_fds->data)[i].fd >= greatest)
