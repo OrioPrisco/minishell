@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 09:48:08 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:45:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,30 @@ void	print_open_redirects(t_fds *fds, int size)
 	int	i;
 
 	i = 0;
+	if (size == 0 || fds == NULL)
+	{
+		ft_printf("No open fds.\n");
+		return ;
+	}
 	while (i < size)
 	{
-		ft_printf("#%d: fd: %d, fn: %s\n", (i + 1), fds[i].fd, fds[i].fn);
+		if (fds[i].fn)
+		{
+			ft_printf("#%d: fd: %d, fn: %s, fd_cloexec: %d\n",
+				(i + 1), fds[i].fd, fds[i].fn, fds[i].fd_cloexec);
+		}
 		i++;
 	}
+}
+
+void	my_vector_pop(t_vector *vector, size_t index, void *dest)
+{
+	ft_memcpy(dest, vector->data + index * vector->elem_size,
+		vector->elem_size);
+	ft_memmove(vector->data + index * vector->elem_size,
+		vector->data + (index + 1) * vector->elem_size,
+		(vector->size - index) * vector->elem_size);
+	vector->size--;
 }
 
 /*	
@@ -36,19 +55,31 @@ void	print_open_redirects(t_fds *fds, int size)
 **	
 **/
 
-int	close_open_redirects(t_fds *fds, int size)
+int	close_open_redirects(t_vector *vec_fds)
 {
+	t_fds	*fds;
+	int		i;
+
+	if (!vec_fds || !vec_fds->data)
+		return (0);
+	i = vec_fds->size - 1;
+	fds = (t_fds *)vec_fds->data;
 	if (fds)
 	{
-		while (size)
+		while (i >= 0)
 		{
-			close(fds[size - 1].fd);
-			free(fds[size - 1].fn);
-			size--;
+			if (fds[i].fd_cloexec)
+			{
+				close(fds[i].fd);
+				free(fds[i].fn);
+				my_vector_pop(vec_fds, i,
+					&(((t_fds *)vec_fds->data)[vec_fds->size]));
+			}
+			i--;
 		}
-		free(fds);
-		fds = 0;
 	}
+	if (vec_fds->size <= 0)
+		vector_clear(vec_fds);
 	return (0);
 }
 

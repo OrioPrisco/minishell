@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 09:29:50 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:43:33 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static char	*get_fn_from_tokens(const char *fn)
 
 	i = 0;
 	fn_trimmed = 0;
-	// if (!fn)
-	// 	return (0);
 	fn_trimmed = ft_strdup(fn);
 	if (!fn_trimmed)
 		return (0);
@@ -36,7 +34,13 @@ static char	*get_fn_from_tokens(const char *fn)
 	return (fn_trimmed);
 }
 
-static int	open_redir_stdout(t_fds *fds, const char *fn)
+/*	
+**	in the future my hope is not need the get_fn_from_tokens function, but
+**	i need it now to get a null terminated string for the file name.
+**	
+**/
+
+int	open_trunc(t_fds *fds, const char *fn, int flags)
 {
 	char	*fn_trimmed;
 
@@ -48,10 +52,12 @@ static int	open_redir_stdout(t_fds *fds, const char *fn)
 	fds->fd = open(fn_trimmed, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fds->fd < 0)
 		return (1);
+	if (flags == 1)
+		fds->fd_cloexec = 1;
 	return (0);
 }
 
-static int	open_redir_stdout_append(t_fds *fds, const char *fn)
+int	open_append(t_fds *fds, const char *fn, int flags)
 {
 	char	*fn_trimmed;
 
@@ -63,21 +69,23 @@ static int	open_redir_stdout_append(t_fds *fds, const char *fn)
 	fds->fd = open(fn_trimmed, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (fds->fd < 0)
 		return (1);
+	if (flags == 1)
+		fds->fd_cloexec = 1;
 	return (0);
 }
 
 static int	redir_token_found(t_fds *current, char *fn_start, t_vector *vec_fds,
 					t_token *tokens)
 {
-	int	(*redir)(t_fds *, const char *);
+	int	(*redir)(t_fds *, const char *, int);
 	int	ret;
 
 	ret = 0;
 	if (tokens->type == T_REDIRECT_STDOUT)
-		redir = &open_redir_stdout;
+		redir = &open_trunc;
 	if (tokens->type == T_REDIRECT_STDOUT_APPEND)
-		redir = &open_redir_stdout_append;
-	ret = (*redir)(current, fn_start);
+		redir = &open_append;
+	ret = (*redir)(current, fn_start, 1);
 	if (!ret)
 	{
 		if (vector_append(vec_fds, current))
@@ -112,8 +120,8 @@ int	open_redirects(t_token *tokens, int size, t_vector *vec_fds)
 		else if (tokens[i].type == T_REDIRECT_STDOUT
 			|| tokens[i].type == T_REDIRECT_STDOUT_APPEND)
 		{
-			ret = redir_token_found(&current, (char *)tokens[i + 2].strview.start,
-					vec_fds, &tokens[i]);
+			ret = redir_token_found(&current,
+					(char *)tokens[i + 2].strview.start, vec_fds, &tokens[i]);
 			if (ret)
 				return (ret);
 		}

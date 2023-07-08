@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 09:18:29 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:44:12 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,30 @@ bool	check_for_redirects(t_token *tokens, int size)
 int	single_command(t_token *tokens, int size)
 {
 	t_vector	vec_fds;
-	t_fds		*fds;
 	int			ret;
+	t_fds		test;
 
-	fds = 0;
 	ret = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
 	if (check_for_redirects(tokens, size))
 	{
 		ret = open_redirects(tokens, size, &vec_fds);
-		fds = vec_fds.data;
 		if (ret)
-			return (close_open_redirects(fds, vec_fds.size),
-				ret);
+			return (close_open_redirects(&vec_fds), ret);
 	}
-	print_open_redirects(fds, vec_fds.size);
-	close_open_redirects(fds, vec_fds.size);
+	ft_bzero((void *)&test, sizeof(test));
+	open_trunc(&test, "new_file", 0);
+	ft_printf("X fd: %d, fn: %s, fd_cloexec: %d\n",
+		test.fd, test.fn, test.fd_cloexec);
+	vector_append(&vec_fds, (void *)&test);
+	ft_printf("after opens\n");
+	print_open_redirects(vec_fds.data, vec_fds.size);
+	close_open_redirects(&vec_fds);
+	ft_printf("after close\n");
+	print_open_redirects(vec_fds.data, vec_fds.size);
+	close(test.fd);
+	free(test.fn);
+	vector_clear(&vec_fds);
 	return (0);
 }
 

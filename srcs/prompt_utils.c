@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/07 17:57:44 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:42:01 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	prompt_loop(char **env)
 				msh_error("malloc");
 			add_history(str_input);
 		}
+		else
+			free(str_input);
 	}
 	return (0);
 }
