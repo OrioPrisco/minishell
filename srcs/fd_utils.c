@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 13:38:37 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 14:04:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	open_append(t_fds *fds, const char *fn, int flags)
 	return (0);
 }
 
-static int	redir_token_found(char *fn_start, t_vector *vec_fds, t_token *tokens)
+static int	redir_token_found(t_token *tokens, t_vector *vec_fds, char *fn_start)
 {
 	int		(*redir)(t_fds *, const char *, int);
 	int		ret;
@@ -99,8 +99,9 @@ static int	redir_token_found(char *fn_start, t_vector *vec_fds, t_token *tokens)
 }
 
 /*	
-**	NOTE: What if the last token is a space? 
-**	
+**	need syntax checking prior to calling open_redirects.
+**	for this reason, the first if that checks size may not be necessary
+**	but only after proper syntax checking is done.
 **/
 
 int	open_redirects(t_token *tokens, int size, t_vector *vec_fds)
@@ -119,8 +120,8 @@ int	open_redirects(t_token *tokens, int size, t_vector *vec_fds)
 		else if (tokens[i].type == T_REDIRECT_STDOUT
 			|| tokens[i].type == T_REDIRECT_STDOUT_APPEND)
 		{
-			ret = redir_token_found((char *)tokens[i + 2].strview.start,
-						vec_fds, &tokens[i]);
+			ret = redir_token_found(&tokens[i], vec_fds,
+						   (char *)tokens[i + 2].strview.start);
 			if (ret)
 				return (ret);
 		}
