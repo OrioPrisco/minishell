@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 12:43:33 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 13:38:37 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,26 +74,27 @@ int	open_append(t_fds *fds, const char *fn, int flags)
 	return (0);
 }
 
-static int	redir_token_found(t_fds *current, char *fn_start, t_vector *vec_fds,
-					t_token *tokens)
+static int	redir_token_found(char *fn_start, t_vector *vec_fds, t_token *tokens)
 {
-	int	(*redir)(t_fds *, const char *, int);
-	int	ret;
+	int		(*redir)(t_fds *, const char *, int);
+	int		ret;
+	t_fds	current;
 
 	ret = 0;
+	ft_bzero(&current, sizeof(t_fds));
 	if (tokens->type == T_REDIRECT_STDOUT)
 		redir = &open_trunc;
 	if (tokens->type == T_REDIRECT_STDOUT_APPEND)
 		redir = &open_append;
-	ret = (*redir)(current, fn_start, 1);
+	ret = (*redir)(&current, fn_start, 1);
 	if (!ret)
 	{
-		if (vector_append(vec_fds, current))
+		if (vector_append(vec_fds, &current))
 			return (vector_clear(vec_fds), 1);
 	}
 	else
 		return (vector_clear(vec_fds), ret);
-	dup_to_lget(vec_fds, current);
+	dup_to_lget(vec_fds, &current);
 	return (0);
 }
 
@@ -104,7 +105,6 @@ static int	redir_token_found(t_fds *current, char *fn_start, t_vector *vec_fds,
 
 int	open_redirects(t_token *tokens, int size, t_vector *vec_fds)
 {
-	t_fds		current;
 	int			i;
 	int			ret;
 
@@ -112,7 +112,6 @@ int	open_redirects(t_token *tokens, int size, t_vector *vec_fds)
 	ret = 0;
 	while (i < size)
 	{
-		ft_bzero(&current, sizeof(t_fds));
 		if ((tokens[i].type == T_REDIRECT_STDOUT
 				|| tokens[i].type == T_REDIRECT_STDOUT_APPEND)
 			&& (i == size - 1 || i == size - 2))
@@ -120,8 +119,8 @@ int	open_redirects(t_token *tokens, int size, t_vector *vec_fds)
 		else if (tokens[i].type == T_REDIRECT_STDOUT
 			|| tokens[i].type == T_REDIRECT_STDOUT_APPEND)
 		{
-			ret = redir_token_found(&current,
-					(char *)tokens[i + 2].strview.start, vec_fds, &tokens[i]);
+			ret = redir_token_found((char *)tokens[i + 2].strview.start,
+						vec_fds, &tokens[i]);
 			if (ret)
 				return (ret);
 		}
