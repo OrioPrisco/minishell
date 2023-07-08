@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 14:14:32 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 22:07:34 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,25 @@ int	close_open_redirects(t_vector *vec_fds)
 **	
 **/
 
-void	dup_to_lget(t_vector *vec_fds, t_fds *current)
+int	dup_to_lget(t_vector *vec_fds, t_fds *current)
 {
 	size_t	i;
 	int		greatest;
+	int		ret;
 
 	i = 0;
-	greatest = 10;
+	ret = 0;
+	greatest = 1022;
 	while (i < vec_fds->size)
 	{
 		if (((t_fds *)vec_fds->data)[i].fd >= greatest)
 			greatest = ((t_fds *)vec_fds->data)[i].fd + 1;
 		i++;
 	}
-	dup2(current->fd, greatest);
+	ret = dup2(current->fd, greatest);
+	if (ret < 0)
+		return (ret);
 	close(current->fd);
 	((t_fds *)vec_fds->data)[vec_fds->size - 1].fd = greatest;
+	return (0);
 }
