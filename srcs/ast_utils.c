@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 12:44:12 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:54:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	single_command(t_token *tokens, int size)
 {
 	t_vector	vec_fds;
 	int			ret;
-	t_fds		test;
 
 	ret = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
@@ -47,18 +46,7 @@ int	single_command(t_token *tokens, int size)
 		if (ret)
 			return (close_open_redirects(&vec_fds), ret);
 	}
-	ft_bzero((void *)&test, sizeof(test));
-	open_trunc(&test, "new_file", 0);
-	ft_printf("X fd: %d, fn: %s, fd_cloexec: %d\n",
-		test.fd, test.fn, test.fd_cloexec);
-	vector_append(&vec_fds, (void *)&test);
-	ft_printf("after opens\n");
-	print_open_redirects(vec_fds.data, vec_fds.size);
 	close_open_redirects(&vec_fds);
-	ft_printf("after close\n");
-	print_open_redirects(vec_fds.data, vec_fds.size);
-	close(test.fd);
-	free(test.fn);
 	vector_clear(&vec_fds);
 	return (0);
 }

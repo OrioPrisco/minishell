@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 12:42:01 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:57:49 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static int	init_prompt_loop(char **env)
 /*	
 **	readline returns NULL for both Ctrl-d and for EOF (redirection?)
 **		how do we differenciate?
+**	
+**	print_tokens(tokens);
 **/
 
 int	prompt_loop(char **env)
@@ -54,8 +56,7 @@ int	prompt_loop(char **env)
 		if (!str_input)
 			msh_exit(env, &com_list);
 		tokens = split_to_tokens(str_input);
-		print_tokens(tokens);
-		ft_printf("return: %d\n", tree_crawler(tokens));
+		tree_crawler(tokens);
 		free(tokens);
 		if (*str_input)
 		{
