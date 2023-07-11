@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/08 23:06:56 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/11 19:02:43 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ typedef struct s_token {
 	t_token_type	type;
 }	t_token;
 
+// like token but the string is owned by the token
+typedef struct s_owned_token {
+	char			*str;
+	t_token_type	type;
+}	t_owned_token;
+
 int			is_identifier_char(int c);
 const char	*token_type_to_str(t_token_type type);
 char		*next_non_identifier(const char *str);
@@ -45,5 +51,10 @@ bool		split_to_tokens(const char *str, t_vector *vec_token);
 bool		process_quotes(t_vector *vec_token);
 bool		split_dquoted_tokens(t_vector *vec_token);
 void		expand_vars(t_vector *vec_token, char **envp);
+//merges tokens into owned tokens
+//will initialize dest.
+//on failure returns 1 and clears src
+//on success returns 0 and src will contain the result
+bool		merge_tokens(t_vector *dest_owned_tok, const t_vector *src_tokens);
 
 #endif

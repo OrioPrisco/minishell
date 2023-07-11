@@ -18,6 +18,7 @@ SRC				=	minishell.c \
 					get_env_var.c \
 					expand_vars.c \
 					split_dquoted_tokens.c \
+					merge_tokens.c \
 					tokens_utils.c \
 					prompt_utils.c \
 					error_utils.c \

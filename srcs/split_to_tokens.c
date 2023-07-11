@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/08 23:10:02 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/11 19:46:31 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ bool	split_to_tokens(const char *str, t_vector *vec_token)
 
 int main(int argc, char **argv, char **envp)
 {
-	t_vector	vec_token;
-	size_t		i;
-	t_token		*token;
+	t_vector		vec_token;
+	t_vector		owned_tokens;
+	size_t			i;
+	t_owned_token	*token;
 
 	(void)argc;
 	(void)argv;
@@ -76,11 +77,12 @@ int main(int argc, char **argv, char **envp)
 	if (process_quotes(&vec_token) || split_dquoted_tokens(&vec_token))
 		return (1);
 	expand_vars(&vec_token, envp);
-	while (i < vec_token.size)
+	if (merge_tokens(&owned_tokens, &vec_token))
+		return (1);
+	while (i < owned_tokens.size)
 	{
-		token = ((t_token *)vec_token.data) + i;
-		printf("%s : %.*s\n", token_type_to_str(token->type),
-			(int)token->strview.size, token->strview.start);
+		token = ((t_owned_token *)owned_tokens.data) + i;
+		printf("%s : %s\n", token_type_to_str(token->type), token->str);
 		i++;
 	}
 }
