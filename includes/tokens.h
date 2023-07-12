@@ -33,10 +33,7 @@ typedef enum e_token_type {
 	T_VAR,
 }	t_token_type;
 
-typedef struct s_token {
-	t_stringview	strview;
-	t_token_type	type;
-}	t_token;
+// internal to parse line
 
 // like token but the string is owned by the token
 typedef struct s_owned_token {
@@ -44,13 +41,24 @@ typedef struct s_owned_token {
 	t_token_type	type;
 }	t_owned_token;
 
+// -- utils
 int			is_identifier_char(int c);
 const char	*token_type_to_str(t_token_type type);
 char		*next_non_identifier(const char *str);
+
+// -- parse_line internals
+
+typedef struct s_token {
+	t_stringview	strview;
+	t_token_type	type;
+}	t_token;
+
 bool		split_to_tokens(const char *str, t_vector *vec_token);
 bool		process_quotes(t_vector *vec_token);
 bool		split_dquoted_tokens(t_vector *vec_token);
 void		expand_vars(t_vector *vec_token, char **envp);
 bool		merge_tokens(t_vector *dest_owned_tok, const t_vector *src_tokens);
+// --
+bool		parse_line(const char *line, t_vector *dest, char **envp);
 
 #endif

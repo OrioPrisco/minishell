@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/11 19:46:31 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/12 14:04:22 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ bool	split_to_tokens(const char *str, t_vector *vec_token)
 
 int main(int argc, char **argv, char **envp)
 {
-	t_vector		vec_token;
 	t_vector		owned_tokens;
 	size_t			i;
 	t_owned_token	*token;
@@ -73,11 +72,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	i = 0;
-	split_to_tokens(readline("minishell>"), &vec_token);
-	if (process_quotes(&vec_token) || split_dquoted_tokens(&vec_token))
-		return (1);
-	expand_vars(&vec_token, envp);
-	if (merge_tokens(&owned_tokens, &vec_token))
+	if (parse_line(readline("minishell >"), &owned_tokens, envp))
 		return (1);
 	while (i < owned_tokens.size)
 	{
