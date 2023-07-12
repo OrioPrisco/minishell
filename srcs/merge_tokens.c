@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/11 19:42:52 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/12 11:42:02 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ static bool	merge_one_token(t_vector *dest, const t_vector *src, size_t index,
 	return (0);
 }
 
+//merges tokens into owned tokens
+//will initialize dest.
+//on failure returns 1 and clears src
+//on success returns 0 and src will contain the result
 bool	merge_tokens(t_vector *dest, const t_vector *src)
 {
 	size_t			index;

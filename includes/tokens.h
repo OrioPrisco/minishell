@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/11 19:02:43 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/12 11:42:26 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ bool		split_to_tokens(const char *str, t_vector *vec_token);
 bool		process_quotes(t_vector *vec_token);
 bool		split_dquoted_tokens(t_vector *vec_token);
 void		expand_vars(t_vector *vec_token, char **envp);
-//merges tokens into owned tokens
-//will initialize dest.
-//on failure returns 1 and clears src
-//on success returns 0 and src will contain the result
 bool		merge_tokens(t_vector *dest_owned_tok, const t_vector *src_tokens);
 
 #endif
