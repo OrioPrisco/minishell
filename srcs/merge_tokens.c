@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/12 11:42:02 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/07/13 14:40:10 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ static size_t	tokens_len(const t_vector *vec_token, size_t index,
 	while (i + index < vec_token->size)
 	{
 		token = ((t_token *)vec_token->data) + index + i;
-		if (!(token->type == T_STR || token->type == T_Q_STR
-				|| token->type == T_VAR))
+		if (!is_text_type(token->type))
 			break ;
 		size += token->strview.size;
 		i++;

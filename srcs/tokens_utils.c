@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/07 17:44:56 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/13 14:34:42 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,24 @@ const char	*token_type_to_str(t_token_type token)
 	if (token == T_VAR)
 		return ("VAR");
 	return ("UNKNOWN");
+}
+
+bool	is_text_type(t_token_type type)
+{
+	return (0
+		|| type == T_STR
+		|| type == T_DQ_STR
+		|| type == T_VAR
+		|| type == T_Q_STR
+	);
+}
+
+bool	is_redirect_type(t_token_type type)
+{
+	return (0
+		|| type == T_REDIRECT_STDOUT
+		|| type == T_REDIRECT_STDIN
+		|| type == T_REDIRECT_STDOUT_APPEND
+		|| type == T_HEREDOC
+	);
 }
