@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:17:16 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/13 16:22:32 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/13 17:45:08 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,14 @@ bool	process_quotes(t_vector *vec_token)
 			continue ;
 		if (*token->strview.start
 			!= *(token->strview.start + token->strview.size - 1))
-			return (ft_putstr_fd("Error : unterminated quote/dquote.\n", 2), 1);
+		{
+			ft_putstr_fd("Error : unterminated ", 2);
+			if (token->type == T_Q_STR)
+				ft_putstr_fd("quote.\n", 2);
+			else
+				ft_putstr_fd("double quote.\n", 2);
+			return (1);
+		}
 		token->strview.start++;
 		token->strview.size -= 2;
 	}
@@ -83,6 +90,32 @@ bool	process_redirects(t_vector *vec_token)
 			token = next;
 		}
 		token++;
+	}
+	return (0);
+}
+
+bool	validate_pipes(const t_vector *vec_token)
+{
+	t_token	*token;
+
+	token = vec_token->data;
+	while (token->type != T_END)
+	{
+		if (token->type == T_PIPE)
+		{
+			token = next_token(token);
+			if (token->type == T_PIPE || token->type == T_END)
+			{
+				ft_putstr_fd("Unexpected Token ", 2);
+				if (token->type == T_PIPE)
+					ft_putstr_fd("|\n", 2);
+				else
+					ft_putstr_fd("\\n\n", 2);
+				return (1);
+			}
+		}
+		else
+			token++;
 	}
 	return (0);
 }

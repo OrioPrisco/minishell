@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/07/13 15:10:47 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/13 17:46:22 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ bool	parse_line(const char *line, t_vector *dest, char **envp)
 		|| split_to_tokens(line, &vec_token)
 		|| process_quotes(&vec_token)
 		|| process_redirects(&vec_token)
+		|| validate_pipes(&vec_token)
 		|| split_dquoted_tokens(&vec_token)
 		|| (expand_vars(&vec_token, envp), 0)
 		|| merge_tokens(dest, &vec_token))
