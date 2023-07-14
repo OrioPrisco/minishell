@@ -6,11 +6,48 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/04 19:26:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:16:58 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*	
+**	TAKES
+**		env, env variable name, history_filename
+**	RETURNS
+**		Pointer to malloced string for history file path.
+**/
+
+static char	*history_file_path(char **env, const char *env_var,
+						const char *h_fn)
+{
+	int		i;
+	char	*ret_path;
+	char	*home;
+
+	i = -1;
+	ret_path = 0;
+	home = 0;
+	while (env[++i])
+	{
+		home = ft_strnstr(env[i], env_var, ft_strlen(env_var));
+		if (home)
+		{
+			home = ft_strdup(&home[ft_strlen(env_var) + 1]);
+			if (home[ft_strlen(home)] != '/')
+			{
+				ret_path = ft_strjoin(home, "/");
+				free(home);
+				home = ret_path;
+			}
+			ret_path = ft_strjoin(home, h_fn);
+			free(home);
+			return (ret_path);
+		}
+	}
+	return (0);
+}
 
 /*
  * From online manuals: https://tiswww.case.edu/php/chet/readline/readline.html
@@ -40,37 +77,78 @@
  *     (if any) is set to NULL. ))
  */
 
-bool	load_in_history(void)
+bool	load_in_history(char **env)
 {
+	int		history_fd;
 	char	*history_fn;
+	char	*gnl_line;
 
-	if (history_fn)
+	history_fn = history_file_path(env, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
+	history_fd = open(history_fn, O_RDONLY);
+	free(history_fn);
+	if (history_fd < 2)
+		return (1);
+	gnl_line = get_next_line(history_fd);
+	while (gnl_line)
 	{
+		if (ft_strchr(gnl_line, '\n'))
+			gnl_line[ft_strlen(gnl_line)] = 0;
+		add_history(gnl_line);
+		free(gnl_line);
+		gnl_line = get_next_line(history_fd);
+	}
+	close(history_fd);
+	return (0);
+}
+
+/*	
+**	readline sometimes adds a \n at the of the string if the user arrows through
+**	the history, for this reason, we have to check the end of the string in the
+**	vector to see if we have a \n then add one if needed to the history file.
+**	
+**	NOTE:	check this function performs correctly after adding here_doc or other
+**			things that may contain newlines.
+**	
+**/
+
+static bool	history_newline_check(const char *str, int history_fd)
+{
+	if (str[ft_strlen(str)] != '\n')
+	{
+		if (write(history_fd, "\n", 1) < 0)
+		{
+			close(history_fd);
+			msh_error("write");
+		}
 	}
 	return (0);
 }
 
-// need history_fn to equal $HOME/.msh_history. would like a clean way to 
-// access $HOME.
+/*
+**	need history_fn to equal $HOME/.msh_history. would like a clean way to 
+**	access $HOME.
+*/
 
-bool	add_com_to_history(char *str)
+bool	save_history(char **env, t_vector *com_list)
 {
-	int		history_fd;
 	char	*history_fn;
+	int		history_fd;
+	size_t	i;
 
-	history_fn = "/home/drew/.msh_history";
+	history_fn = history_file_path(env, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
 	history_fd = open(history_fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
-	if (history_fd < 2)
-		ms_error("open");
-	if (write(history_fd, str, ft_strlen(str)) < 0)
+	free(history_fn);
+	i = 0;
+	while (i < com_list->size)
 	{
-		close(history_fd);
-		ms_error("write");
-	}
-	if (write(history_fd, "\n", 2) < 0)
-	{
-		close(history_fd);
-		ms_error("write");
+		if (write(history_fd, ((char **)com_list->data)[i],
+			ft_strlen(((char **)com_list->data)[i])) < 0)
+		{
+			close(history_fd);
+			msh_error("write");
+		}
+		history_newline_check(((char **)com_list->data)[i], history_fd);
+		i++;
 	}
 	close(history_fd);
 	return (0);

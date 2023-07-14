@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/07/12 14:04:44 by OrioPrisc        ###   ########.fr        #
+#    Updated: 2023/07/14 17:54:12 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC				=	minishell.c \
 					prompt_utils.c \
 					error_utils.c \
 					history.c \
+					signal_utils.c \
 
 NAME			=	minishell
 
@@ -45,7 +46,7 @@ SUBMODULES		=	libft/.git\
 					libft/ftprintf/.git\
 					libft/getnextline/.git\
 
-LFLAGS			=	-Llibft -lreadline -lftprintf -lvector -lft
+LFLAGS			=	-Llibft -lreadline -lftprintf -lvector -lgetnextline -lft
 
 DEPENDS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.d,$(SRC))
 OBJS		:=	$(patsubst %.c,$(OBJ_FOLDER)%.o,$(SRC))
