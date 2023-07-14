@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:17:16 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/13 17:45:08 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/14 16:41:27 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ bool	process_redirects(t_vector *vec_token)
 	return (0);
 }
 
+//checks that pipes are not followed by end or another pipe
 bool	validate_pipes(const t_vector *vec_token)
 {
 	t_token	*token;
