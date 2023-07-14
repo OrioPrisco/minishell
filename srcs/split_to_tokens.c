@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/14 17:02:12 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/14 17:45:22 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,29 @@ bool	split_to_tokens(const char *str, t_vector *vec_token)
 #include <stdio.h>
 #include "env_var.h"
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_vector		owned_tokens;
 	size_t			i;
 	t_owned_token	*token;
+	char			*line;
 
 	(void)argc;
 	(void)argv;
 	i = 0;
-	if (parse_line(readline("minishell >"), &owned_tokens, envp))
+	line = readline("minishell> ");
+	if (!line)
 		return (1);
+	if (parse_line(line, &owned_tokens, envp))
+		return (free(line), 1);
 	while (i < owned_tokens.size)
 	{
 		token = ((t_owned_token *)owned_tokens.data) + i;
 		printf("%s : %s\n", token_type_to_str(token->type), token->str);
 		i++;
+		free(token->str);
 	}
+	free(line);
+	vector_clear(&owned_tokens);
 }
 */
