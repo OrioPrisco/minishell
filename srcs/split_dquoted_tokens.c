@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_quoted_tokens.c                              :+:      :+:    :+:   */
+/*   split_dquoted_tokens.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 16:31:29 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/07 17:50:53 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/14 17:00:55 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "vector.h"
 #include "libft.h"
 
+//returns the next string or variable token in a dquoted string
 static t_token	next_sub_token(const char *str)
 {
 	if (*str == '$')
@@ -21,6 +22,9 @@ static t_token	next_sub_token(const char *str)
 	return ((t_token){{str, ft_strcspn(str, "$")}, T_STR});
 }
 
+//splits a single dquoted token into string and variables tokens
+// returns 0 on success
+// returns 1 on error
 static bool	split_dqtoken(t_vector *dest, const t_stringview *strview)
 {
 	t_token	curr;
@@ -40,8 +44,11 @@ static bool	split_dqtoken(t_vector *dest, const t_stringview *strview)
 }
 
 //could probably pop and insert elemnts in place
-//would require some index variables and would be harder,
-//but use less memory
+// would require some index variables and would be harder,
+// but use less memory
+//splits all the dquoted tokens into strings and variables
+// returns 0 on success
+// returns 1 on error
 bool	split_dquoted_tokens(t_vector *vec_token)
 {
 	t_vector	vec2;

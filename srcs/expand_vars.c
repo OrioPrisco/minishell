@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:52:36 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/08 23:04:52 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/14 16:43:03 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "libft.h"
 #include "env_var.h"
 
+//expands all variables tokens to the corresponding env var
 void	expand_vars(t_vector *vec_token, char **envp)
 {
 	size_t	i;

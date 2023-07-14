@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/13 14:40:10 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/14 16:54:51 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include "vector.h"
 #include <stdlib.h>
 
-static size_t	tokens_len(const t_vector *vec_token, size_t index,
+//returns the total size of the next text tokens
+// also stores the number of text tokens observed in num_strings
+static size_t	text_tokens_len(const t_vector *vec_token, size_t index,
 	size_t *num_strings)
 {
 	size_t	size;
@@ -37,6 +39,8 @@ static size_t	tokens_len(const t_vector *vec_token, size_t index,
 
 //vector_append_elems are unchecked, as we have allocate enough memory
 // with vector_allocate (as long as there's no bugs)
+//merges tokens into a single owned_token and appends it to the output.
+// does not add space tokens
 static bool	merge_one_token(t_vector *dest, const t_vector *src, size_t index,
 	size_t *num_strings)
 {
@@ -46,7 +50,7 @@ static bool	merge_one_token(t_vector *dest, const t_vector *src, size_t index,
 	t_owned_token	token;
 
 	vector_init(&sbuilder, sizeof(char));
-	if (vector_allocate(&sbuilder, tokens_len(src, index, num_strings)))
+	if (vector_allocate(&sbuilder, text_tokens_len(src, index, num_strings)))
 		return (1);
 	i = index;
 	while (i < index + *num_strings)
