@@ -6,21 +6,23 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 21:55:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/15 11:21:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	check_for_redirects(t_token *tokens, int size)
+bool	check_for_redirects(t_vector *tokens, int size)
 {
-	int	i;
+	int				i;
+	t_owned_token	*current;
 
 	i = 0;
 	while (i < size)
 	{
-		if (tokens[i].type == T_REDIRECT_STDOUT
-			|| tokens[i].type == T_REDIRECT_STDOUT_APPEND)
+		current = (t_owned_token *)tokens->data + i;
+		if (current->type == T_REDIRECT_STDOUT 
+			|| current->type == T_REDIRECT_STDOUT_APPEND)
 			return (1);
 		i++;
 	}
@@ -33,7 +35,7 @@ bool	check_for_redirects(t_token *tokens, int size)
 **	return could be return status of command?
 **/
 
-int	single_command(t_token *tokens, int size)
+int	single_command(t_vector *tokens, int size)
 {
 	t_vector	vec_fds;
 	int			ret;
@@ -62,13 +64,13 @@ int	single_command(t_token *tokens, int size)
 **	&& || or T_END)
 **/
 
-int	tree_crawler(t_token *tokens)
+int	tree_crawler(t_vector *tokens)
 {
 	int	i;
 	int	ret;
 
 	i = 0;
-	while (tokens[i].type != T_END)
+	while (((t_owned_token *)tokens->data + i)->type != T_END)
 		i++;
 	ret = single_command(tokens, i);
 	return (ret);

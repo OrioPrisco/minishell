@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/15 09:42:20 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:44:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_owned_token {
 int			is_identifier_char(int c);
 const char	*token_type_to_str(t_token_type type);
 char		*next_non_identifier(const char *str);
+void		print_tokens(t_vector *owned_tokens);
 
 // -- parse_line internals
 

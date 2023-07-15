@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/08 22:06:39 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/15 11:01:16 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_fds
 //	fd_utils.c
 int		open_trunc(t_fds *fds, const char *fn, int flags);
 int		open_append(t_fds *fds, const char *fn, int flags);
-int		open_redirects(t_token *tokens, int size, t_vector *vec_fds);
+int		open_redirects(t_vector *tokens, int size, t_vector *vec_fds);
 
 //	fd_utils_2.c
 void	print_open_redirects(t_fds *fds, int size);

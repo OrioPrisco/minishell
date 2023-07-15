@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/15 09:42:36 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:43:45 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 #include "libft.h"
 #include "minishell.h"
 
-void	print_tokens(t_token *tokens)
+void	print_tokens(t_vector *owned_tokens)
 {
-	while (tokens->type != T_END)
+	size_t	i;
+	t_owned_token	*token;
+
+	i = 0;
+	while (i < owned_tokens->size)
 	{
-		printf("%s : %.*s\n", token_type_to_str(tokens->type),
-			(int)tokens->strview.size, tokens->strview.start);
-		tokens++;
+		token = ((t_owned_token *)owned_tokens->data) + i;
+		printf("%s : %s\n", token_type_to_str(token->type), token->str);
+		i++;
 	}
 }
 
