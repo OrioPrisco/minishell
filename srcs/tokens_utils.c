@@ -6,7 +6,11 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/07/07 08:26:26 by dpentlan         ###   ########.fr       */
+=======
+/*   Updated: 2023/07/07 17:44:56 by OrioPrisco       ###   ########.fr       */
+>>>>>>> validate_quotes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +66,7 @@ const char	*token_type_to_str(t_token_type token)
 	if (token == T_Q_STR)
 		return ("Q_STR");
 	if (token == T_DQ_STR)
-		return ("T_DQ_STR");
+		return ("DQ_STR");
 	if (token == T_STR)
 		return ("STR");
 	if (token == T_END)
@@ -77,5 +81,7 @@ const char	*token_type_to_str(t_token_type token)
 		return (">>");
 	if (token == T_PIPE)
 		return ("|");
+	if (token == T_VAR)
+		return ("VAR");
 	return ("UNKNOWN");
 }

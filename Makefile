@@ -6,7 +6,11 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2023/07/07 15:29:02 by dpentlan         ###   ########.fr        #
+=======
+#    Updated: 2023/07/12 14:04:44 by OrioPrisc        ###   ########.fr        #
+>>>>>>> validate_quotes
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +18,13 @@ CC				=	cc
 
 SRC				=	minishell.c \
 					split_to_tokens.c \
+					validate_tokens.c \
+					get_env_var.c \
+					expand_vars.c \
+					split_dquoted_tokens.c \
+					merge_tokens.c \
 					tokens_utils.c \
+					parse_line.c \
 					prompt_utils.c \
 					error_utils.c \
 					history.c \
