@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/15 11:51:11 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/15 12:23:43 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@
 
 int	open_trunc(t_fds *fds, const char *fn, int flags)
 {
-	fds->fn = (char *)fn;
+	fds->fn = ft_strdup(fn);
+	if (!fds->fn)
+		return (1);
 	fds->fd = open(fn, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fds->fd < 0)
 		return (1);
@@ -53,7 +55,9 @@ int	open_trunc(t_fds *fds, const char *fn, int flags)
 
 int	open_append(t_fds *fds, const char *fn, int flags)
 {
-	fds->fn = (char *)fn;
+	fds->fn = ft_strdup(fn);
+	if (!fds->fn)
+		return (1);
 	fds->fd = open(fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (fds->fd < 0)
 		return (1);

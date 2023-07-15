@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/15 12:10:11 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/15 12:24:32 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	prompt_loop(char **envp)
 			return (1);
 		print_tokens(&owned_tokens);
 		tree_crawler(&owned_tokens);
-	//	free_owned_tokens(&owned_tokens);
+		free_owned_tokens(&owned_tokens);
 		vector_clear(&owned_tokens);
 		if (*str_input)
 		{
