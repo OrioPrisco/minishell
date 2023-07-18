@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/18 14:28:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:59:55 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			is_identifier_char(int c);
 const char	*token_type_to_str(t_token_type type);
 char		*next_non_identifier(const char *str);
 void		print_tokens(t_vector *owned_tokens);
-void		free_owned_tokens(t_vector *owned_tokens);
+void		free_owned_token(void *owned_token);
 bool		is_text_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
 

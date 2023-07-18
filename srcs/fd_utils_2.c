@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 15:43:42 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/18 16:19:10 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	close_open_redirects(t_vector *vec_fds)
 		}
 	}
 	if (vec_fds->size <= 0)
-		vector_clear(vec_fds);
+		vector_free(vec_fds, free_fds);
 	return (0);
 }
 

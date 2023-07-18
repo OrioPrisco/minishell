@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 15:46:36 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/18 16:12:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ static int	redir_token_found(t_owned_token *owned_token,
 	if (!ret)
 	{
 		if (vector_append(vec_fds, &current))
-			return (vector_clear(vec_fds), 1);
+			return (vector_free(vec_fds, free_fds), 1);
 	}
 	else
-		return (vector_clear(vec_fds), ret);
+		return (vector_free(vec_fds, free_fds), ret);
 	ret = dup_to_lget(vec_fds, &current);
 	if (ret)
 		return (ret);
@@ -133,4 +133,12 @@ int	open_redirects(t_vector *tokens, int size, t_vector *vec_fds)
 		i++;
 	}
 	return (0);
+}
+
+void	free_fds(void *to_free)
+{
+	t_fds	*current;
+
+	current = to_free;
+	free(current->fn);
 }

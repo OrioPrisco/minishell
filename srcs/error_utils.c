@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 15:42:10 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/18 16:18:27 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	free_command_vector(t_vector *com_list)
 		free(((char **)com_list->data)[i]);
 		i++;
 	}
-	vector_clear(com_list);
+	vector_free(com_list, free);
 }
 
 void	msh_error(const char *message)
