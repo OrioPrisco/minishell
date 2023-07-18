@@ -6,10 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 14:02:36 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:20:10 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "vector.h"
+#include "tokens.h"
+#include "filedescriptors.h"
 #include "minishell.h"
 
 bool	check_for_redirects(t_vector *tokens, int size)
@@ -50,7 +53,7 @@ int	single_command(t_vector *tokens, int size)
 			return (close_open_redirects(&vec_fds), ret);
 	}
 	close_open_redirects(&vec_fds);
-	vector_clear(&vec_fds);
+	vector_free(&vec_fds, free_fds);
 	return (0);
 }
 

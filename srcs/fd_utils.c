@@ -6,39 +6,17 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 13:56:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:56:05 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static char	*get_fn_from_tokens(const char *fn)
-// {
-// 	char	*fn_trimmed;
-// 	int		i;
-//
-// 	i = 0;
-// 	fn_trimmed = 0;
-// 	fn_trimmed = ft_strdup(fn);
-// 	if (!fn_trimmed)
-// 		return (0);
-// 	while (fn_trimmed[i])
-// 	{
-// 		if (fn_trimmed[i] == ' ')
-// 		{
-// 			fn_trimmed[i] = 0;
-// 			break ;
-// 		}
-// 		i++;
-// 	}
-// 	return (fn_trimmed);
-// }
-
-/*	
-**	in the future my hope is not need the get_fn_from_tokens function, but
-**	i need it now to get a null terminated string for the file name.
-**	
-**/
+#include "filedescriptors.h"
+#include "libft.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include "tokens.h"
+#include "vector.h"
 
 int	open_trunc(t_fds *fds, const char *fn, int flags)
 {
@@ -83,10 +61,10 @@ static int	redir_token_found(t_owned_token *owned_token,
 	if (!ret)
 	{
 		if (vector_append(vec_fds, &current))
-			return (vector_clear(vec_fds), 1);
+			return (vector_free(vec_fds, free_fds), 1);
 	}
 	else
-		return (vector_clear(vec_fds), ret);
+		return (vector_free(vec_fds, free_fds), ret);
 	ret = dup_to_lget(vec_fds, &current);
 	if (ret)
 		return (ret);
@@ -94,10 +72,6 @@ static int	redir_token_found(t_owned_token *owned_token,
 }
 
 /*	
-**	need syntax checking prior to calling open_redirects.
-**	for this reason, the first if that checks size may not be necessary
-**	but only after proper syntax checking is done.
-**	
 **	need size rather than just looking for T_END because you can have multiple
 **	commands in a vector of t_owned_tokens.
 **/
@@ -113,11 +87,7 @@ int	open_redirects(t_vector *tokens, int size, t_vector *vec_fds)
 	while (i < size)
 	{
 		current = (t_owned_token *)tokens->data + i;
-		if ((current->type == T_REDIRECT_STDOUT
-				|| current->type == T_REDIRECT_STDOUT_APPEND)
-			&& i == size - 1)
-			return (2);
-		else if (current->type == T_REDIRECT_STDOUT
+		if (current->type == T_REDIRECT_STDOUT
 			|| current->type == T_REDIRECT_STDOUT_APPEND)
 		{
 			ret = redir_token_found(current, vec_fds, (current + 1)->str);
@@ -127,4 +97,12 @@ int	open_redirects(t_vector *tokens, int size, t_vector *vec_fds)
 		i++;
 	}
 	return (0);
+}
+
+void	free_fds(void *to_free)
+{
+	t_fds	*current;
+
+	current = to_free;
+	free(current->fn);
 }

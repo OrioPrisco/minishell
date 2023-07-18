@@ -6,11 +6,16 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 13:58:00 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:49:44 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "filedescriptors.h"
+#include "ft_printf.h"
+#include "libft.h"
+#include "vector.h"
+#include <unistd.h>
 
 /*	
 **	mostly for debugging to view fds vector data
@@ -36,16 +41,6 @@ void	print_open_redirects(t_fds *fds, int size)
 		}
 		i++;
 	}
-}
-
-void	my_vector_pop(t_vector *vector, size_t index, void *dest)
-{
-	ft_memcpy(dest, vector->data + index * vector->elem_size,
-		vector->elem_size);
-	ft_memmove(vector->data + index * vector->elem_size,
-		vector->data + (index + 1) * vector->elem_size,
-		(vector->size - index) * vector->elem_size);
-	vector->size--;
 }
 
 /*	
@@ -74,14 +69,14 @@ int	close_open_redirects(t_vector *vec_fds)
 			{
 				close(fds[i].fd);
 				free(fds[i].fn);
-				my_vector_pop(vec_fds, i,
+				vector_pop(vec_fds, i,
 					&(((t_fds *)vec_fds->data)[vec_fds->size]));
 			}
 			i--;
 		}
 	}
 	if (vec_fds->size <= 0)
-		vector_clear(vec_fds);
+		vector_free(vec_fds, free_fds);
 	return (0);
 }
 

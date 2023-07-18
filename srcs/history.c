@@ -6,11 +6,17 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 14:07:03 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:49:23 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
+#include "get_next_line.h"
+#include <readline/history.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include "vector.h"
 
 /*	
 **	TAKES

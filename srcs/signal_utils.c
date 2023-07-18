@@ -6,11 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:03:56 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/05 11:58:23 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:52:17 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
+#include "libft.h"
 
 /*	
 **	The signal raised by Ctrl-c is SIGINT

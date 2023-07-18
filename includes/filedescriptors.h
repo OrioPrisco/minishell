@@ -6,15 +6,14 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/15 11:01:16 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:11:48 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILEDESCRIPTORS_H
 # define FILEDESCRIPTORS_H
 
-# include "tokens.h"
-# include "stringview.h"
+typedef struct s_vector	t_vector;
 
 //	fd_cloexec is a flag that indicates the fd should be closed when execve
 //	returns succussfully
@@ -30,6 +29,7 @@ typedef struct s_fds
 int		open_trunc(t_fds *fds, const char *fn, int flags);
 int		open_append(t_fds *fds, const char *fn, int flags);
 int		open_redirects(t_vector *tokens, int size, t_vector *vec_fds);
+void	free_fds(void *t_fds);
 
 //	fd_utils_2.c
 void	print_open_redirects(t_fds *fds, int size);
