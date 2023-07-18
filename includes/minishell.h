@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 17:54:35 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:05:48 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <signal.h>
+# include "stringview.h"
+# include "tokens.h"
+# include "filedescriptors.h"
 
 //	Defines
 # define HISTORY_FILE_PATH "HOME"
@@ -39,9 +42,13 @@ void	msh_exit(char **env, t_vector *com_list);
 //	history.c
 bool	save_history(char **env, t_vector *com_list);
 bool	load_in_history(char **env);
+void	history_loop_logic(char *str_input, t_vector *com_list);
 
 //	signal_utils.c
 void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
+
+//	ast_utils.c
+int		tree_crawler(t_vector *tokens);
 
 #endif

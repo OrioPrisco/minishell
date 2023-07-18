@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/06 18:16:58 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:07:03 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 /*	
 **	TAKES
-**		env, env variable name, history_filename
+**		envp, envp variable name, history_filename
 **	RETURNS
 **		Pointer to malloced string for history file path.
 **/
 
-static char	*history_file_path(char **env, const char *env_var,
+static char	*history_file_path(char **envp, const char *envp_var,
 						const char *h_fn)
 {
 	int		i;
@@ -29,12 +29,12 @@ static char	*history_file_path(char **env, const char *env_var,
 	i = -1;
 	ret_path = 0;
 	home = 0;
-	while (env[++i])
+	while (envp[++i])
 	{
-		home = ft_strnstr(env[i], env_var, ft_strlen(env_var));
+		home = ft_strnstr(envp[i], envp_var, ft_strlen(envp_var));
 		if (home)
 		{
-			home = ft_strdup(&home[ft_strlen(env_var) + 1]);
+			home = ft_strdup(&home[ft_strlen(envp_var) + 1]);
 			if (home[ft_strlen(home)] != '/')
 			{
 				ret_path = ft_strjoin(home, "/");
@@ -77,13 +77,13 @@ static char	*history_file_path(char **env, const char *env_var,
  *     (if any) is set to NULL. ))
  */
 
-bool	load_in_history(char **env)
+bool	load_in_history(char **envp)
 {
 	int		history_fd;
 	char	*history_fn;
 	char	*gnl_line;
 
-	history_fn = history_file_path(env, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
+	history_fn = history_file_path(envp, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
 	history_fd = open(history_fn, O_RDONLY);
 	free(history_fn);
 	if (history_fd < 2)
@@ -92,7 +92,7 @@ bool	load_in_history(char **env)
 	while (gnl_line)
 	{
 		if (ft_strchr(gnl_line, '\n'))
-			gnl_line[ft_strlen(gnl_line)] = 0;
+			gnl_line[ft_strlen(gnl_line) - 1] = 0;
 		add_history(gnl_line);
 		free(gnl_line);
 		gnl_line = get_next_line(history_fd);
@@ -113,7 +113,7 @@ bool	load_in_history(char **env)
 
 static bool	history_newline_check(const char *str, int history_fd)
 {
-	if (str[ft_strlen(str)] != '\n')
+	if (str[ft_strlen(str)] != '\n' && *str)
 	{
 		if (write(history_fd, "\n", 1) < 0)
 		{
@@ -129,13 +129,13 @@ static bool	history_newline_check(const char *str, int history_fd)
 **	access $HOME.
 */
 
-bool	save_history(char **env, t_vector *com_list)
+bool	save_history(char **envp, t_vector *com_list)
 {
 	char	*history_fn;
 	int		history_fd;
 	size_t	i;
 
-	history_fn = history_file_path(env, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
+	history_fn = history_file_path(envp, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
 	history_fd = open(history_fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	free(history_fn);
 	i = 0;
@@ -152,4 +152,16 @@ bool	save_history(char **env, t_vector *com_list)
 	}
 	close(history_fd);
 	return (0);
+}
+
+void	history_loop_logic(char *str_input, t_vector *com_list)
+{
+	if (*str_input)
+	{
+		if (vector_append(com_list, &str_input))
+			msh_error("malloc");
+		add_history(str_input);
+	}
+	else
+		free(str_input);
 }

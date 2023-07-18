@@ -6,12 +6,13 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/13 14:34:42 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/18 14:33:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
 #include "libft.h"
+#include "minishell.h"
 
 //returns whether a character is alphanumeric or _
 //careful, identifier cannot start with a digit.
