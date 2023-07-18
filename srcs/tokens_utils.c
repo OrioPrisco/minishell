@@ -6,27 +6,13 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/18 13:59:09 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:33:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
 #include "libft.h"
 #include "minishell.h"
-
-void	print_tokens(t_vector *owned_tokens)
-{
-	size_t			i;
-	t_owned_token	*token;
-
-	i = 0;
-	while (i < owned_tokens->size)
-	{
-		token = ((t_owned_token *)owned_tokens->data) + i;
-		printf("%s : %s\n", token_type_to_str(token->type), token->str);
-		i++;
-	}
-}
 
 //returns whether a character is alphanumeric or _
 //careful, identifier cannot start with a digit.
@@ -86,16 +72,22 @@ const char	*token_type_to_str(t_token_type token)
 	return ("UNKNOWN");
 }
 
-void	free_owned_tokens(t_vector *owned_tokens)
+bool	is_text_type(t_token_type type)
 {
-	size_t			i;
-	t_owned_token	*current;
+	return (0
+		|| type == T_STR
+		|| type == T_DQ_STR
+		|| type == T_VAR
+		|| type == T_Q_STR
+	);
+}
 
-	i = 0;
-	while (i < owned_tokens->size)
-	{
-		current = (t_owned_token *)owned_tokens->data + i;
-		free(current->str);
-		i++;
-	}
+bool	is_redirect_type(t_token_type type)
+{
+	return (0
+		|| type == T_REDIRECT_STDOUT
+		|| type == T_REDIRECT_STDIN
+		|| type == T_REDIRECT_STDOUT_APPEND
+		|| type == T_HEREDOC
+	);
 }

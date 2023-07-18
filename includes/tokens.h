@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/18 14:00:02 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:28:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ const char	*token_type_to_str(t_token_type type);
 char		*next_non_identifier(const char *str);
 void		print_tokens(t_vector *owned_tokens);
 void		free_owned_tokens(t_vector *owned_tokens);
+bool		is_text_type(t_token_type type);
+bool		is_redirect_type(t_token_type type);
 
 // -- parse_line internals
 
@@ -57,6 +59,8 @@ typedef struct s_token {
 
 bool		split_to_tokens(const char *str, t_vector *vec_token);
 bool		process_quotes(t_vector *vec_token);
+bool		process_redirects(t_vector *vec_token);
+bool		validate_pipes(const t_vector *vec_token);
 bool		split_dquoted_tokens(t_vector *vec_token);
 void		expand_vars(t_vector *vec_token, char **envp);
 bool		merge_tokens(t_vector *dest_owned_tok, const t_vector *src_tokens);

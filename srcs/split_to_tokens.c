@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/12 14:04:22 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/07/14 17:45:22 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 // space and tabs are treated as whitespace
 // \v and \f are printed correctly, but do not count as whitespace
 //error out in case of unknown character ?
+//returns the next token in a string of text
 static t_token	get_one_token(const char *str)
 {
 	if (ft_strchr("\t ", *str))
@@ -38,8 +39,9 @@ static t_token	get_one_token(const char *str)
 
 //output tokens may be nonsensical, like unterminated quote tokens
 // or redirect tokens at the end of the list
-//returns 0 and populates the vector
-//or returns 1 and a freed vector
+//splits a string of text into tokens. will  initialize the vector
+// returns 0 on success and populates the vector
+// returns 1 on error and frees the vector
 bool	split_to_tokens(const char *str, t_vector *vec_token)
 {
 	t_token		curr;
@@ -63,22 +65,29 @@ bool	split_to_tokens(const char *str, t_vector *vec_token)
 #include <stdio.h>
 #include "env_var.h"
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_vector		owned_tokens;
 	size_t			i;
 	t_owned_token	*token;
+	char			*line;
 
 	(void)argc;
 	(void)argv;
 	i = 0;
-	if (parse_line(readline("minishell >"), &owned_tokens, envp))
+	line = readline("minishell> ");
+	if (!line)
 		return (1);
+	if (parse_line(line, &owned_tokens, envp))
+		return (free(line), 1);
 	while (i < owned_tokens.size)
 	{
 		token = ((t_owned_token *)owned_tokens.data) + i;
 		printf("%s : %s\n", token_type_to_str(token->type), token->str);
 		i++;
+		free(token->str);
 	}
+	free(line);
+	vector_clear(&owned_tokens);
 }
 */
