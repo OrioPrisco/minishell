@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:39:05 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/08 22:11:38 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/18 17:15:29 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ const char	*get_env_var(char **envp, const char *name, size_t name_size)
 	}
 	while (*envp)
 	{
-		if (!ft_memcmp(name, *envp, name_size))
+		if (!ft_memcmp(name, *envp, name_size) && (*envp)[name_size] == '=')
 			return (*envp + name_size + 1);
 		envp++;
 	}
