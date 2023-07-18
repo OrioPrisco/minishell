@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 16:19:10 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/18 16:49:44 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ void	print_open_redirects(t_fds *fds, int size)
 	}
 }
 
-void	my_vector_pop(t_vector *vector, size_t index, void *dest)
-{
-	ft_memcpy(dest, vector->data + index * vector->elem_size,
-		vector->elem_size);
-	ft_memmove(vector->data + index * vector->elem_size,
-		vector->data + (index + 1) * vector->elem_size,
-		(vector->size - index) * vector->elem_size);
-	vector->size--;
-}
-
 /*	
 **	NOTE: since the the fds.fn is a pointer, these need to be freed here.
 **	This loop only frees 
@@ -79,7 +69,7 @@ int	close_open_redirects(t_vector *vec_fds)
 			{
 				close(fds[i].fd);
 				free(fds[i].fn);
-				my_vector_pop(vec_fds, i,
+				vector_pop(vec_fds, i,
 					&(((t_fds *)vec_fds->data)[vec_fds->size]));
 			}
 			i--;
