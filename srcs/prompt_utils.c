@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/15 12:24:32 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:06:55 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,11 @@ static int	init_prompt_loop(char **envp)
 	return (0);
 }
 
-void	free_owned_tokens(t_vector *owned_tokens)
-{
-	size_t			i;
-	t_owned_token	*current;
-	
-	i = 0;
-	while (i < owned_tokens->size)
-	{
-		current = (t_owned_token *)owned_tokens->data + i;
-		free(current->str);
-		i++;
-	}
-}
-
 /*	
 **	readline returns NULL for both Ctrl-d and for EOF (redirection?)
 **		how do we differenciate?
 **	
-**	print_tokens(tokens);
+**	print_tokens(&owned_tokens);
 **/
 
 int	prompt_loop(char **envp)
@@ -71,18 +57,10 @@ int	prompt_loop(char **envp)
 			msh_exit(envp, &com_list);
 		if (parse_line(str_input, &owned_tokens, envp))
 			return (1);
-		print_tokens(&owned_tokens);
 		tree_crawler(&owned_tokens);
 		free_owned_tokens(&owned_tokens);
 		vector_clear(&owned_tokens);
-		if (*str_input)
-		{
-			if (vector_append(&com_list, &str_input))
-				msh_error("malloc");
-			add_history(str_input);
-		}
-		else
-			free(str_input);
+		history_loop_logic(str_input, &com_list);
 	}
 	return (0);
 }

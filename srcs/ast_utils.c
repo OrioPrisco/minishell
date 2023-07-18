@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/15 11:21:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:02:36 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	check_for_redirects(t_vector *tokens, int size)
 	while (i < size)
 	{
 		current = (t_owned_token *)tokens->data + i;
-		if (current->type == T_REDIRECT_STDOUT 
+		if (current->type == T_REDIRECT_STDOUT
 			|| current->type == T_REDIRECT_STDOUT_APPEND)
 			return (1);
 		i++;
@@ -33,6 +33,7 @@ bool	check_for_redirects(t_vector *tokens, int size)
 **	tokens is pointer to token space
 **	size is the number of tokens to look through
 **	return could be return status of command?
+**	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
 **/
 
 int	single_command(t_vector *tokens, int size)
@@ -48,7 +49,6 @@ int	single_command(t_vector *tokens, int size)
 		if (ret)
 			return (close_open_redirects(&vec_fds), ret);
 	}
-	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
 	close_open_redirects(&vec_fds);
 	vector_clear(&vec_fds);
 	return (0);

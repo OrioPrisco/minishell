@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/15 10:43:45 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:59:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	print_tokens(t_vector *owned_tokens)
 {
-	size_t	i;
+	size_t			i;
 	t_owned_token	*token;
 
 	i = 0;
@@ -84,4 +84,18 @@ const char	*token_type_to_str(t_token_type token)
 	if (token == T_VAR)
 		return ("VAR");
 	return ("UNKNOWN");
+}
+
+void	free_owned_tokens(t_vector *owned_tokens)
+{
+	size_t			i;
+	t_owned_token	*current;
+
+	i = 0;
+	while (i < owned_tokens->size)
+	{
+		current = (t_owned_token *)owned_tokens->data + i;
+		free(current->str);
+		i++;
+	}
 }

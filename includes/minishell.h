@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/15 10:49:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:05:48 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	msh_exit(char **env, t_vector *com_list);
 //	history.c
 bool	save_history(char **env, t_vector *com_list);
 bool	load_in_history(char **env);
+void	history_loop_logic(char *str_input, t_vector *com_list);
 
 //	signal_utils.c
 void	sigint_handler(int signum);

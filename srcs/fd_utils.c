@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/15 12:23:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:56:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ int	open_append(t_fds *fds, const char *fn, int flags)
 	return (0);
 }
 
-static int	redir_token_found(t_owned_token *owned_token, t_vector *vec_fds, char *fn_start)
+static int	redir_token_found(t_owned_token *owned_token,
+							t_vector *vec_fds, char *fn_start)
 {
 	int		(*redir)(t_fds *, const char *, int);
 	int		ret;
@@ -114,7 +115,7 @@ int	open_redirects(t_vector *tokens, int size, t_vector *vec_fds)
 		current = (t_owned_token *)tokens->data + i;
 		if ((current->type == T_REDIRECT_STDOUT
 				|| current->type == T_REDIRECT_STDOUT_APPEND)
-				&& i == size - 1)
+			&& i == size - 1)
 			return (2);
 		else if (current->type == T_REDIRECT_STDOUT
 			|| current->type == T_REDIRECT_STDOUT_APPEND)
