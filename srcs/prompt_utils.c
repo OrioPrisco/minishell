@@ -6,11 +6,15 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 14:06:55 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:51:39 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
+#include "vector.h"
+#include "tokens.h"
+#include <readline/readline.h>
 
 /*	
 **	signal returns pointer to most recent function call by signal.

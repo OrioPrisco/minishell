@@ -6,11 +6,17 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 13:56:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:46:36 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "filedescriptors.h"
+#include "libft.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include "tokens.h"
+#include "vector.h"
 
 // static char	*get_fn_from_tokens(const char *fn)
 // {

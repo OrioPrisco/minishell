@@ -6,11 +6,16 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 13:58:00 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:43:42 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "filedescriptors.h"
+#include "ft_printf.h"
+#include "libft.h"
+#include "vector.h"
+#include <unistd.h>
 
 /*	
 **	mostly for debugging to view fds vector data

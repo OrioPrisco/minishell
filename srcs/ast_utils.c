@@ -6,10 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 14:02:36 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:39:57 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "vector.h"
+#include "tokens.h"
+#include "filedescriptors.h"
 #include "minishell.h"
 
 bool	check_for_redirects(t_vector *tokens, int size)
