@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/07/18 14:35:39 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/07/19 15:38:11 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC				=	minishell.c \
 					history.c \
 					signal_utils.c \
 					ast_utils.c \
+					utils.c \
 					fd_utils.c \
 					fd_utils_2.c \
 
