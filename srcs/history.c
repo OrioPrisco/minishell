@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 15:49:23 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/18 18:34:58 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "vector.h"
+#include "env_var.h"
 
 /*	
 **	TAKES
@@ -28,31 +29,22 @@
 static char	*history_file_path(char **envp, const char *envp_var,
 						const char *h_fn)
 {
-	int		i;
-	char	*ret_path;
-	char	*home;
+	char		*ret_path;
+	char		*temp;
+	const char	*home;
 
-	i = -1;
 	ret_path = 0;
-	home = 0;
-	while (envp[++i])
-	{
-		home = ft_strnstr(envp[i], envp_var, ft_strlen(envp_var));
-		if (home)
-		{
-			home = ft_strdup(&home[ft_strlen(envp_var) + 1]);
-			if (home[ft_strlen(home)] != '/')
-			{
-				ret_path = ft_strjoin(home, "/");
-				free(home);
-				home = ret_path;
-			}
-			ret_path = ft_strjoin(home, h_fn);
-			free(home);
-			return (ret_path);
-		}
-	}
-	return (0);
+	home = get_env_var(envp, envp_var, ft_strlen(envp_var));
+	if (!home)
+		return (0);
+	if (home[ft_strlen(home)] == '/')
+		return (ft_strjoin(home, h_fn));
+	temp = ft_strjoin(home, "/");
+	if (!temp)
+		return (0);
+	ret_path = ft_strjoin(temp, h_fn);
+	free(temp);
+	return (ret_path);
 }
 
 /*
