@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/20 16:36:38 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 16:08:51 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,22 +102,18 @@ static int	redir_token_found(t_owned_token *owned_token,
 **	commands in a vector of t_owned_tokens.
 **/
 
-int	open_redirects(t_vector *tokens, int size, t_vector *vec_fds)
+int	open_redirects(t_vector *tokens, int start, int stop, t_vector *vec_fds)
 {
 	int				i;
 	int				ret;
 	t_owned_token	*current;
 
-	i = 0;
+	i = start;
 	ret = 0;
-	while (i < size)
+	while (i < stop)
 	{
 		current = (t_owned_token *)tokens->data + i;
-		if ((current->type == T_REDIRECT_STDOUT
-				|| current->type == T_REDIRECT_STDOUT_APPEND)
-			&& i == size - 1)
-			return (2);
-		else if (current->type == T_REDIRECT_STDOUT
+		if (current->type == T_REDIRECT_STDOUT
 			|| current->type == T_REDIRECT_STDOUT_APPEND)
 		{
 			ret = redir_token_found(current, vec_fds, (current + 1)->str);

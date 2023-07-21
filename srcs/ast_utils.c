@@ -6,19 +6,19 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 13:33:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 16:54:45 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	check_for_redirects(t_vector *tokens, int size)
+static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
 	int				i;
 	t_owned_token	*current;
 
-	i = 0;
-	while (i < size)
+	i = start;
+	while (i < stop)
 	{
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_REDIRECT_STDOUT
@@ -31,24 +31,25 @@ bool	check_for_redirects(t_vector *tokens, int size)
 
 /*	
 **	tokens is pointer to token space
-**	size is the number of tokens to look through
 **	return could be return status of command?
 **	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
 **/
 
-int	single_command(t_vector *tokens, int size)
+int	single_command(t_vector *tokens, int start, int stop)
 {
 	t_vector	vec_fds;
 	int			ret;
 
 	ret = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
-	if (check_for_redirects(tokens, size))
+	if (check_for_redirects(tokens, start, stop))
 	{
-		ret = open_redirects(tokens, size, &vec_fds);
+		ret = open_redirects(tokens, start, stop, &vec_fds);
 		if (ret)
 			return (close_open_redirects(&vec_fds), ret);
 	}
+	print_relavent_tokens(tokens, start, stop);
+	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
 	close_open_redirects(&vec_fds);
 	vector_clear(&vec_fds);
 	return (0);

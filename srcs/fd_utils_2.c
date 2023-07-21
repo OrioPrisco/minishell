@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 13:58:00 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:03:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ void	my_vector_pop(t_vector *vector, size_t index, void *dest)
 **	NOTE: since the the fds.fn is a pointer, these need to be freed here.
 **	This loop only frees 
 **	
+**	after close(fds[i].fd);
 **	ft_printf("closed fd: %d, fn %s, fd_cloexec %d\n",
 		fds[i].fd, fds[i].fn, fds[i].fd_cloexec);
-**	
+**	before free(fds[i].fn);
 */
 
 int	close_open_redirects(t_vector *vec_fds)
@@ -73,6 +74,8 @@ int	close_open_redirects(t_vector *vec_fds)
 			if (fds[i].fd_cloexec)
 			{
 				close(fds[i].fd);
+				ft_printf("closed fd: %d, fn %s, fd_cloexec %d\n",
+					fds[i].fd, fds[i].fn, fds[i].fd_cloexec);
 				free(fds[i].fn);
 				my_vector_pop(vec_fds, i,
 					&(((t_fds *)vec_fds->data)[vec_fds->size]));

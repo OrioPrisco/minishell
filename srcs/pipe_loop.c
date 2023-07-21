@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 14:58:37 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 16:52:20 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,31 @@ int	get_command_segment(t_vector *tokens, int i, int size)
 **	
 */
 
-bool	load_pipe_vec(t_vector *pipes, t_vector *tokens)
+int	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 {
 	t_owned_token	*current;
 	size_t				i;
-	int					j;
+	int					start;
 
+	start = -1;
+	if (vector_append(pipes, (int *)&start))
+		return (vector_clear(pipes), 1);
 	i = 0;
-	j = 0;
 	while (i < tokens->size)
 	{
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_PIPE)
 		{
-			if (vector_append(pipes, &j))
+			if (vector_append(pipes, (int *)&i))
 				return (vector_clear(pipes), 1);
-			j = -1;
 		}
 		i++;
-		j++;
 	}
+	i--;
+	if (vector_append(pipes, (int *)&i))
+		return (vector_clear(pipes), 1);
+	if (pipes->size > 2)
+		return (pipes->size);
 	return (0);
 }
 
@@ -67,8 +72,8 @@ bool	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 
 t_vector	*my_vector_pop_n(t_vector *vector, size_t index, size_t n)
 {
-	ft_memmove(vector->data + index * vector->elem_size,
-		vector->data + index + n,
+	ft_memmove(vector->data + (index * vector->elem_size),
+		vector->data + (index * vector->elem_size) + (n * vector->elem_size),
 		(vector->size - index - n) * vector->elem_size);
 	vector->size -= n;
 	return (vector);
@@ -82,25 +87,26 @@ t_vector	*my_vector_pop_n(t_vector *vector, size_t index, size_t n)
 int	pipe_loop(t_vector *tokens, int size)
 {
 	t_vector		pipes;
-	int				piping;
 	int				ret;
+	int				*pos;
 
 	ret = 0;
-	piping = 0;
 	vector_init(&pipes, sizeof(int));
-	load_pipe_vec(&pipes, tokens);
-	while (pipes.size > 0)
+	if (load_pipe_vec(&pipes, tokens))
 	{
-		piping = 1;
-		ft_printf("This should only print if theres a pipe!\n");
-		// create pipe and fork here?
-		ret = single_command(tokens, *(int *)pipes.data);
-		my_vector_pop_n(&pipes, 0, 1);
+		while (pipes.size > 1)
+		{
+			ft_printf("Pipe detected! Multiple commands:\n");
+			// create pipe and fork here?
+			pos = (int *)pipes.data;
+			ret = single_command(tokens, *pos + 1, *(pos + 1));
+			my_vector_pop_n(&pipes, 0, 1);
+		}
 	}
-	if (!piping)
+	else
 	{
-		ft_printf("This should only print if there is no pipe\n");
-		ret = single_command(tokens, size);
+		ft_printf("No pipe detected. Single command:\n");
+		ret = single_command(tokens, 0, size);
 	}
 	return (vector_clear(&pipes), ret);
 }
