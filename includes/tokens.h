@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/23 17:11:33 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/06 18:26:24 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef enum e_token_type {
 	T_REDIRECT_STDOUT_APPEND = '>' + 1,
 	T_PIPE = '|',
 	T_VAR,
+	T_WILDCARD,
 }	t_token_type;
 
 // internal to parse line

@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/18 14:33:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:29:38 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ const char	*token_type_to_str(t_token_type token)
 		return ("|");
 	if (token == T_VAR)
 		return ("VAR");
+	if (token == T_WILDCARD)
+		return ("*");
 	return ("UNKNOWN");
 }
 

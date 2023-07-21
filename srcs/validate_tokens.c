@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:17:16 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/19 15:17:57 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/21 17:41:54 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ bool	process_redirect(t_token *token)
 	}
 	if (token->type == T_HEREDOC)
 	{
-		while (is_text_type(next->type))
+		while (is_text_type(next->type) || next->type == T_WILDCARD)
 		{
 			process_one_token(next);
 			next++->type = T_STR;
