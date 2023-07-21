@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 17:11:39 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:16:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ t_vector	*my_vector_pop_n(t_vector *vector, size_t index, size_t n)
 /*
 **	pipe_loop
 **	
+			ft_printf("Pipe detected! Multiple commands:\n");
+**	
+		ft_printf("No pipe detected. Single command:\n");
+**	
 */
 
 int	pipe_loop(t_vector *tokens, int size)
@@ -96,7 +100,6 @@ int	pipe_loop(t_vector *tokens, int size)
 	{
 		while (pipes.size > 1)
 		{
-			ft_printf("Pipe detected! Multiple commands:\n");
 			pos = (int *)pipes.data;
 			ret = single_command(tokens, *pos + 1, *(pos + 1));
 			my_vector_pop_n(&pipes, 0, 1);
@@ -104,7 +107,6 @@ int	pipe_loop(t_vector *tokens, int size)
 	}
 	else
 	{
-		ft_printf("No pipe detected. Single command:\n");
 		ret = single_command(tokens, 0, size);
 	}
 	return (vector_clear(&pipes), ret);

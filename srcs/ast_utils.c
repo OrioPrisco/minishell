@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 16:54:45 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:56:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,41 @@ static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 	return (0);
 }
 
+/*
+**	check_and_open_redirects
+**	
+*/
+
+int	check_and_open_redirects(t_vector *tokens, t_vector *vec_fds, 
+							 int start, int stop)
+{
+	int			ret;
+
+	ret = 0;
+	if (check_for_redirects(tokens, start, stop))
+	{
+		ret = open_redirects(tokens, start, stop, vec_fds);
+		if (ret)
+			return (close_open_redirects(vec_fds), ret);
+	}
+	return (0);
+}
+
+/*
+**	func_name
+**	
+*/
+
+void	cleanup_redirects(t_vector *vec_fds)
+{
+	close_open_redirects(vec_fds);
+	vector_clear(vec_fds);
+}
+
 /*	
 **	tokens is pointer to token space
 **	return could be return status of command?
+**	print_relavent_tokens(tokens, start, stop);
 **	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
 **/
 
@@ -42,16 +74,10 @@ int	single_command(t_vector *tokens, int start, int stop)
 
 	ret = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
-	if (check_for_redirects(tokens, start, stop))
-	{
-		ret = open_redirects(tokens, start, stop, &vec_fds);
-		if (ret)
-			return (close_open_redirects(&vec_fds), ret);
-	}
-	print_relavent_tokens(tokens, start, stop);
-	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
-	close_open_redirects(&vec_fds);
-	vector_clear(&vec_fds);
+	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
+	if (ret)
+		return (ret);
+	cleanup_redirects(&vec_fds);
 	return (0);
 }
 
