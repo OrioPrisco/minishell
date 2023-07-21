@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 07:54:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 13:33:24 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ int	tree_crawler(t_vector *tokens)
 	i = 0;
 	while (((t_owned_token *)tokens->data + i)->type != T_END)
 		i++;
-	ret = single_command(tokens, i);
+	ret = pipe_loop(tokens, i);
 	return (ret);
 }
