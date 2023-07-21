@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 16:52:20 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:11:39 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	get_command_segment(t_vector *tokens, int i, int size)
 int	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 {
 	t_owned_token	*current;
-	size_t				i;
-	int					start;
+	size_t			i;
+	int				start;
 
 	start = -1;
 	if (vector_append(pipes, (int *)&start))
@@ -97,7 +97,6 @@ int	pipe_loop(t_vector *tokens, int size)
 		while (pipes.size > 1)
 		{
 			ft_printf("Pipe detected! Multiple commands:\n");
-			// create pipe and fork here?
 			pos = (int *)pipes.data;
 			ret = single_command(tokens, *pos + 1, *(pos + 1));
 			my_vector_pop_n(&pipes, 0, 1);
