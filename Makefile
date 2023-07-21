@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/07/18 14:35:39 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/07/21 07:51:58 by dpentlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRC				=	minishell.c \
 					ast_utils.c \
 					fd_utils.c \
 					fd_utils_2.c \
+					pipe_loop.c \
 
 NAME			=	minishell
 
