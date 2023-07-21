@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 17:56:44 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/21 18:04:23 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ int	single_command(t_vector *tokens, int start, int stop)
 
 	ret = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
+	ret = check_and_open_heredoc(tokens, start, stop);
+	if (ret)
+		return (ret);
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		return (ret);
