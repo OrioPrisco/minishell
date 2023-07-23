@@ -6,11 +6,14 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 17:16:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:14:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "tokens.h"
+#include "vector.h"
+#include "libft.h"
 
 /*
 **	get_command_segment

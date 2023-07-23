@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/21 16:20:34 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:11:33 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ const char	*token_type_to_str(t_token_type type);
 char		*next_non_identifier(const char *str);
 void		print_tokens(t_vector *owned_tokens);
 void		print_relavent_tokens(t_vector *owned_tokens, int start, int stop);
-void		free_owned_tokens(t_vector *owned_tokens);
+void		free_owned_token(void *owned_token);
 bool		is_text_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
 
@@ -59,12 +59,13 @@ typedef struct s_token {
 }	t_token;
 
 bool		split_to_tokens(const char *str, t_vector *vec_token);
-bool		process_quotes(t_vector *vec_token);
-bool		process_redirects(t_vector *vec_token);
-bool		validate_pipes(const t_vector *vec_token);
+bool		process_quote(t_token *token);
+bool		process_redirect(t_token *token);
+bool		validate_pipe(const t_token *token);
 bool		split_dquoted_tokens(t_vector *vec_token);
 void		expand_vars(t_vector *vec_token, char **envp);
 bool		merge_tokens(t_vector *dest_owned_tok, const t_vector *src_tokens);
+bool		process_one_token(t_token *token);
 // --
 bool		parse_line(const char *line, t_vector *dest, char **envp);
 
