@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/24 12:34:27 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/07/24 12:34:48 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static bool	merge_one_token(t_vector *dest, const t_vector *src, size_t index,
 	if (!*num_strings)
 		token.type = ((t_token *)src->data)[i++].type;
 	if (vector_append(dest, &token))
-		return (free(token.str), 1);
+		return (free_owned_token(&token), 1);
 	return (0);
 }
 
