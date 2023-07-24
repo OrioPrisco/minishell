@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/06 18:26:24 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/06 18:27:54 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void		print_relavent_tokens(t_vector *owned_tokens, int start, int stop);
 void		free_owned_token(void *owned_token);
 bool		is_text_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
+bool		is_wildcard_expr_type(t_token_type type);
 
 // -- parse_line internals
 
