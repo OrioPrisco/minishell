@@ -6,27 +6,16 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/21 18:07:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:10:05 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft.h"
-# include "get_next_line.h"
-# include "vector.h"
-# include "ft_printf.h"
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <unistd.h>
 # include <stdbool.h>
-# include <signal.h>
-# include "stringview.h"
-# include "tokens.h"
-# include "filedescriptors.h"
+
+typedef struct s_vector	t_vector;
 
 //	Defines
 # define HISTORY_FILE_PATH "HOME"

@@ -6,11 +6,15 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 14:06:55 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:19:43 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
+#include "vector.h"
+#include "tokens.h"
+#include <readline/readline.h>
 
 /*	
 **	signal returns pointer to most recent function call by signal.
@@ -58,8 +62,7 @@ int	prompt_loop(char **envp)
 		if (parse_line(str_input, &owned_tokens, envp))
 			return (1);
 		tree_crawler(&owned_tokens);
-		free_owned_tokens(&owned_tokens);
-		vector_clear(&owned_tokens);
+		vector_free(&owned_tokens, free_owned_token);
 		history_loop_logic(str_input, &com_list);
 	}
 	return (0);

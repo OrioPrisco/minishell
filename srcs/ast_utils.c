@@ -6,10 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/22 16:28:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:11:09 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "vector.h"
+#include "tokens.h"
+#include "filedescriptors.h"
 #include "minishell.h"
 
 static bool	check_for_redirects(t_vector *tokens, int start, int stop)
@@ -34,8 +37,8 @@ static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 **	
 */
 
-int	check_and_open_redirects(t_vector *tokens, t_vector *vec_fds, 
-							 int start, int stop)
+int	check_and_open_redirects(t_vector *tokens, t_vector *vec_fds,
+							int start, int stop)
 {
 	int			ret;
 

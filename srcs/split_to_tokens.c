@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/14 17:45:22 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/18 16:16:26 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,8 @@ int	main(int argc, char **argv, char **envp)
 		token = ((t_owned_token *)owned_tokens.data) + i;
 		printf("%s : %s\n", token_type_to_str(token->type), token->str);
 		i++;
-		free(token->str);
 	}
 	free(line);
-	vector_clear(&owned_tokens);
+	vector_free(&owned_tokens, free_owned_token);
 }
 */
