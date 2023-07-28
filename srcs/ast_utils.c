@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/23 17:11:09 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/28 17:44:16 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,15 @@ void	cleanup_redirects(t_vector *vec_fds)
 **	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
 **/
 
-int	single_command(t_vector *tokens, int start, int stop)
+int	single_command(t_vector *tokens, int start, int stop, char **envp)
 {
 	t_vector	vec_fds;
 	int			ret;
 
 	ret = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
+    if (access_loop(tokens, start, envp))
+		return (1);							// returns in event of malloc error.
 	ret = check_and_open_heredoc(tokens, start, stop);
 	if (ret)
 		return (ret);
@@ -97,7 +99,7 @@ int	single_command(t_vector *tokens, int start, int stop)
 **	&& || or T_END)
 **/
 
-int	tree_crawler(t_vector *tokens)
+int	tree_crawler(t_vector *tokens, char **envp)
 {
 	int	i;
 	int	ret;
@@ -105,6 +107,6 @@ int	tree_crawler(t_vector *tokens)
 	i = 0;
 	while (((t_owned_token *)tokens->data + i)->type != T_END)
 		i++;
-	ret = pipe_loop(tokens, i);
+	ret = pipe_loop(tokens, i, envp);
 	return (ret);
 }

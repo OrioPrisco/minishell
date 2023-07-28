@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/23 17:10:05 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/28 17:12:37 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,16 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 //	ast_utils.c
-int		tree_crawler(t_vector *tokens);
-int		single_command(t_vector *tokens, int start, int stop);
+int		tree_crawler(t_vector *tokens, char **envp);
+int		single_command(t_vector *tokens, int start, int stop, char **envp);
 
 //	pipe_loop.c
-int		pipe_loop(t_vector *tokens, int size);
+int		pipe_loop(t_vector *tokens, int size, char **envp);
 
 //	heredoc_utils.c
 int		check_and_open_heredoc(t_vector *tokens, int start, int stop);
+
+//	access_utils.c
+bool	access_loop(t_vector *tokens, int start, char **envp);
 
 #endif
