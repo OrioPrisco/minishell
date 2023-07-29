@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/28 17:12:37 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:22:39 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ int		pipe_loop(t_vector *tokens, int size, char **envp);
 int		check_and_open_heredoc(t_vector *tokens, int start, int stop);
 
 //	access_utils.c
-bool	access_loop(t_vector *tokens, int start, char **envp);
+char	*access_loop(t_vector *tokens, int start, char **envp);
 
 #endif

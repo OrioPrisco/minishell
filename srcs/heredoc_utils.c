@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/23 17:15:05 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/29 11:10:50 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ static bool	check_for_heredoc(t_vector *tokens, int start, int stop)
 	return (0);
 }
 
+// placed under (void)ret;
+		// ret = open_redirects(tokens, start, stop, vec_fds);
+		// if (ret)
+		// 	return (close_open_redirects(vec_fds), ret);
+
 int	check_and_open_heredoc(t_vector *tokens, int start, int stop)
 {
 	int			ret;
@@ -45,9 +50,6 @@ int	check_and_open_heredoc(t_vector *tokens, int start, int stop)
 	{
 		ft_printf("heredoc present!\n");
 		(void)ret;
-		// ret = open_redirects(tokens, start, stop, vec_fds);
-		// if (ret)
-		// 	return (close_open_redirects(vec_fds), ret);
 	}
 	return (0);
 }

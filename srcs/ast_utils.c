@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/28 17:44:16 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:25:05 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "tokens.h"
 #include "filedescriptors.h"
 #include "minishell.h"
+#include "ft_printf.h"
 
 static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
@@ -77,14 +78,18 @@ int	single_command(t_vector *tokens, int start, int stop, char **envp)
 
 	ret = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
-    if (access_loop(tokens, start, envp))
-		return (1);							// returns in event of malloc error.
 	ret = check_and_open_heredoc(tokens, start, stop);
 	if (ret)
 		return (ret);
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		return (ret);
+	if (!access_loop(tokens, start, envp))
+	{
+		ft_printf("no access found\n");
+		return (1);
+	}
+	ft_printf("access found\n");
 	cleanup_redirects(&vec_fds);
 	return (0);
 }
