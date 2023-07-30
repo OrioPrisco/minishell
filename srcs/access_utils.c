@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/29 11:22:22 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:31:14 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 #include "unistd.h"
 #include "vector.h"
 #include "tokens.h"
-
-// get rid of this when you're done. just for debugging.
-#include <stdio.h>
 
 /*	*** table_free (table free) ***
  *
@@ -119,6 +116,7 @@ bool	add_command_to_path(t_vector *tokens, int start, char **path)
 /*	
 **	RETURN
 **		Returns NULL if malloc error while working or returns char * on success.
+		Will also return NULL if no executable is found in path.
 **	
 **/
 

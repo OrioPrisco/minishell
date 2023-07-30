@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/29 11:10:50 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/30 16:54:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 #include "tokens.h"
 #include "vector.h"
 #include "ft_printf.h"
+#include <stdio.h>
 
 /*
 **	check_for_heredoc
 **	
 */
 
-static bool	check_for_heredoc(t_vector *tokens, int start, int stop)
+static int	check_for_heredoc(t_vector *tokens, int start, int stop)
 {
 	int				i;
 	t_owned_token	*current;
@@ -30,7 +31,7 @@ static bool	check_for_heredoc(t_vector *tokens, int start, int stop)
 	{
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_HEREDOC)
-			return (1);
+			return (i);
 		i++;
 	}
 	return (0);
@@ -44,12 +45,15 @@ static bool	check_for_heredoc(t_vector *tokens, int start, int stop)
 int	check_and_open_heredoc(t_vector *tokens, int start, int stop)
 {
 	int			ret;
+	char		*limiter;
 
 	ret = 0;
-	if (check_for_heredoc(tokens, start, stop))
+	limiter = 0;
+	ret = check_for_heredoc(tokens, start, stop);
+	if (ret)
 	{
-		ft_printf("heredoc present!\n");
-		(void)ret;
+		limiter = ((t_owned_token *)tokens->data + (ret + 1))->str;
+		ft_printf("Limiter is %s\n", limiter);
 	}
 	return (0);
 }
