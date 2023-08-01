@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/31 22:21:00 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/01 07:57:22 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,7 @@ int	single_command(t_vector *tokens, int start, int stop, char **envp)
 		return (ret);
 	execve_command = access_loop(tokens, start, envp);
 	if (!execve_command)
-	{
-		ft_printf("no access found\n");
-		return (1);
-	}
+		return (ft_printf("no access found\n"), 1);
 	ft_printf("access found\n");
 	if (execve_command)
 		free(execve_command);

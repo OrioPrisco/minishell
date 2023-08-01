@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/01 07:32:47 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/01 08:04:49 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "libft.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <readline/readline.h>
 
 /*
 **	print_here_doc_contents
@@ -34,6 +35,7 @@ int	print_here_doc_contents(int heredoc_fd)
 	// read(0, buf, 100);
 	read(heredoc_fd, buf, 100);
 	write(1, buf, 100);
+	write(1, "\n", 1);
 	close(heredoc_fd);
 	return (0);
 }
@@ -107,17 +109,18 @@ int	check_and_open_heredoc(t_vector *tokens, int start, int stop)
 	{
 		if (pipefd[0])
 			old_fd = pipefd[0];
-		limiter = ft_strjoin(((t_owned_token *)tokens->data + (ret + 1))->str, "\n");
+		//limiter = ft_strjoin(((t_owned_token *)tokens->data + (ret + 1))->str, "\n");
+		limiter = ((t_owned_token *)tokens->data + (ret + 1))->str;
 		if (pipe(pipefd))
 			return (perror("pipe"), -1);
 		//here_doc_input_loop(pipefd, limiter);
 		while (1)
 		{
 			stdin_line = 0;
-			write(1, "heredoc> ", 9);
-			stdin_line = get_next_line(0);
+			stdin_line = readline("heredoc> ");
 			if (!stdin_line)
-				return (close(pipefd[1]), perror("malloc"), -1);
+				return (close(pipefd[1]), -1);
+			//ft_printf("stdin_line = %d, limiter = %d\n", ft_strlen(stdin_line), ft_strlen(limiter));
 			if (!ft_strncmp(stdin_line, limiter, ft_strlen(limiter))
 				&& ft_strlen(stdin_line) == ft_strlen(limiter))
 			{
@@ -130,7 +133,7 @@ int	check_and_open_heredoc(t_vector *tokens, int start, int stop)
 		if (old_fd)
 			close(old_fd);
 		close(pipefd[1]);
-		free(limiter);
+		//free(limiter);
 		ret = check_for_heredoc(tokens, start, stop);
 	}
 	return (pipefd[0]);
