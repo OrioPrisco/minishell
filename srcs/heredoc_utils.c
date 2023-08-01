@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/30 16:54:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/01 07:32:47 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,124 @@
 #include "tokens.h"
 #include "vector.h"
 #include "ft_printf.h"
+#include "get_next_line.h"
+#include "libft.h"
+#include <unistd.h>
 #include <stdio.h>
 
 /*
+**	print_here_doc_contents
+**	mostly for debugging purposes...
+**	Will actually need to fork and dup after fork.
+*/
+
+int	print_here_doc_contents(int heredoc_fd)
+{
+	char buf[100];
+
+	ft_bzero(buf, 100);
+	// dup2(heredoc_fd, 0);
+	// read(0, buf, 100);
+	read(heredoc_fd, buf, 100);
+	write(1, buf, 100);
+	close(heredoc_fd);
+	return (0);
+}
+
+/*
 **	check_for_heredoc
+**	
+**	Using a static int so that we can iterate over then entire selection with 
+	while loop in the calling function. Then when we do not find a token we can 
+	reset i to 0 for the next command.
 **	
 */
 
 static int	check_for_heredoc(t_vector *tokens, int start, int stop)
 {
-	int				i;
+	static int				i;
 	t_owned_token	*current;
 
-	i = start;
-	while (i < stop)
+	while (i + start < stop)
 	{
-		current = (t_owned_token *)tokens->data + i;
+		current = (t_owned_token *)tokens->data + (i + start);
 		if (current->type == T_HEREDOC)
-			return (i);
+		{
+			i++;
+			return (i + start - 1);
+		}
 		i++;
 	}
+	i = 0;
 	return (0);
 }
 
-// placed under (void)ret;
-		// ret = open_redirects(tokens, start, stop, vec_fds);
-		// if (ret)
-		// 	return (close_open_redirects(vec_fds), ret);
+/*
+**	here_doc_input_loop
+**	
+*/
+
+int	here_doc_input_loop(int *pipefd, char *limiter)
+{
+	if (pipefd) {}
+	if (limiter) {}
+	return (0);
+}
+
+/*	
+**	pipefd[0] = read end of the pipe
+**	pipefd[1] = write end of the pipe
+**	
+**	Commenting out dup2 and close because when you dup the pipe to stdin, the 
+	program continues and whatever is in the pipe gets dumped into the shell.
+	Rather, you need to catch the contents of the pipe and send it to your program.
+**	RETURN
+**		-1 on error; int fd of pipe read end containing heredoc contents on success.
+**/
 
 int	check_and_open_heredoc(t_vector *tokens, int start, int stop)
 {
 	int			ret;
 	char		*limiter;
+	int			pipefd[2];
+	char		*stdin_line;
+	int			old_fd;
 
+	old_fd = 0;
 	ret = 0;
 	limiter = 0;
+	pipefd[0] = 0;
+	pipefd[1] = 0;
 	ret = check_for_heredoc(tokens, start, stop);
-	if (ret)
+	while (ret)
 	{
-		limiter = ((t_owned_token *)tokens->data + (ret + 1))->str;
-		ft_printf("Limiter is %s\n", limiter);
+		if (pipefd[0])
+			old_fd = pipefd[0];
+		limiter = ft_strjoin(((t_owned_token *)tokens->data + (ret + 1))->str, "\n");
+		if (pipe(pipefd))
+			return (perror("pipe"), -1);
+		//here_doc_input_loop(pipefd, limiter);
+		while (1)
+		{
+			stdin_line = 0;
+			write(1, "heredoc> ", 9);
+			stdin_line = get_next_line(0);
+			if (!stdin_line)
+				return (close(pipefd[1]), perror("malloc"), -1);
+			if (!ft_strncmp(stdin_line, limiter, ft_strlen(limiter))
+				&& ft_strlen(stdin_line) == ft_strlen(limiter))
+			{
+				free(stdin_line);
+				break ;
+			}
+			ft_putstr_fd(stdin_line, pipefd[1]);
+			free(stdin_line);
+		}
+		if (old_fd)
+			close(old_fd);
+		close(pipefd[1]);
+		free(limiter);
+		ret = check_for_heredoc(tokens, start, stop);
 	}
-	return (0);
+	return (pipefd[0]);
 }

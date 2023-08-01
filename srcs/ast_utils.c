@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/29 11:25:05 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/07/31 22:21:00 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "filedescriptors.h"
 #include "minishell.h"
 #include "ft_printf.h"
+#include <stdlib.h>
 
 static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
@@ -69,27 +70,37 @@ void	cleanup_redirects(t_vector *vec_fds)
 **	return could be return status of command?
 **	print_relavent_tokens(tokens, start, stop);
 **	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
+**	RETURN
+**		Returns 0 on success and return int from called functions on error.
 **/
 
 int	single_command(t_vector *tokens, int start, int stop, char **envp)
 {
 	t_vector	vec_fds;
 	int			ret;
+	int			here_doc_contents;
+	char		*execve_command;
 
 	ret = 0;
+	execve_command = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
-	ret = check_and_open_heredoc(tokens, start, stop);
-	if (ret)
-		return (ret);
+	here_doc_contents = check_and_open_heredoc(tokens, start, stop);
+	if (here_doc_contents < 0)
+		return (-1);
+	if (here_doc_contents)
+		print_here_doc_contents(here_doc_contents);
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		return (ret);
-	if (!access_loop(tokens, start, envp))
+	execve_command = access_loop(tokens, start, envp);
+	if (!execve_command)
 	{
 		ft_printf("no access found\n");
 		return (1);
 	}
 	ft_printf("access found\n");
+	if (execve_command)
+		free(execve_command);
 	cleanup_redirects(&vec_fds);
 	return (0);
 }
