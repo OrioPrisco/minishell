@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/28 16:16:30 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/01 12:53:26 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_vector	*my_vector_pop_n(t_vector *vector, size_t index, size_t n)
 **	
 */
 
-int	pipe_loop(t_vector *tokens, int size, char **envp)
+int	pipe_loop(t_vector *tokens, int size, t_cominfo *cominfo)
 {
 	t_vector		pipes;
 	int				ret;
@@ -104,13 +104,13 @@ int	pipe_loop(t_vector *tokens, int size, char **envp)
 		while (pipes.size > 1)
 		{
 			pos = (int *)pipes.data;
-			ret = single_command(tokens, *pos + 1, *(pos + 1), envp);
+			ret = single_command(tokens, *pos + 1, *(pos + 1), cominfo);
 			my_vector_pop_n(&pipes, 0, 1);
 		}
 	}
 	else
 	{
-		ret = single_command(tokens, 0, size, envp);
+		ret = single_command(tokens, 0, size, cominfo);
 	}
 	return (vector_clear(&pipes), ret);
 }

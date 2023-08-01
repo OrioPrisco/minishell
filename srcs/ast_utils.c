@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/01 07:57:22 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/01 12:54:18 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	cleanup_redirects(t_vector *vec_fds)
 **		Returns 0 on success and return int from called functions on error.
 **/
 
-int	single_command(t_vector *tokens, int start, int stop, char **envp)
+int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 {
 	t_vector	vec_fds;
 	int			ret;
@@ -84,7 +84,7 @@ int	single_command(t_vector *tokens, int start, int stop, char **envp)
 	ret = 0;
 	execve_command = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
-	here_doc_contents = check_and_open_heredoc(tokens, start, stop);
+	here_doc_contents = check_and_open_heredoc(tokens, start, stop, cominfo);
 	if (here_doc_contents < 0)
 		return (-1);
 	if (here_doc_contents)
@@ -92,7 +92,7 @@ int	single_command(t_vector *tokens, int start, int stop, char **envp)
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		return (ret);
-	execve_command = access_loop(tokens, start, envp);
+	execve_command = access_loop(tokens, start, cominfo->envp);
 	if (!execve_command)
 		return (ft_printf("no access found\n"), 1);
 	ft_printf("access found\n");
@@ -112,7 +112,7 @@ int	single_command(t_vector *tokens, int start, int stop, char **envp)
 **	&& || or T_END)
 **/
 
-int	tree_crawler(t_vector *tokens, char **envp)
+int	tree_crawler(t_vector *tokens, t_cominfo *cominfo)
 {
 	int	i;
 	int	ret;
@@ -120,6 +120,6 @@ int	tree_crawler(t_vector *tokens, char **envp)
 	i = 0;
 	while (((t_owned_token *)tokens->data + i)->type != T_END)
 		i++;
-	ret = pipe_loop(tokens, i, envp);
+	ret = pipe_loop(tokens, i, cominfo);
 	return (ret);
 }

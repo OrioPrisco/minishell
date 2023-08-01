@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/29 11:31:14 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:50:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ bool	add_slash_and_comment(char **path, int i, char *command)
 	char	*slash_command;
 	char	*new_path;
 
+	if (!command)
+		return (1);
 	slash_command = ft_strjoin("/", command);
 	if (!slash_command)
 		return (1);
@@ -132,7 +134,10 @@ char	*access_loop(t_vector *tokens, int start, char **envp)
 	env = get_env_var(envp, "PATH", 4);
 	path = ft_split(env, ':');
 	if (add_command_to_path(tokens, start, path))
+	{
+		table_free(path);
 		return (0);
+	}
 	while (path[i])
 	{
 		if (access(path[i], F_OK | X_OK) == 0)

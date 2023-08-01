@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 18:34:58 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/01 13:00:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,13 @@ bool	save_history(char **envp, t_vector *com_list)
 	return (0);
 }
 
-void	history_loop_logic(char *str_input, t_vector *com_list)
+void	history_loop_logic(t_cominfo *cominfo)
 {
+	char		*str_input;
+	t_vector	*com_list;
+
+	str_input = cominfo->command;
+	com_list = cominfo->com_list;
 	if (*str_input)
 	{
 		if (vector_append(com_list, &str_input))
