@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/01 12:54:18 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:39:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,11 @@ int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 
 int	tree_crawler(t_vector *tokens, t_cominfo *cominfo)
 {
-	int	i;
-	int	ret;
+	t_vector	pids;
 
-	i = 0;
-	while (((t_owned_token *)tokens->data + i)->type != T_END)
-		i++;
-	ret = pipe_loop(tokens, i, cominfo);
-	return (ret);
+	vector_init(&pids, sizeof(int));
+	fork_loop(tokens, cominfo, &pids);
+	msh_wait(&pids);
+	vector_clear(&pids);
+	return (0);
 }

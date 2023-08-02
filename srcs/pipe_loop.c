@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/01 12:53:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:38:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,28 +89,46 @@ t_vector	*my_vector_pop_n(t_vector *vector, size_t index, size_t n)
 **	
 		ft_printf("No pipe detected. Single command:\n");
 **	
+**	I think this 
 */
 
-int	pipe_loop(t_vector *tokens, int size, t_cominfo *cominfo)
+int	pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes)
+{
+	int				*pos;
+
+	while (pipes->size > 1)
+	{
+		pos = (int *)pipes->data;
+		single_command(tokens, *pos + 1, *(pos + 1), cominfo);
+		my_vector_pop_n(pipes, 0, 1);
+	}
+	return (0);
+}
+
+/*
+**	fork_loop
+**	
+*/
+
+int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 {
 	t_vector		pipes;
 	int				ret;
-	int				*pos;
+	int				i;
 
+	i = 0;
 	ret = 0;
+	if (pids) {}
+	while (((t_owned_token *)tokens->data + i)->type != T_END)
+		i++;
 	vector_init(&pipes, sizeof(int));
 	if (load_pipe_vec(&pipes, tokens))
 	{
-		while (pipes.size > 1)
-		{
-			pos = (int *)pipes.data;
-			ret = single_command(tokens, *pos + 1, *(pos + 1), cominfo);
-			my_vector_pop_n(&pipes, 0, 1);
-		}
+		pipe_loop(tokens, cominfo, &pipes);
 	}
 	else
 	{
-		ret = single_command(tokens, 0, size, cominfo);
+		single_command(tokens, 0, i, cominfo);
 	}
 	return (vector_clear(&pipes), ret);
 }

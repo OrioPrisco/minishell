@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/02 08:54:39 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:38:36 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,11 @@ int		single_command(t_vector *tokens, int start, int stop,
 			t_cominfo *cominfo);
 
 //	pipe_loop.c
-int		pipe_loop(t_vector *tokens, int size, t_cominfo *cominfo);
+int		pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes);
+int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
+
+//	fork_utils.c
+int		msh_wait(t_vector *pids);
 
 //	heredoc_utils.c
 int		print_here_doc_contents(int heredoc_fd);
