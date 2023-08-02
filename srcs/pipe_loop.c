@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/02 18:38:09 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:05:33 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "tokens.h"
 #include "vector.h"
 #include "libft.h"
+#include <unistd.h>
 
 /*
 **	get_command_segment
@@ -107,20 +108,21 @@ int	pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes)
 
 /*
 **	fork_loop
-**	
+**	Errors not handled yet. think about return in case of fork failure or malloc failure.
 */
 
 int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 {
 	t_vector		pipes;
 	int				ret;
-	int				i;
+	int				size;
+	int				pid;
 
-	i = 0;
+	size = 0;
 	ret = 0;
 	if (pids) {}
-	while (((t_owned_token *)tokens->data + i)->type != T_END)
-		i++;
+	while (((t_owned_token *)tokens->data + size)->type != T_END)
+		size++;
 	vector_init(&pipes, sizeof(int));
 	if (load_pipe_vec(&pipes, tokens))
 	{
@@ -128,7 +130,13 @@ int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 	}
 	else
 	{
-		single_command(tokens, 0, i, cominfo);
+		pid = fork();
+		if (pid < 0)
+			return (1);
+		if (vector_append(pids, (int *)&pid))
+			return (1);
+		if (pid == 0)
+			single_command(tokens, 0, size, cominfo);
 	}
 	return (vector_clear(&pipes), ret);
 }
