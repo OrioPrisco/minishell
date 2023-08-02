@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/02 18:38:36 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:32:14 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ typedef struct s_cominfo
 	char		**envp;
 	t_vector	*com_list;
 }				t_cominfo;
+
+typedef struct s_com_segment
+{
+	t_vector	*tokens;
+	int			start;
+	int			stop;
+}				t_com_segment;
 
 //	Defines
 # define HISTORY_FILE_PATH "HOME"
@@ -45,7 +52,7 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 //	ast_utils.c
-int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
+int		tree_crawler(t_vector *tokens, t_cominfo cominfo);
 int		single_command(t_vector *tokens, int start, int stop,
 			t_cominfo *cominfo);
 
@@ -55,6 +62,8 @@ int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 
 //	fork_utils.c
 int		msh_wait(t_vector *pids);
+int		print_execve_args(char **execve_com_args);
+int		construct_execve_args(t_com_segment com_seg, char **execve_com_args);
 
 //	heredoc_utils.c
 int		print_here_doc_contents(int heredoc_fd);

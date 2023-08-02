@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/01 13:00:33 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:06:00 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ int	prompt_loop(char **envp)
 			msh_exit(envp, &com_list);
 		if (parse_line(str_input, &owned_tokens, envp))
 			return (1);
-		cominfo.com_list = &com_list;
-		cominfo.envp = envp;
-		cominfo.command = str_input;
-		tree_crawler(&owned_tokens, &cominfo);
+		tree_crawler(&owned_tokens, (t_cominfo){ str_input, envp, &com_list });
 		history_loop_logic(&cominfo);
 		vector_free(&owned_tokens, free_owned_token);
 	}

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/02 18:39:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:32:58 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ void	cleanup_redirects(t_vector *vec_fds)
 **	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
 **	RETURN
 **		Returns 0 on success and return int from called functions on error.
+
+**	This functions will only be called from a child process. So rather than return, we should
+		exit.
 **/
 
 int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
@@ -80,9 +83,11 @@ int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 	int			ret;
 	int			here_doc_contents;
 	char		*execve_command;
+	char		**execve_com_args;
 
 	ret = 0;
 	execve_command = 0;
+	execve_com_args = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
 	here_doc_contents = check_and_open_heredoc(tokens, start, stop, cominfo);
 	if (here_doc_contents < 0)
@@ -99,6 +104,10 @@ int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 	if (execve_command)
 		free(execve_command);
 	cleanup_redirects(&vec_fds);
+	if (construct_execve_args((t_com_segment){ tokens, start, stop }, execve_com_args))
+		return (1);
+	print
+	execve(execve_command, , cominfo->envp);
 	return (0);
 }
 
@@ -112,12 +121,12 @@ int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 **	&& || or T_END)
 **/
 
-int	tree_crawler(t_vector *tokens, t_cominfo *cominfo)
+int	tree_crawler(t_vector *tokens, t_cominfo cominfo)
 {
 	t_vector	pids;
 
 	vector_init(&pids, sizeof(int));
-	fork_loop(tokens, cominfo, &pids);
+	fork_loop(tokens, &cominfo, &pids);
 	msh_wait(&pids);
 	vector_clear(&pids);
 	return (0);
