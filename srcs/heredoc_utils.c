@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/01 14:41:40 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/02 08:55:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ int	here_doc_input_loop(int *pipefd, char *limiter, t_cominfo *cominfo)
 		str_input = 0;
 		str_input = readline("heredoc> ");
 		if (!str_input)
-			return (close(pipefd[1]), -1);
+			return (close(pipefd[1]), close(pipefd[0]),
+				msh_exit(cominfo->envp, cominfo->com_list), -1);
 		if (append_str_to_com_list("\n", cominfo))
 			return (-1);
 		if (append_str_to_com_list(str_input, cominfo))
