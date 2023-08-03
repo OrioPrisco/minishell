@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 09:57:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 11:25:54 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	add_slash_and_comment(char **path, int i, char *command)
 		return (1);
 	new_path = ft_strjoin(path[i], slash_command);
 	if (!new_path)
-		return (1);
+		return (free(slash_command), 1);
 	free(slash_command);
 	free(path[i]);
 	path[i] = new_path;
