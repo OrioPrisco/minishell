@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 11:29:23 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 11:47:52 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,11 @@ bool	add_command_to_single_path_item(char **path, int i, char *command)
 		item in the path variable so it can be run through the access function.
 */
 
-bool	add_command_to_path(t_vector *tokens, int start, char **path)
+bool	add_command_to_path(char *command, char **path)
 {
-	char	*command;
 	int		i;
 
 	i = 0;
-	command = ((t_owned_token *)tokens->data + start)->str;
 	while (path[i])
 	{
 		if (add_command_to_single_path_item(path, i, command))
@@ -118,7 +116,7 @@ char	**get_path_with_commands(t_vector *tokens, int start, char **path,
 	path = ft_split(env, ':');
 	if (!path)
 		return (0);
-	if (add_command_to_path(tokens, start, path))
+	if (add_command_to_path(((t_owned_token *)tokens->data + start)->str, path))
 	{
 		table_free(path);
 		return (0);
