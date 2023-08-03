@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:35:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/19 15:35:37 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/03 09:56:49 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define UTILS_H
 
 void	free_str(void *data);
+void	table_free(char **table);
 
 #endif

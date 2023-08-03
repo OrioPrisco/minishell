@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/02 08:55:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 11:11:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ bool	append_str_to_com_list(char *str, t_cominfo *cominfo)
 /*
 **	here_doc_input_loop
 **	
+		//ft_dprintf(pipefd[1], str_input, "\n");
 */
 
 int	here_doc_input_loop(int *pipefd, char *limiter, t_cominfo *cominfo)
@@ -105,12 +106,10 @@ int	here_doc_input_loop(int *pipefd, char *limiter, t_cominfo *cominfo)
 		if (!str_input)
 			return (close(pipefd[1]), close(pipefd[0]),
 				msh_exit(cominfo->envp, cominfo->com_list), -1);
-		if (append_str_to_com_list("\n", cominfo))
-			return (-1);
-		if (append_str_to_com_list(str_input, cominfo))
-			return (-1);
-		if (!ft_strncmp(str_input, limiter, ft_strlen(limiter))
-			&& ft_strlen(str_input) == ft_strlen(limiter))
+		if (append_str_to_com_list("\n", cominfo)
+			|| append_str_to_com_list(str_input, cominfo))
+			return (free(str_input), -1);
+		if (!ft_strcmp(str_input, limiter))
 		{
 			free(str_input);
 			break ;
@@ -147,8 +146,7 @@ int	check_and_open_heredoc(t_vector *tokens, int start, int stop,
 	old_fd = 0;
 	ret = 0;
 	limiter = 0;
-	pipefd[0] = 0;
-	pipefd[1] = 0;
+	ft_bzero((void *)pipefd, sizeof(pipefd));
 	ret = check_for_heredoc(tokens, start, stop);
 	while (ret)
 	{
@@ -157,7 +155,8 @@ int	check_and_open_heredoc(t_vector *tokens, int start, int stop,
 		limiter = ((t_owned_token *)tokens->data + (ret + 1))->str;
 		if (pipe(pipefd))
 			return (perror("pipe"), -1);
-		here_doc_input_loop(pipefd, limiter, cominfo);
+		if (here_doc_input_loop(pipefd, limiter, cominfo))
+			return (perror("malloc"), -1);
 		if (old_fd)
 			close(old_fd);
 		close(pipefd[1]);

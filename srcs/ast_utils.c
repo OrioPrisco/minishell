@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/02 20:32:58 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:35:32 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "minishell.h"
 #include "ft_printf.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
@@ -97,12 +98,12 @@ int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		return (ret);
-	execve_command = access_loop(tokens, start, cominfo->envp);
+	execve_command = access_loop((t_owned_token *)tokens->data + start,
+			cominfo->envp);
 	if (!execve_command)
-		return (ft_printf("no access found\n"), 1);
-	ft_printf("access found\n");
-	if (execve_command)
-		free(execve_command);
+		return (perror("malloc"), -1);
+	print_access_debug(execve_command);
+	free(execve_command);
 	cleanup_redirects(&vec_fds);
 	if (construct_execve_args((t_com_segment){ tokens, start, stop }, execve_com_args))
 		return (1);

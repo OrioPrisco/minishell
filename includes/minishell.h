@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/02 20:32:14 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:33:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdbool.h>
+# include "tokens.h"
 
 typedef struct s_vector	t_vector;
 
@@ -71,6 +72,9 @@ int		check_and_open_heredoc(t_vector *tokens, int start, int stop,
 			t_cominfo *cominfo);
 
 //	access_utils.c
-char	*access_loop(t_vector *tokens, int start, char **envp);
+bool	add_slash_and_command(char **path, int i, char *command);
+bool	add_command_to_single_path_item(char **path, int i, char *command);
+void	print_access_debug(char *execve_command);
+char	*access_loop(t_owned_token *token, char **envp);
 
 #endif
