@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 11:25:54 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 11:29:23 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 **	
 */
 
-bool	add_slash_and_comment(char **path, int i, char *command)
+bool	add_slash_and_command(char **path, int i, char *command)
 {
 	char	*slash_command;
 	char	*new_path;
@@ -59,7 +59,7 @@ bool	add_command_to_single_path_item(char **path, int i, char *command)
 		j++;
 	if (path[i][j - 1] != '/')
 	{
-		if (add_slash_and_comment(path, i, command))
+		if (add_slash_and_command(path, i, command))
 			return (1);
 	}
 	else
