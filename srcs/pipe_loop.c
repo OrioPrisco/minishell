@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 10:38:14 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 11:34:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,6 @@ int	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 }
 
 /*
-**	my_vector_pop_n
-**	
-*/
-
-t_vector	*my_vector_pop_n(t_vector *vector, size_t index, size_t n)
-{
-	ft_memmove(vector->data + (index * vector->elem_size),
-		vector->data + (index * vector->elem_size) + (n * vector->elem_size),
-		(vector->size - index - n) * vector->elem_size);
-	vector->size -= n;
-	return (vector);
-}
-
-/*
 **	pipe_loop
 **	
 			ft_printf("Pipe detected! Multiple commands:\n");
@@ -100,7 +86,7 @@ int	pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes)
 	{
 		pos = (int *)pipes->data;
 		single_command(tokens, *pos + 1, *(pos + 1), cominfo);
-		my_vector_pop_n(pipes, 0, 1);
+		vector_pop_n(pipes, 0, 1);
 	}
 	return (0);
 }
