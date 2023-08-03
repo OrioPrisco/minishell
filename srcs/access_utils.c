@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 14:11:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:26:18 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ char	**get_path_with_commands(char *command, char **path, char **envp)
 {
 	const char	*env;
 
-	if (path)
-		return (0);
 	env = get_env_var(envp, "PATH", 4);
 	if (!env)
 		return (0);
