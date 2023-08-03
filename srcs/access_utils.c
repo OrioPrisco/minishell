@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 14:04:40 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:08:51 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,10 @@ char	*get_process_name(t_owned_token *token)
 	ret_str = ft_strdup("");
 	if (!ret_str)
 		return (0);
-	ret_str[0] = 0;
 	while (token->type != T_END && token->type != T_PIPE)
 	{
 		if (token->type == T_STR)
-		{
-			free(ret_str);
-			ret_str = ft_strdup(token->str);
-			if (!ret_str)
-				return (0);
-			return (ret_str);
-		}
+			return (free(ret_str), ft_strdup(token->str));
 		token++;
 		if (token->type == T_END || token->type == T_PIPE)
 			return (ret_str);
