@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:33:41 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:43:36 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	sigint_handler(int signum);
 void	sigquit_handler(int signum);
 
 //	ast_utils.c
-int		tree_crawler(t_vector *tokens, t_cominfo cominfo);
+int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
 int		single_command(t_vector *tokens, int start, int stop,
 			t_cominfo *cominfo);
 

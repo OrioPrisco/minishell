@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:35:29 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:52:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,15 @@ int	print_execve_args(char **execve_com_args)
 
 int	add_item_to_com_table(char **execve_com_args, char *str)
 {
-	if (execve_com_args) {}
-	if (str) {}
+	(void)execve_com_args;
+	(void)str;
 	return (0);
 }
 
 /*
 **	
-**	check the token logic. here I'm adding 1 if < > >> << so that we skip over certain words
+**	check the token logic. here I'm adding 1 if < > >> << so that we skip over 
+		certain words
 		CHECK THESE CASES
 */
 
@@ -75,7 +76,8 @@ int	construct_execve_args(t_com_segment com_seg, char **execve_com_args)
 	while (i < com_seg.stop)
 	{
 		if (((t_owned_token *)tokens->data + i)->type == T_STR)
-			add_item_to_com_table(execve_com_args, ((t_owned_token *)tokens->data + i)->str);
+			add_item_to_com_table(execve_com_args,
+				((t_owned_token *)tokens->data + i)->str);
 		if (((t_owned_token *)tokens->data + i)->type == T_REDIRECT_STDIN
 			|| ((t_owned_token *)tokens->data + i)->type == T_REDIRECT_STDOUT
 			|| ((t_owned_token *)tokens->data + i)->type == T_REDIRECT_STDOUT_APPEND

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:35:32 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:50:23 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "ft_printf.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
@@ -103,12 +104,12 @@ int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 	if (!execve_command)
 		return (perror("malloc"), -1);
 	print_access_debug(execve_command);
-	free(execve_command);
-	cleanup_redirects(&vec_fds);
 	if (construct_execve_args((t_com_segment){ tokens, start, stop }, execve_com_args))
 		return (1);
-	print
-	execve(execve_command, , cominfo->envp);
+	print_execve_args(execve_com_args);
+	execve(execve_command, execve_com_args, cominfo->envp);
+	cleanup_redirects(&vec_fds);
+	free(execve_command);
 	return (0);
 }
 
@@ -122,12 +123,12 @@ int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 **	&& || or T_END)
 **/
 
-int	tree_crawler(t_vector *tokens, t_cominfo cominfo)
+int	tree_crawler(t_vector *tokens, t_cominfo *cominfo)
 {
 	t_vector	pids;
 
 	vector_init(&pids, sizeof(int));
-	fork_loop(tokens, &cominfo, &pids);
+	fork_loop(tokens, cominfo, &pids);
 	msh_wait(&pids);
 	vector_clear(&pids);
 	return (0);
