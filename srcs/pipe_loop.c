@@ -26,7 +26,6 @@ int	get_command_segment(t_vector *tokens, int i, int size)
 
 	while (i < size)
 	{
-		i++;
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_PIPE)
 			return (i);
