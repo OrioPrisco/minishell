@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:52:06 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:42:33 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,20 @@ int	add_item_to_com_table(char **execve_com_args, char *str)
 
 int	construct_execve_args(t_com_segment com_seg, char **execve_com_args)
 {
-	int			i;
-	t_vector	*tokens;
+	t_owned_token	*token;
 
 	if (!execve_com_args)
 		execve_com_args = (char **)malloc(sizeof(char *) * 1);
 	if (!execve_com_args)
 		return (1);
-	tokens = com_seg.tokens;
-	i = com_seg.start;
-	while (i < com_seg.stop)
+	token = (t_owned_token *)com_seg.tokens->data + com_seg.start;
+	while (token->type != T_END && token->type != T_PIPE)
 	{
-		if (((t_owned_token *)tokens->data + i)->type == T_STR)
-			add_item_to_com_table(execve_com_args,
-				((t_owned_token *)tokens->data + i)->str);
-		if (((t_owned_token *)tokens->data + i)->type == T_REDIRECT_STDIN
-			|| ((t_owned_token *)tokens->data + i)->type == T_REDIRECT_STDOUT
-			|| ((t_owned_token *)tokens->data + i)->type == T_REDIRECT_STDOUT_APPEND
-			|| ((t_owned_token *)tokens->data + i)->type == T_HEREDOC
-			)
-			i++;
-		i++;
+		if (token->type == T_STR)
+			add_item_to_com_table(execve_com_args, token->str);
+		else
+			token++;
+		token++;
 	}	
 	return (0);
 }

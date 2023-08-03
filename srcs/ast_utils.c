@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:50:23 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:44:29 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	cleanup_redirects(t_vector *vec_fds)
 **	RETURN
 **		Returns 0 on success and return int from called functions on error.
 
-**	This functions will only be called from a child process. So rather than return, we should
-		exit.
+**	This functions will only be called from a child process. So rather than
+		return, we should exit.
 **/
 
 int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
@@ -104,7 +104,8 @@ int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 	if (!execve_command)
 		return (perror("malloc"), -1);
 	print_access_debug(execve_command);
-	if (construct_execve_args((t_com_segment){ tokens, start, stop }, execve_com_args))
+	if (construct_execve_args((t_com_segment){tokens, start, stop},
+		execve_com_args))
 		return (1);
 	print_execve_args(execve_com_args);
 	execve(execve_command, execve_com_args, cominfo->envp);
