@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/01 14:50:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:12:28 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ char	*access_loop(t_vector *tokens, int start, char **envp)
 	i = 0;
 	ret_str = 0;
 	env = get_env_var(envp, "PATH", 4);
+	if (!env)
+		return (0);
 	path = ft_split(env, ':');
 	if (add_command_to_path(tokens, start, path))
 	{
