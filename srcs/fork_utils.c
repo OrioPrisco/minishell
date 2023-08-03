@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 14:42:33 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:25:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ int	construct_execve_args(t_com_segment com_seg, char **execve_com_args)
 {
 	t_owned_token	*token;
 
+	execve_com_args = (char **)malloc(sizeof(char *) * 1);
 	if (!execve_com_args)
-		execve_com_args = (char **)malloc(sizeof(char *) * 1);
-	if (!execve_com_args)
-		return (1);
+		return (-1);
+	execve_com_args[0] = 0;
 	token = (t_owned_token *)com_seg.tokens->data + com_seg.start;
 	while (token->type != T_END && token->type != T_PIPE)
 	{
