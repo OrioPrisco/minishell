@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 09:12:28 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:57:15 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,7 @@
 #include "unistd.h"
 #include "vector.h"
 #include "tokens.h"
-
-/*	*** table_free (table free) ***
- *
- *	Frees a char ** table created by ft_split.
- *	Takes a table to free 'table'.
- *	Returns nothing.
- */
-
-void	table_free(char **table)
-{
-	int	i;
-
-	i = 0;
-	while (table[i])
-	{
-		free(table[i]);
-		i++;
-	}
-	free(table);
-	return ;
-}
+#include "utils.h"
 
 /*
 **	add_slash_and_comment
@@ -115,6 +95,37 @@ bool	add_command_to_path(t_vector *tokens, int start, char **path)
 	return (0);
 }
 
+/*
+**	NAME
+		*get_path_with_commands
+**	DESCRIPTION
+		Gets path from environment variables, splits by ':', then takes the table from 
+		ft_split and adds 'command' or '/command' to the end.
+**	RETURN
+		Returns a freeable table with command added to the end of each item in PATH.
+*/
+
+char	**get_path_with_commands(t_vector *tokens, int start, char **path,
+						char **envp)
+{
+	const char	*env;
+
+	if (path)
+		return (0);
+	env = get_env_var(envp, "PATH", 4);
+	if (!env)
+		return (0);
+	path = ft_split(env, ':');
+	if (!path)
+		return (0);
+	if (add_command_to_path(tokens, start, path))
+	{
+		table_free(path);
+		return (0);
+	}
+	return (path);
+}
+
 /*	
 **	RETURN
 **		Returns NULL if malloc error while working or returns char * on success.
@@ -124,22 +135,16 @@ bool	add_command_to_path(t_vector *tokens, int start, char **path)
 
 char	*access_loop(t_vector *tokens, int start, char **envp)
 {
-	const char	*env;
 	char		**path;
 	int			i;
 	char		*ret_str;
 
 	i = 0;
 	ret_str = 0;
-	env = get_env_var(envp, "PATH", 4);
-	if (!env)
+	path = 0;
+	path = get_path_with_commands(tokens, start, path, envp);
+	if (!path)
 		return (0);
-	path = ft_split(env, ':');
-	if (add_command_to_path(tokens, start, path))
-	{
-		table_free(path);
-		return (0);
-	}
 	while (path[i])
 	{
 		if (access(path[i], F_OK | X_OK) == 0)
