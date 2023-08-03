@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:43:36 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 19:26:18 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 //	fork_utils.c
 int		msh_wait(t_vector *pids);
 int		print_execve_args(char **execve_com_args);
-int		construct_execve_args(t_com_segment com_seg, char **execve_com_args);
+char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args);
 
 //	heredoc_utils.c
 int		print_here_doc_contents(int heredoc_fd);

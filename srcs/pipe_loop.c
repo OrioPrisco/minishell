@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 17:52:09 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:57:04 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 	{
 		pid = fork();
 		if (pid < 0)
-			return (1);
+			return (-1);
 		if (vector_append(pids, (int *)&pid))
-			return (1);
+			return (-1);
 		if (pid == 0)
 			single_command(tokens, 0, size, cominfo);
 	}

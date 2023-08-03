@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 17:52:39 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 19:27:32 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "ft_printf.h"
+#include "libft.h"
+#include "utils.h"
 
 /*
 **	msh_wait
@@ -27,8 +30,8 @@ int	msh_wait(t_vector *pids)
 {
 	while (pids->size > 0)
 	{
-		waitpid(((long) pids->data + pids->size), NULL, 0);
-		vector_pop_n(pids, pids->size, 1);
+		waitpid(*((int *)pids->data + pids->size), NULL, 0);
+		vector_pop_n(pids, pids->size - 1, 1);
 	}
 	return (0);
 }
@@ -48,11 +51,53 @@ int	print_execve_args(char **execve_com_args)
 	return (0);
 }
 
-int	add_item_to_com_table(char **execve_com_args, char *str)
+/*
+**	NAME
+		*dup_and_add_to_com_table
+**	DESCRIPTION
+		
+**	RETURN
+		
+*/
+
+char	**dup_and_add_to_com_table(char **execve_com_args, char *str)
 {
-	(void)execve_com_args;
+	char	**new_table;
+	size_t		tab_size;
+
+	tab_size = 0;
+	new_table = 0;
+	while (execve_com_args[tab_size])
+		tab_size++;
+	new_table = (char **)malloc(sizeof(char *) * (tab_size + 2));
+	if (!new_table)
+		return (NULL);
 	(void)str;
-	return (0);
+	ft_bzero((void *)new_table, sizeof(char *) * (tab_size + 2));
+	ft_memcpy(new_table, execve_com_args, sizeof(char *) * tab_size);
+	new_table[tab_size + 1] = str;
+	return (table_free(execve_com_args), new_table);
+}
+
+char	**add_item_to_com_table(char **execve_com_args, char *str)
+{
+	if (!execve_com_args)
+	{
+		execve_com_args = (char **)malloc(sizeof(char *) * 2);
+		if (!execve_com_args)
+			return (NULL);
+		ft_bzero((void *)execve_com_args, sizeof(char *) * 2);
+		execve_com_args[0] = ft_strdup(str);
+		if (!execve_com_args[0])
+			return (NULL);
+	}
+	else
+	{
+		execve_com_args = dup_and_add_to_com_table(execve_com_args, str);
+		if (!execve_com_args)
+			return (table_free(execve_com_args), NULL);
+	}
+	return (execve_com_args);
 }
 
 /*
@@ -62,22 +107,22 @@ int	add_item_to_com_table(char **execve_com_args, char *str)
 		CHECK THESE CASES
 */
 
-int	construct_execve_args(t_com_segment com_seg, char **execve_com_args)
+char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args)
 {
 	t_owned_token	*token;
 
-	execve_com_args = (char **)malloc(sizeof(char *) * 1);
-	if (!execve_com_args)
-		return (-1);
-	execve_com_args[0] = 0;
 	token = (t_owned_token *)com_seg.tokens->data + com_seg.start;
 	while (token->type != T_END && token->type != T_PIPE)
 	{
-		if (token->type == T_STR)
-			add_item_to_com_table(execve_com_args, token->str);
-		else
-			token++;
+		if (is_redirect_type(token->type))
+			token ++;
+		else if (token->type == T_STR)
+		{
+			execve_com_args = add_item_to_com_table(execve_com_args, token->str);
+			if (!execve_com_args)
+				return (0);
+		}
 		token++;
 	}	
-	return (0);
+	return (execve_com_args);
 }
