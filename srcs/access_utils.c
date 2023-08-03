@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 11:47:52 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:16:10 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,59 +19,6 @@
 #include "vector.h"
 #include "tokens.h"
 #include "utils.h"
-
-/*
-**	add_slash_and_comment
-**	
-*/
-
-bool	add_slash_and_command(char **path, int i, char *command)
-{
-	char	*slash_command;
-	char	*new_path;
-
-	if (!command)
-		return (1);
-	slash_command = ft_strjoin("/", command);
-	if (!slash_command)
-		return (1);
-	new_path = ft_strjoin(path[i], slash_command);
-	if (!new_path)
-		return (free(slash_command), 1);
-	free(slash_command);
-	free(path[i]);
-	path[i] = new_path;
-	return (0);
-}
-
-/*
-**	add_command_to_single_path_item
-**	
-*/
-
-bool	add_command_to_single_path_item(char **path, int i, char *command)
-{
-	char	*new_path;
-	int		j;
-
-	j = 0;
-	while (path[i][j])
-		j++;
-	if (path[i][j - 1] != '/')
-	{
-		if (add_slash_and_command(path, i, command))
-			return (1);
-	}
-	else
-	{
-		new_path = ft_strjoin(path[i], command);
-		if (!new_path)
-			return (1);
-		free(path[i]);
-		path[i] = new_path;
-	}
-	return (0);
-}
 
 /*
 **	add_command_to_path
@@ -101,10 +48,10 @@ bool	add_command_to_path(char *command, char **path)
 		ft_split and adds 'command' or '/command' to the end.
 **	RETURN
 		Returns a freeable table with command added to the end of each item in PATH.
+		Returns NULL on error.
 */
 
-char	**get_path_with_commands(t_vector *tokens, int start, char **path,
-						char **envp)
+char	**get_path_with_commands(char *command, char **path, char **envp)
 {
 	const char	*env;
 
@@ -116,7 +63,7 @@ char	**get_path_with_commands(t_vector *tokens, int start, char **path,
 	path = ft_split(env, ':');
 	if (!path)
 		return (0);
-	if (add_command_to_path(((t_owned_token *)tokens->data + start)->str, path))
+	if (add_command_to_path(command, path))
 	{
 		table_free(path);
 		return (0);
@@ -124,34 +71,120 @@ char	**get_path_with_commands(t_vector *tokens, int start, char **path,
 	return (path);
 }
 
-/*	
+/*
+**	NAME
+		*get_process_name
+**	DESCRIPTION
+		Starting from token provided, searches until T_END or T_PIPE for a T_STR
+		jumping over any other token (ie. T_REDIRECT_STDIN, T_REDIRECT_APPEND_STDIN,
+		T_REDIRECT_APPEND_STDOUT, T_HEREDOC)
 **	RETURN
-**		Returns NULL if malloc error while working or returns char * on success.
-		Will also return NULL if no executable is found in path.
-**	
-**/
+		Returns a malloced string containing the command.
+		Returns an empty string if no command is found. (ie. '<< heredoc' is a valid
+		command)
+		Returns NULL if malloc error.
+*/
 
-char	*access_loop(t_vector *tokens, int start, char **envp)
+char	*get_process_name(t_owned_token *token)
 {
-	char		**path;
-	int			i;
-	char		*ret_str;
+	char	*ret_str;
+
+	ret_str = 0;
+	ret_str = (char *)malloc(sizeof(char) * 1);
+	if (!ret_str)
+		return (0);
+	ret_str[0] = 0;
+	while (token->type != T_END && token->type != T_PIPE)
+	{
+		if (token->type == T_STR)
+		{
+			free(ret_str);
+			ret_str = ft_strdup(token->str);
+			if (!ret_str)
+				return (0);
+			return (ret_str);
+		}
+		token++;
+		if (token->type == T_END || token->type == T_PIPE)
+			return (ret_str);
+		token++;
+	}
+	return (ret_str);
+}
+
+/*
+**	NAME
+		check_access
+**	DESCRIPTION
+		Takes a path (with commands appended to the end of each member) and
+		iterates over table searching for access.
+**	RETURN
+		Returns malloced string containing the abs path and command if one is 
+		found in path if access is found.
+		Returns malloced empty string if access is never found.
+		Returns NULL if malloc error.
+*/
+
+char	*check_access(char **path)
+{
+	int		i;
+	char	*ret_str;
 
 	i = 0;
 	ret_str = 0;
-	path = 0;
-	path = get_path_with_commands(tokens, start, path, envp);
-	if (!path)
+	ret_str = (char *)malloc(sizeof(char) * 1);
+	if (!ret_str)
 		return (0);
+	ret_str[0] = 0;
 	while (path[i])
 	{
 		if (access(path[i], F_OK | X_OK) == 0)
 		{
+			free(ret_str);
 			ret_str = ft_strdup(path[i]);
+			if (!ret_str)
+				return (0);
 			break ;
 		}
 		i++;
 	}
-	table_free(path);
 	return (ret_str);
+}
+
+/*	
+**	NAME
+		access_loop
+**	DESCRIPTION
+		Gets the name of the process from the token provided.
+		Then builds a list of all possible paths based on PATH environment variable.
+		Finally checks access for command in built list of paths.
+**	RETURN
+		Returns a malloced string containing the abs path and process name of the 
+		command the user entered. 
+		Returns an empty string if no access is found. 
+		Returns NULL if malloc error.
+**	
+**/
+
+char	*access_loop(t_owned_token *token, char **envp)
+{
+	char		**path;
+	char		*command;
+
+	path = 0;
+	command = 0;
+	command = get_process_name(token);
+	if (!command)
+		return (0);
+	if (!command[0])
+		return (command);
+	path = get_path_with_commands(command, path, envp);
+	free(command);
+	if (!path)
+		return (0);
+	command = check_access(path);
+	if (!command)
+		return (0);
+	table_free(path);
+	return (command);
 }
