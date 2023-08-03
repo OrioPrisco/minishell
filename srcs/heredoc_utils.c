@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 10:28:00 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 10:53:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,7 @@ int	check_and_open_heredoc(t_vector *tokens, int start, int stop,
 	old_fd = 0;
 	ret = 0;
 	limiter = 0;
-	pipefd[0] = 0;
-	pipefd[1] = 0;
+	ft_bzero((void *)pipefd, sizeof(pipefd));
 	ret = check_for_heredoc(tokens, start, stop);
 	while (ret)
 	{

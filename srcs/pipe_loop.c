@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 08:36:48 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 10:38:14 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 
 	start = -1;
 	if (vector_append(pipes, (int *)&start))
-		return (vector_clear(pipes), 1);
+		return (vector_clear(pipes), -1);
 	i = 0;
 	while (i < tokens->size)
 	{
@@ -56,13 +56,13 @@ int	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 		if (current->type == T_PIPE)
 		{
 			if (vector_append(pipes, (int *)&i))
-				return (vector_clear(pipes), 1);
+				return (vector_clear(pipes), -1);
 		}
 		i++;
 	}
 	i--;
 	if (vector_append(pipes, (int *)&i))
-		return (vector_clear(pipes), 1);
+		return (vector_clear(pipes), -1);
 	if (pipes->size > 2)
 		return (pipes->size);
 	return (0);
@@ -122,13 +122,12 @@ int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 	while (((t_owned_token *)tokens->data + i)->type != T_END)
 		i++;
 	vector_init(&pipes, sizeof(int));
-	if (load_pipe_vec(&pipes, tokens))
-	{
+	ret = load_pipe_vec(&pipes, tokens);
+	if (ret < 0)
+		return (vector_clear(&pipes), -1);
+	else if (ret > 0)
 		pipe_loop(tokens, cominfo, &pipes);
-	}
 	else
-	{
 		single_command(tokens, 0, i, cominfo);
-	}
 	return (vector_clear(&pipes), ret);
 }
