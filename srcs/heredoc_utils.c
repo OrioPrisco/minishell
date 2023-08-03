@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:59:54 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:09:23 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static int	check_for_heredoc(t_vector *tokens, int start, int stop)
 		}
 		i++;
 	}
-	i = 0;
 	return (0);
 }
 
@@ -111,14 +110,10 @@ int	here_doc_input_loop(int *pipefd, char *limiter, t_cominfo *cominfo)
 			|| append_str_to_com_list(str_input, cominfo))
 			return (free(str_input), -1);
 		if (!ft_strcmp(str_input, limiter))
-		{
-			free(str_input);
-			break ;
-		}
+			return (free(str_input), 0);
 		ft_dprintf(pipefd[1], "%s\n", str_input);
 		free(str_input);
 	}
-	return (0);
 }
 
 /*	
@@ -144,7 +139,6 @@ int	check_and_open_heredoc(t_vector *tokens, int start, int stop,
 	int			old_fd;
 
 	old_fd = 0;
-	ret = 0;
 	limiter = 0;
 	ft_bzero((void *)pipefd, sizeof(pipefd));
 	ret = check_for_heredoc(tokens, start, stop);

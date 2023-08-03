@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 11:34:41 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:15:30 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,8 @@ int	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 	{
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_PIPE)
-		{
-			if (vector_append(pipes, (int *)&i))
+			if (vector_append(pipes, &i))
 				return (vector_clear(pipes), -1);
-		}
 		i++;
 	}
 	i--;

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 14:26:18 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:04:05 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,8 @@ bool	add_command_to_path(char *command, char **path)
 
 	i = 0;
 	while (path[i])
-	{
-		if (add_command_to_single_path_item(path, i, command))
+		if (add_command_to_single_path_item(path, i++, command))
 			return (1);
-		i++;
-	}
 	return (0);
 }
 
@@ -51,9 +48,10 @@ bool	add_command_to_path(char *command, char **path)
 		Returns NULL on error.
 */
 
-char	**get_path_with_commands(char *command, char **path, char **envp)
+char	**get_path_with_commands(char *command, char **envp)
 {
 	const char	*env;
+	char		**path;
 
 	env = get_env_var(envp, "PATH", 4);
 	if (!env)
@@ -62,10 +60,7 @@ char	**get_path_with_commands(char *command, char **path, char **envp)
 	if (!path)
 		return (0);
 	if (add_command_to_path(command, path))
-	{
-		table_free(path);
-		return (0);
-	}
+		return (table_free(path), NULL);
 	return (path);
 }
 
@@ -85,12 +80,6 @@ char	**get_path_with_commands(char *command, char **path, char **envp)
 
 char	*get_process_name(t_owned_token *token)
 {
-	char	*ret_str;
-
-	ret_str = 0;
-	ret_str = ft_strdup("");
-	if (!ret_str)
-		return (0);
 	while (token->type != T_END && token->type != T_PIPE)
 	{
 		if (token->type == T_STR)
@@ -100,7 +89,7 @@ char	*get_process_name(t_owned_token *token)
 			return (ret_str);
 		token++;
 	}
-	return (ret_str);
+	return (ft_strdup(""));
 }
 
 /*
@@ -119,27 +108,15 @@ char	*get_process_name(t_owned_token *token)
 char	*check_access(char **path)
 {
 	int		i;
-	char	*ret_str;
 
 	i = 0;
-	ret_str = 0;
-	ret_str = (char *)malloc(sizeof(char) * 1);
-	if (!ret_str)
-		return (0);
-	ret_str[0] = 0;
 	while (path[i])
 	{
 		if (access(path[i], F_OK | X_OK) == 0)
-		{
-			free(ret_str);
-			ret_str = ft_strdup(path[i]);
-			if (!ret_str)
-				return (0);
-			break ;
-		}
+			return (ft_strdup(path[i]));
 		i++;
 	}
-	return (ret_str);
+	return (ft_strdup(""));
 }
 
 /*	
@@ -162,14 +139,12 @@ char	*access_loop(t_owned_token *token, char **envp)
 	char		**path;
 	char		*command;
 
-	path = 0;
-	command = 0;
 	command = get_process_name(token);
 	if (!command)
 		return (0);
 	if (!command[0])
 		return (command);
-	path = get_path_with_commands(command, path, envp);
+	path = get_path_with_commands(command, envp);
 	free(command);
 	if (!path)
 		return (0);
