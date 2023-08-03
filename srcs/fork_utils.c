@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/02 18:14:55 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:36:24 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 
 int	msh_wait(t_vector *pids)
 {
-	if (pids) {}
+	(void)pids;
 	return (0);
 }
