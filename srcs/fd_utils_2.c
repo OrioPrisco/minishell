@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 16:49:44 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/23 17:12:12 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ void	print_open_redirects(t_fds *fds, int size)
 **	NOTE: since the the fds.fn is a pointer, these need to be freed here.
 **	This loop only frees 
 **	
+**	after close(fds[i].fd);
 **	ft_printf("closed fd: %d, fn %s, fd_cloexec %d\n",
 		fds[i].fd, fds[i].fn, fds[i].fd_cloexec);
-**	
+**	before free(fds[i].fn);
 */
 
 int	close_open_redirects(t_vector *vec_fds)

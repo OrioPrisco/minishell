@@ -6,10 +6,11 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 16:19:43 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/03 11:22:50 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
 #include <signal.h>
 #include "vector.h"
@@ -51,6 +52,7 @@ int	prompt_loop(char **envp)
 	char			*str_input;
 	t_vector		com_list;
 	t_vector		owned_tokens;
+	t_cominfo		cominfo;
 
 	init_prompt_loop(envp);
 	vector_init(&com_list, sizeof(char *));
@@ -61,9 +63,11 @@ int	prompt_loop(char **envp)
 			msh_exit(envp, &com_list);
 		if (parse_line(str_input, &owned_tokens, envp))
 			return (1);
-		tree_crawler(&owned_tokens);
+		ft_bzero((void *)&cominfo, sizeof(cominfo));
+		cominfo = (t_cominfo){str_input, envp, &com_list};
+		tree_crawler(&owned_tokens, &cominfo);
+		history_loop_logic(&cominfo);
 		vector_free(&owned_tokens, free_owned_token);
-		history_loop_logic(str_input, &com_list);
 	}
 	return (0);
 }

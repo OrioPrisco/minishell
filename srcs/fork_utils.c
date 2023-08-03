@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   fork_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
+/*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 15:35:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/03 09:56:49 by dpentlan         ###   ########.fr       */
+/*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
+/*   Updated: 2023/08/03 08:36:24 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "minishell.h"
 
-void	free_str(void *data);
-void	table_free(char **table);
+/*
+**	msh_wait
+**	
+*/
 
-#endif
+int	msh_wait(t_vector *pids)
+{
+	(void)pids;
+	return (0);
+}

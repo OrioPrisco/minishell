@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:33:01 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 16:02:31 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/23 17:13:06 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ void	print_tokens(t_vector *owned_tokens)
 
 	i = 0;
 	while (i < owned_tokens->size)
+	{
+		token = ((t_owned_token *)owned_tokens->data) + i;
+		printf("%s : %s\n", token_type_to_str(token->type), token->str);
+		i++;
+	}
+}
+
+void	print_relavent_tokens(t_vector *owned_tokens, int start, int stop)
+{
+	int				i;
+	t_owned_token	*token;
+
+	i = start;
+	while (i < stop)
 	{
 		token = ((t_owned_token *)owned_tokens->data) + i;
 		printf("%s : %s\n", token_type_to_str(token->type), token->str);

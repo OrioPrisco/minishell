@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 16:20:10 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/03 13:14:31 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 #include "tokens.h"
 #include "filedescriptors.h"
 #include "minishell.h"
+#include "ft_printf.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-bool	check_for_redirects(t_vector *tokens, int size)
+static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
 	int				i;
 	t_owned_token	*current;
 
-	i = 0;
-	while (i < size)
+	i = start;
+	while (i < stop)
 	{
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_REDIRECT_STDOUT
@@ -32,28 +35,71 @@ bool	check_for_redirects(t_vector *tokens, int size)
 	return (0);
 }
 
-/*	
-**	tokens is pointer to token space
-**	size is the number of tokens to look through
-**	return could be return status of command?
-**	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
-**/
+/*
+**	check_and_open_redirects
+**	
+*/
 
-int	single_command(t_vector *tokens, int size)
+int	check_and_open_redirects(t_vector *tokens, t_vector *vec_fds,
+							int start, int stop)
 {
-	t_vector	vec_fds;
 	int			ret;
 
 	ret = 0;
-	vector_init(&vec_fds, sizeof(t_fds));
-	if (check_for_redirects(tokens, size))
+	if (check_for_redirects(tokens, start, stop))
 	{
-		ret = open_redirects(tokens, size, &vec_fds);
+		ret = open_redirects(tokens, start, stop, vec_fds);
 		if (ret)
-			return (close_open_redirects(&vec_fds), ret);
+			return (close_open_redirects(vec_fds), ret);
 	}
-	close_open_redirects(&vec_fds);
-	vector_free(&vec_fds, free_fds);
+	return (0);
+}
+
+/*
+**	func_name
+**	
+*/
+
+void	cleanup_redirects(t_vector *vec_fds)
+{
+	close_open_redirects(vec_fds);
+	vector_clear(vec_fds);
+}
+
+/*	
+**	tokens is pointer to token space
+**	return could be return status of command?
+**	print_relavent_tokens(tokens, start, stop);
+**	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
+**	RETURN
+**		Returns 0 on success and return int from called functions on error.
+**/
+
+int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
+{
+	t_vector	vec_fds;
+	int			ret;
+	int			here_doc_contents;
+	char		*execve_command;
+
+	ret = 0;
+	execve_command = 0;
+	vector_init(&vec_fds, sizeof(t_fds));
+	here_doc_contents = check_and_open_heredoc(tokens, start, stop, cominfo);
+	if (here_doc_contents < 0)
+		return (-1);
+	if (here_doc_contents)
+		print_here_doc_contents(here_doc_contents);
+	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
+	if (ret)
+		return (ret);
+	execve_command = access_loop((t_owned_token *)tokens->data + start,
+			cominfo->envp);
+	if (!execve_command)
+		return (perror("malloc"), -1);
+	print_access_debug(execve_command);
+	free(execve_command);
+	cleanup_redirects(&vec_fds);
 	return (0);
 }
 
@@ -67,14 +113,13 @@ int	single_command(t_vector *tokens, int size)
 **	&& || or T_END)
 **/
 
-int	tree_crawler(t_vector *tokens)
+int	tree_crawler(t_vector *tokens, t_cominfo *cominfo)
 {
-	int	i;
-	int	ret;
+	t_vector	pids;
 
-	i = 0;
-	while (((t_owned_token *)tokens->data + i)->type != T_END)
-		i++;
-	ret = single_command(tokens, i);
-	return (ret);
+	vector_init(&pids, sizeof(int));
+	fork_loop(tokens, cominfo, &pids);
+	msh_wait(&pids);
+	vector_clear(&pids);
+	return (0);
 }
