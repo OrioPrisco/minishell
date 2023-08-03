@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:16:10 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:26:18 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ char	**get_path_with_commands(char *command, char **path, char **envp)
 {
 	const char	*env;
 
-	if (path)
-		return (0);
 	env = get_env_var(envp, "PATH", 4);
 	if (!env)
 		return (0);
@@ -90,20 +88,13 @@ char	*get_process_name(t_owned_token *token)
 	char	*ret_str;
 
 	ret_str = 0;
-	ret_str = (char *)malloc(sizeof(char) * 1);
+	ret_str = ft_strdup("");
 	if (!ret_str)
 		return (0);
-	ret_str[0] = 0;
 	while (token->type != T_END && token->type != T_PIPE)
 	{
 		if (token->type == T_STR)
-		{
-			free(ret_str);
-			ret_str = ft_strdup(token->str);
-			if (!ret_str)
-				return (0);
-			return (ret_str);
-		}
+			return (free(ret_str), ft_strdup(token->str));
 		token++;
 		if (token->type == T_END || token->type == T_PIPE)
 			return (ret_str);
@@ -183,8 +174,8 @@ char	*access_loop(t_owned_token *token, char **envp)
 	if (!path)
 		return (0);
 	command = check_access(path);
+	table_free(path);
 	if (!command)
 		return (0);
-	table_free(path);
 	return (command);
 }

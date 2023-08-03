@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 11:11:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:59:54 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ bool	append_str_to_com_list(char *str, t_cominfo *cominfo)
 /*
 **	here_doc_input_loop
 **	
-		//ft_dprintf(pipefd[1], str_input, "\n");
+		// ft_putstr_fd(str_input, pipefd[1]);
+		// ft_putstr_fd("\n", pipefd[1]);
 */
 
 int	here_doc_input_loop(int *pipefd, char *limiter, t_cominfo *cominfo)
@@ -114,8 +115,7 @@ int	here_doc_input_loop(int *pipefd, char *limiter, t_cominfo *cominfo)
 			free(str_input);
 			break ;
 		}
-		ft_putstr_fd(str_input, pipefd[1]);
-		ft_putstr_fd("\n", pipefd[1]);
+		ft_dprintf(pipefd[1], "%s\n", str_input);
 		free(str_input);
 	}
 	return (0);
