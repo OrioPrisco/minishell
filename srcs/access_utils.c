@@ -82,11 +82,10 @@ char	*get_process_name(t_owned_token *token)
 {
 	while (token->type != T_END && token->type != T_PIPE)
 	{
-		if (token->type == T_STR)
-			return (free(ret_str), ft_strdup(token->str));
-		token++;
-		if (token->type == T_END || token->type == T_PIPE)
-			return (ret_str);
+		if (is_redirect_type(token->type))
+			token ++;
+		else if (token->type == T_STR)
+			return (ft_strdup(token->str));
 		token++;
 	}
 	return (ft_strdup(""));
