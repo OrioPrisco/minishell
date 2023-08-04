@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 18:57:04 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/04 15:45:28 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 
 	size = 0;
 	ret = 0;
-	(void)pids;
 	while (((t_owned_token *)tokens->data + size)->type != T_END)
 		size++;
 	vector_init(&pipes, sizeof(int));

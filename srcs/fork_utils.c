@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/04 15:31:59 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/04 16:32:42 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,14 @@
 
 int	msh_wait(t_vector *pids)
 {
+	int	current_pid;
+
+	current_pid = 0;
 	while (pids->size > 0)
 	{
-		waitpid(*((int *)pids->data + pids->size), NULL, 0);
+		current_pid = *((int *)pids->data + pids->size - 1);
+		//ft_printf("waiting on %d\n", current_pid);
+		waitpid(current_pid, NULL, 0);
 		vector_pop_n(pids, pids->size - 1, 1);
 	}
 	return (0);
