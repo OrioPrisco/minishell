@@ -6,12 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:44:53 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/04 16:54:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/04 17:04:35 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "vector.h"
+#include "child.h"
 #include <unistd.h>
 
 int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)

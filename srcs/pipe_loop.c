@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/04 16:53:30 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/04 17:03:47 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "tokens.h"
 #include "vector.h"
 #include "libft.h"
+#include "child.h"
 
 /*
 **	get_command_segment
