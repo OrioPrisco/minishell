@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/04 14:51:40 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/04 16:39:46 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	cleanup_redirects(t_vector *vec_fds)
 **		Function does not return, child process should terminate here in some way.
 **/
 
-void	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
+void	single_command(t_vector *tokens, int start, int stop,
+					t_cominfo *cominfo)
 {
 	t_vector	vec_fds;
 	int			ret;
@@ -102,8 +103,8 @@ void	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
 	if (!execve_command)
 		msh_exit(cominfo->envp, cominfo->com_list);
 	print_access_debug(execve_command);
-	execve_com_args = construct_execve_args((t_com_segment){tokens, start, stop},
-		execve_com_args);
+	execve_com_args = construct_execve_args(
+			(t_com_segment){tokens, start, stop}, execve_com_args);
 	if (!execve_com_args)
 		msh_exit(cominfo->envp, cominfo->com_list);
 	print_execve_args(execve_com_args);

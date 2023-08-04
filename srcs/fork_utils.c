@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/04 16:32:42 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/04 16:42:00 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	msh_wait(t_vector *pids)
 	while (pids->size > 0)
 	{
 		current_pid = *((int *)pids->data + pids->size - 1);
-		//ft_printf("waiting on %d\n", current_pid);
 		waitpid(current_pid, NULL, 0);
 		vector_pop_n(pids, pids->size - 1, 1);
 	}
@@ -68,7 +67,7 @@ int	print_execve_args(char **execve_com_args)
 char	**dup_and_add_to_com_table(char **execve_com_args, char *str)
 {
 	char	**new_table;
-	size_t		tab_size;
+	size_t	tab_size;
 
 	tab_size = 0;
 	new_table = 0;
@@ -123,7 +122,8 @@ char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args)
 			token ++;
 		else if (token->type == T_STR)
 		{
-			execve_com_args = add_item_to_com_table(execve_com_args, token->str);
+			execve_com_args = add_item_to_com_table(
+					execve_com_args, token->str);
 			if (!execve_com_args)
 				return (0);
 		}
