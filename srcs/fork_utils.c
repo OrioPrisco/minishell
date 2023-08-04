@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/04 14:30:27 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/04 15:31:59 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ char	**dup_and_add_to_com_table(char **execve_com_args, char *str)
 	new_table = (char **)malloc(sizeof(char *) * (tab_size + 2));
 	if (!new_table)
 		return (NULL);
-	(void)str;
 	ft_bzero((void *)new_table, sizeof(char *) * (tab_size + 2));
-	ft_memcpy(new_table, execve_com_args, sizeof(char *) * tab_size);
-	new_table[tab_size + 1] = str;
-	return (table_free(execve_com_args), new_table);
+	ft_memcpy(new_table, execve_com_args, sizeof(char **) * tab_size);
+	new_table[tab_size] = str;
+	free(execve_com_args);
+	return (new_table);
 }
 
 char	**add_item_to_com_table(char **execve_com_args, char *str)
