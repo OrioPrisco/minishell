@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/05 14:21:12 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/05 16:16:25 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "libft.h"
 #include "tokens.h"
 #include "vector.h"
+#include <fcntl.h>
 #include <unistd.h>
 
 /*	
@@ -112,6 +113,13 @@ int	dup_to_lget(t_vector *vec_fds, t_fds *current)
 
 int	redir_stdin_token_found(char *filename)
 {
+	int	open_fd;
+
 	ft_printf("file to read: %s\n", filename);
+	open_fd = open(filename, O_RDONLY);
+	if (open_fd < 0)
+		msh_error(filename);
+	dup2(open_fd, 0);
+	close(open_fd);
 	return (0);
 }
