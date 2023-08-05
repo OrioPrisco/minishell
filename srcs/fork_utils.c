@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/04 17:04:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/05 16:55:43 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ int	msh_wait(t_vector *pids)
 	}
 	return (0);
 }
+
+/*
+ *	DEBUG Function
+ *
+ */
 
 int	print_execve_args(char **execve_com_args)
 {
@@ -109,6 +114,7 @@ char	**add_item_to_com_table(char **execve_com_args, char *str)
 **	check the token logic. here I'm adding 1 if < > >> << so that we skip over 
 		certain words
 		CHECK THESE CASES
+**	Look over returns and errors.
 */
 
 char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args)

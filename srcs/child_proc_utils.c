@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/05 15:15:59 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/05 17:06:37 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,20 @@ void	single_command(t_vector *tokens, int start, int stop,
 		msh_exit_child(cominfo->envp, cominfo->com_list);
 	execve_command = access_loop((t_owned_token *)tokens->data + start,
 			cominfo->envp);
-	if (!execve_command)
+	if (!execve_command || !execve_command[0])
+	{
+		cleanup_redirects(&vec_fds);
 		msh_exit_child(cominfo->envp, cominfo->com_list);
+	}
 	//print_access_debug(execve_command);
 	execve_com_args = construct_execve_args(
 			(t_com_segment){tokens, start, stop}, execve_com_args);
 	if (!execve_com_args)
-		msh_exit_child(cominfo->envp, cominfo->com_list);
+		msh_error("malloc");
 	//print_execve_args(execve_com_args);
-	if (execve_command[0])
-		execve(execve_command, execve_com_args, cominfo->envp);
-	cleanup_redirects(&vec_fds);
-	free(execve_command);
-	msh_exit_child(cominfo->envp, cominfo->com_list);
+	execve(execve_command, execve_com_args, cominfo->envp);
+	// Delete this if not needed.
+	// cleanup_redirects(&vec_fds);
+	// free(execve_command);
+	// msh_exit_child(cominfo->envp, cominfo->com_list);
 }
