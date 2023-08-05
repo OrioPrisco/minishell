@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/04 16:58:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/05 12:35:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 	{
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_REDIRECT_STDOUT
-			|| current->type == T_REDIRECT_STDOUT_APPEND)
+			|| current->type == T_REDIRECT_STDOUT_APPEND
+			|| current->type == T_REDIRECT_STDIN)
 			return (1);
 		i++;
 	}
