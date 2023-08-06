@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 22:32:19 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/06 22:34:40 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,5 @@ char	*access_loop(t_owned_token *tokens, char **envp)
 		return (0);
 	command = check_access(path);
 	table_free(path);
-	if (!command)
-		return (0);
 	return (command);
 }
