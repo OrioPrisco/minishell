@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 19:31:12 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/06 20:29:38 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/06 23:52:55 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,4 @@ char	*path_concat(const char *folder, const char *item)
 	temp2 = ft_strjoin(temp, item);
 	free(temp);
 	return (temp2);
-}
-
-char	*path_concat_free(char *folder, char *item,
-	t_free_mode folder_mode, t_free_mode item_mode)
-{
-	char	*temp;
-
-	temp = path_concat(folder, item);
-	if (temp && folder_mode & FREE_ON_SUCCESS)
-		free(folder);
-	if (!temp && folder_mode & FREE_ON_ERROR)
-		free(folder);
-	if (temp && item_mode & FREE_ON_SUCCESS)
-		free(item);
-	if (!temp && folder_mode & FREE_ON_ERROR)
-		free(item);
-	return (temp);
 }
