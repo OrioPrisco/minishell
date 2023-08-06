@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 22:28:33 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/06 22:32:19 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ char	*check_access(char **path)
 **	NAME
 		access_loop
 **	DESCRIPTION
-		Gets the name of the process from the token provided.
+		Gets the name of the process from the list of token provided.
 		Then builds a list of all possible paths based on PATH environment variable.
 		Finally checks access for command in built list of paths.
 **	RETURN
@@ -137,12 +137,12 @@ char	*check_access(char **path)
 **	
 **/
 
-char	*access_loop(t_owned_token *token, char **envp)
+char	*access_loop(t_owned_token *tokens, char **envp)
 {
 	char		**path;
 	char		*command;
 
-	command = get_process_name(token);
+	command = get_process_name(tokens);
 	if (!command)
 		return (0);
 	if (!command[0])
