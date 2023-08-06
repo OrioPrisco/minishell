@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 17:04:05 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/06 22:28:33 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "vector.h"
 #include "tokens.h"
 #include "utils.h"
+#include "path.h"
 
 /*
 **	add_command_to_path
@@ -32,8 +33,11 @@ bool	add_command_to_path(char *command, char **path)
 
 	i = 0;
 	while (path[i])
-		if (add_command_to_single_path_item(path, i++, command))
+	{
+		path[i] = path_concat_free(path[i], command, FREE_ALWAYS, FREE_NEVER);
+		if (!path[i])
 			return (1);
+	}
 	return (0);
 }
 
