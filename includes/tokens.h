@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/06 18:27:54 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/06 18:33:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef enum e_token_type {
 	T_PIPE = '|',
 	T_VAR,
 	T_WILDCARD,
+	T_DIR_SEP,
 }	t_token_type;
 
 // internal to parse line
