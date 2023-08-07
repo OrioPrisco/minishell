@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/07 13:05:45 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:03:35 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 #include "filedescriptors.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "utils.h"
+
+void	msh_exit_child(char **envp, t_vector *com_list)
+{
+	save_history(envp, com_list);
+	vector_free(com_list, free_str);
+	exit(EXIT_SUCCESS);
+}
 
 /*	
 **	tokens is pointer to token space
@@ -53,9 +61,9 @@ void	single_command(t_vector *tokens, int start, int stop,
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		msh_exit_child(cominfo->envp, cominfo->com_list);
-	execve_command = access_loop((t_owned_token *)tokens->data + start,
-			cominfo->envp);
-	if (!execve_command || !execve_command[0])
+	execve_command = find_executable(cominfo,
+			(t_com_segment){tokens, start, stop});
+	if (!execve_command)
 	{
 		cleanup_redirects(&vec_fds);
 		msh_exit_child(cominfo->envp, cominfo->com_list);

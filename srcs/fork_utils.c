@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/05 16:55:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/07 14:48:59 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,6 @@ char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args)
 				return (0);
 		}
 		token++;
-	}	
+	}
 	return (execve_com_args);
 }

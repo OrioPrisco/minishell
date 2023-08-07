@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/07 12:27:03 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:00:29 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ int		check_and_open_heredoc(t_vector *tokens, int start, int stop,
 //	access_utils.c
 void	print_access_debug(char *execve_command);
 char	*access_loop(t_owned_token *token, char **envp);
+char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 23:44:38 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/07 15:22:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,27 @@ char	*access_loop(t_owned_token *tokens, char **envp)
 	command_path = check_access((const char **)path_tab, command);
 	table_free(path_tab);
 	return (command_path);
+}
+
+/*
+**	*find_executable
+**	
+*/
+
+char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
+{
+	char			*execve_command;
+	t_owned_token	*com_start;
+
+	com_start = (t_owned_token *)com_segment.tokens->data + com_segment.start;
+	execve_command = access_loop(com_start, cominfo->envp);
+	if (!execve_command)
+		return (0);
+	if (!execve_command[0])
+	{
+		ft_dprintf(2, "command not found: %s\n",
+			get_process_name(com_start));
+		return (free(execve_command), NULL);
+	}
+	return (execve_command);
 }
