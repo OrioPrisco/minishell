@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   access_utils_2.c                                   :+:      :+:    :+:   */
+/*   path.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 22:25:04 by OrioPrisco       ###   ########.fr       */
+/*   Created: 2023/08/06 20:01:38 by OrioPrisco        #+#    #+#             */
+/*   Updated: 2023/08/06 23:53:13 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdlib.h>
-#include "libft.h"
-#include "ft_printf.h"
+#ifndef PATH_H
+# define PATH_H
 
-void	print_access_debug(char *execve_command)
-{
-	if (!execve_command[0])
-		ft_printf("no access found\n");
-	else
-		ft_printf("access found\n");
-}
+char	*path_concat(const char *folder, const char *item);
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/05 15:16:49 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/07 12:27:03 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ int		check_and_open_heredoc(t_vector *tokens, int start, int stop,
 			t_cominfo *cominfo);
 
 //	access_utils.c
-bool	add_slash_and_command(char **path, int i, char *command);
-bool	add_command_to_single_path_item(char **path, int i, char *command);
 void	print_access_debug(char *execve_command);
 char	*access_loop(t_owned_token *token, char **envp);
 
