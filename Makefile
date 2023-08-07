@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/08/03 13:04:27 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/08/06 23:50:53 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRC				=	minishell.c \
 					heredoc_utils.c \
 					access_utils.c \
 					access_utils_2.c \
+					path_utils.c\
 
 NAME			=	minishell
 

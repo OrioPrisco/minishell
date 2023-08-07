@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/01 13:00:09 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/06 20:34:06 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <unistd.h>
 #include "vector.h"
 #include "env_var.h"
+#include "path.h"
 
 /*	
 **	TAKES
@@ -29,22 +30,12 @@
 static char	*history_file_path(char **envp, const char *envp_var,
 						const char *h_fn)
 {
-	char		*ret_path;
-	char		*temp;
 	const char	*home;
 
-	ret_path = 0;
 	home = get_env_var(envp, envp_var, ft_strlen(envp_var));
 	if (!home)
 		return (0);
-	if (home[ft_strlen(home)] == '/')
-		return (ft_strjoin(home, h_fn));
-	temp = ft_strjoin(home, "/");
-	if (!temp)
-		return (0);
-	ret_path = ft_strjoin(temp, h_fn);
-	free(temp);
-	return (ret_path);
+	return (path_concat(home, h_fn));
 }
 
 /*
