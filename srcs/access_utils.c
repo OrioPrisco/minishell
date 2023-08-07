@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/07 15:22:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:18:55 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 /*
 **	NAME
-		*get_process_name
+		*get_exec_name
 **	DESCRIPTION
 		Starting from token provided, searches until T_END or T_PIPE for a T_STR
 		jumping over any other token (ie. T_REDIRECT_STDIN, T_REDIRECT_APPEND_STDIN,
@@ -35,7 +35,7 @@
 		Returns NULL if malloc error.
 */
 
-static const char	*get_process_name(t_owned_token *token)
+static const char	*get_exec_name(t_owned_token *token)
 {
 	while (token->type != T_END && token->type != T_PIPE)
 	{
@@ -45,7 +45,7 @@ static const char	*get_process_name(t_owned_token *token)
 			return (token->str);
 		token++;
 	}
-	return ("");
+	return (NULL);
 }
 
 /*
@@ -93,47 +93,57 @@ static char	*check_access(const char *const *path, const char *command)
 **	
 **/
 
-char	*access_loop(t_owned_token *tokens, char **envp)
+char	*access_loop(const char *command, char **envp)
 {
 	char		**path_tab;
 	const char	*path;
-	const char	*command;
 	char		*command_path;
 
 	path = get_env_var(envp, "PATH", ft_strlen("PATH"));
 	if (!path)
 		return (0);
-	command = get_process_name(tokens);
-	if (!command)
-		return (0);
-	if (!command[0])
-		return (ft_strdup(command));
 	path_tab = ft_split(path, ':');
 	if (!path_tab)
 		return (0);
 	command_path = check_access((const char **)path_tab, command);
-	table_free(path_tab);
-	return (command_path);
+	return (table_free(path_tab), command_path);
 }
 
 /*
-**	*find_executable
-**	
+	NAME
+		find_executable
+	DESCRIPTION
+		Looks for abs path of executable command.
+		First looks in the command itself looking for a relative path.
+		if no releative path is found, we check for the executable in the PATH
+		varaible with the access_loop function.
+		If nothing is found by the end, we print 'command not found' and
+		return NULL
+	RETURN
+		Returns a malloced string containing the abs path of the command to
+		execute.
+		Returns NULL in case of no executaeble found, or no command given,
+		or malloc error inside of a function.
 */
 
 char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
 {
 	char			*execve_command;
-	t_owned_token	*com_start;
+	const char		*exec_name;
 
-	com_start = (t_owned_token *)com_segment.tokens->data + com_segment.start;
-	execve_command = access_loop(com_start, cominfo->envp);
+	exec_name = get_exec_name(
+			(t_owned_token *)com_segment.tokens->data + com_segment.start);
+	if (!exec_name)
+		return (NULL);
+	execve_command = exec_rel_path(exec_name);
+	if (execve_command)
+		return (execve_command);
+	execve_command = access_loop(exec_name, cominfo->envp);
 	if (!execve_command)
-		return (0);
+		return (NULL);
 	if (!execve_command[0])
 	{
-		ft_dprintf(2, "command not found: %s\n",
-			get_process_name(com_start));
+		ft_dprintf(2, "command not found: %s\n", exec_name);
 		return (free(execve_command), NULL);
 	}
 	return (execve_command);

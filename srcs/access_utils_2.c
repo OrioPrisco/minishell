@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 22:25:04 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/07 16:21:23 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,15 @@ void	print_access_debug(char *execve_command)
 		ft_printf("no access found\n");
 	else
 		ft_printf("access found\n");
+}
+
+/*
+**	exec_rel_pathfunc_name
+**	
+*/
+
+char	*exec_rel_path(const char *exec_name)
+{
+	(void)(exec_name);
+	return (0);
 }
