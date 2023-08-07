@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/05 17:06:37 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/07 13:05:45 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@
 
 **	RETURN
 **		Function does not return, child process should terminate here in some way.
+
+	These lines were removed after vector init. The heredoc stuff should be moved
+		to parsing. Keeping here for the moment for reference.
+
+	int			here_doc_contents;
+	
+	here_doc_contents = check_and_open_heredoc(tokens, start, stop, cominfo);
+	if (here_doc_contents < 0)
+		msh_exit_child(cominfo->envp, cominfo->com_list);
+	if (here_doc_contents)
+		print_here_doc_contents(here_doc_contents);
 **/
 
 void	single_command(t_vector *tokens, int start, int stop,
@@ -32,7 +43,6 @@ void	single_command(t_vector *tokens, int start, int stop,
 {
 	t_vector	vec_fds;
 	int			ret;
-	int			here_doc_contents;
 	char		*execve_command;
 	char		**execve_com_args;
 
@@ -40,11 +50,6 @@ void	single_command(t_vector *tokens, int start, int stop,
 	execve_command = 0;
 	execve_com_args = 0;
 	vector_init(&vec_fds, sizeof(t_fds));
-	here_doc_contents = check_and_open_heredoc(tokens, start, stop, cominfo);
-	if (here_doc_contents < 0)
-		msh_exit_child(cominfo->envp, cominfo->com_list);
-	if (here_doc_contents)
-		print_here_doc_contents(here_doc_contents);
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		msh_exit_child(cominfo->envp, cominfo->com_list);
@@ -55,15 +60,9 @@ void	single_command(t_vector *tokens, int start, int stop,
 		cleanup_redirects(&vec_fds);
 		msh_exit_child(cominfo->envp, cominfo->com_list);
 	}
-	//print_access_debug(execve_command);
 	execve_com_args = construct_execve_args(
 			(t_com_segment){tokens, start, stop}, execve_com_args);
 	if (!execve_com_args)
 		msh_error("malloc");
-	//print_execve_args(execve_com_args);
 	execve(execve_command, execve_com_args, cominfo->envp);
-	// Delete this if not needed.
-	// cleanup_redirects(&vec_fds);
-	// free(execve_command);
-	// msh_exit_child(cominfo->envp, cominfo->com_list);
 }
