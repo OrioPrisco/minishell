@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 23:44:38 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/07 21:41:01 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,11 @@ static const char	*get_process_name(t_owned_token *token)
 		Takes a command and a path,
 		and iterates over table searching for access.
 **	RETURN
-		Returns malloced string containing the abs path and command if one is 
+		Returns malloced string containing either a copy of the command
+		if contains a slash and access is found or
+		the abs path and command if one is 
 		found in path if access is found.
-		Returns malloced empty string if access is never found.
+		Returns malloced empty string if access is not found.
 		Returns NULL if malloc error.
 */
 
@@ -65,6 +67,12 @@ static char	*check_access(const char *const *path, const char *command)
 {
 	char	*temp;
 
+	if (ft_strchr(command, '/'))
+	{
+		if (!access(command, F_OK | X_OK))
+			return (ft_strdup(command));
+		return (ft_strdup(""));
+	}
 	while (*path)
 	{
 		temp = path_concat(*path, command);
@@ -86,7 +94,7 @@ static char	*check_access(const char *const *path, const char *command)
 		Then builds a list of all possible paths based on PATH environment variable.
 		Finally checks access for command in built list of paths.
 **	RETURN
-		Returns a malloced string containing the abs path and process name of the 
+		Returns a malloced string containing the abs or relative path of the 
 		command the user entered. 
 		Returns an empty string if no access is found. 
 		Returns NULL if malloc error.
