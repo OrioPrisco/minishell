@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/07 16:18:55 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:23:48 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,6 @@ char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
 		return (NULL);
-	execve_command = exec_rel_path(exec_name);
-	if (execve_command)
-		return (execve_command);
 	execve_command = access_loop(exec_name, cominfo->envp);
 	if (!execve_command)
 		return (NULL);
