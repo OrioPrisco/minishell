@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/07 15:03:35 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/08 13:04:24 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "utils.h"
+#include "ft_printf.h"
 
 void	msh_exit_child(char **envp, t_vector *com_list)
 {
