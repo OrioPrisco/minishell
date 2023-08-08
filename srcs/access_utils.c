@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/08 16:53:28 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:03:38 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@
 		T_REDIRECT_APPEND_STDOUT, T_HEREDOC)
 **	RETURN
 		Returns a non malloced string containing the command.
-		Returns an empty string if no command is found. (ie. '<< heredoc' is a valid
-		command)
 		Returns NULL if malloc error.
 */
 
