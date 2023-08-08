@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/08 16:37:06 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:41:16 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 /*
 **	NAME
-		*get_process_name
+		*get_exec_name
 **	DESCRIPTION
 		Starting from token provided, searches until T_END or T_PIPE for a T_STR
 		jumping over any other token (ie. T_REDIRECT_STDIN, T_REDIRECT_APPEND_STDIN,
@@ -35,7 +35,7 @@
 		Returns NULL if malloc error.
 */
 
-static const char	*get_process_name(t_owned_token *token)
+static const char	*get_exec_name(t_owned_token *token)
 {
 	while (token->type != T_END && token->type != T_PIPE)
 	{
@@ -45,7 +45,7 @@ static const char	*get_process_name(t_owned_token *token)
 			return (token->str);
 		token++;
 	}
-	return ("");
+	return (NULL);
 }
 
 /*
@@ -94,28 +94,22 @@ static char	*check_access(const char *const *path, const char *command)
 		Then builds a list of all possible paths based on PATH environment variable.
 		Finally checks access for command in built list of paths.
 **	RETURN
-		Returns a malloced string containing the abs or relative path of the 
+		Returns a malloced string containing the abs path and process name of the 
 		command the user entered. 
 		Returns an empty string if no access is found. 
 		Returns NULL if malloc error.
 **	
 **/
 
-char	*access_loop(t_owned_token *tokens, char **envp)
+char	*access_loop(const char *command, char **envp)
 {
 	char		**path_tab;
 	const char	*path;
-	const char	*command;
 	char		*command_path;
 
 	path = get_env_var(envp, "PATH", ft_strlen("PATH"));
 	if (!path)
 		return (0);
-	command = get_process_name(tokens);
-	if (!command)
-		return (0);
-	if (!command[0])
-		return (ft_strdup(command));
 	path_tab = ft_split(path, ':');
 	if (!path_tab)
 		return (0);
