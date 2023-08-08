@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/08 16:41:16 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:53:28 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static char	*check_access(const char *const *path, const char *command)
 
 	if (ft_strchr(command, '/'))
 	{
-		if (!access(command, F_OK | X_OK))
+		if (!access(command, F_OK | X_OK) && !is_directory(command))
 			return (ft_strdup(command));
 		return (ft_strdup(""));
 	}
@@ -147,9 +147,6 @@ char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
 	if (!execve_command)
 		return (NULL);
 	if (!execve_command[0])
-	{
-		ft_dprintf(2, "command not found: %s\n", exec_name);
-		return (free(execve_command), NULL);
-	}
+		return (free(execve_command), access_error_print(exec_name), NULL);
 	return (execve_command);
 }
