@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/08 16:52:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:08:03 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int		prompt_loop(char **env);
 //	error_utils.c
 void	msh_error(const char *message);
 void	msh_exit(char **envp, t_vector *com_list);
-void	msh_exit_child(char **envp, t_vector *com_list);
 
 //	history.c
 bool	save_history(char **env, t_vector *com_list);

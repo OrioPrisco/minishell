@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/08 13:30:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:09:15 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@
 #include "utils.h"
 #include "ft_printf.h"
 
-void	msh_exit_child(char **envp, t_vector *com_list)
+void	msh_exit_child(t_vector *com_list)
 {
-	save_history(envp, com_list);
 	vector_free(com_list, free_str);
 	exit(EXIT_SUCCESS);
 }
@@ -61,13 +60,13 @@ void	single_command(t_vector *tokens, int start, int stop,
 	vector_init(&vec_fds, sizeof(t_fds));
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
-		msh_exit_child(cominfo->envp, cominfo->com_list);
+		msh_exit_child(cominfo->com_list);
 	execve_command = find_executable(cominfo,
 			(t_com_segment){tokens, start, stop});
 	if (!execve_command)
 	{
 		cleanup_redirects(&vec_fds);
-		msh_exit_child(cominfo->envp, cominfo->com_list);
+		msh_exit_child(cominfo->com_list);
 	}
 	execve_com_args = construct_execve_args(
 			(t_com_segment){tokens, start, stop}, execve_com_args);
