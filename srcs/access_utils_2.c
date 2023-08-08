@@ -6,17 +6,18 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/08/08 15:57:42 by dpentlan         ###   ########.fr       */
+=======
+/*   Updated: 2023/08/06 22:25:04 by OrioPrisco       ###   ########.fr       */
+>>>>>>> 64e8ff1 (Modifying access to work with new code.)
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 #include "libft.h"
 #include "ft_printf.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
 
 void	print_access_debug(char *execve_command)
 {
