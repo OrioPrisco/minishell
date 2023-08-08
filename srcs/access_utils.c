@@ -6,11 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/08 16:09:12 by dpentlan         ###   ########.fr       */
-=======
-/*   Updated: 2023/08/07 21:41:01 by OrioPrisco       ###   ########.fr       */
->>>>>>> 64e8ff1 (Modifying access to work with new code.)
+/*   Updated: 2023/08/08 16:33:29 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +120,42 @@ char	*access_loop(t_owned_token *tokens, char **envp)
 	if (!path_tab)
 		return (0);
 	command_path = check_access((const char **)path_tab, command);
-	table_free(path_tab);
-	return (command_path);
+	return (table_free(path_tab), command_path);
+}
+
+/*
+	NAME
+		find_executable
+	DESCRIPTION
+		Looks for abs path of executable command.
+		First looks in the command itself looking for a relative path.
+		if no releative path is found, we check for the executable in the PATH
+		varaible with the access_loop function.
+		If nothing is found by the end, we print 'command not found' and
+		return NULL
+	RETURN
+		Returns a malloced string containing the abs path of the command to
+		execute.
+		Returns NULL in case of no executaeble found, or no command given,
+		or malloc error inside of a function.
+*/
+
+char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
+{
+	char			*execve_command;
+	const char		*exec_name;
+
+	exec_name = get_exec_name(
+			(t_owned_token *)com_segment.tokens->data + com_segment.start);
+	if (!exec_name)
+		return (NULL);
+	execve_command = access_loop(exec_name, cominfo->envp);
+	if (!execve_command)
+		return (NULL);
+	if (!execve_command[0])
+	{
+		ft_dprintf(2, "command not found: %s\n", exec_name);
+		return (free(execve_command), NULL);
+	}
+	return (execve_command);
 }

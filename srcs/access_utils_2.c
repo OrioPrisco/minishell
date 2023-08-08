@@ -6,11 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/08 15:57:42 by dpentlan         ###   ########.fr       */
-=======
-/*   Updated: 2023/08/06 22:25:04 by OrioPrisco       ###   ########.fr       */
->>>>>>> 64e8ff1 (Modifying access to work with new code.)
+/*   Updated: 2023/08/08 16:33:43 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
