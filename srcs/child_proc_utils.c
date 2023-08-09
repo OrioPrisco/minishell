@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/08 18:09:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/09 10:41:45 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	single_command(t_vector *tokens, int start, int stop,
 	char		*execve_command;
 	char		**execve_com_args;
 
-	ret = 0;
 	execve_command = 0;
 	execve_com_args = 0;
 	vector_init(&vec_fds, sizeof(t_fds));

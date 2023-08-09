@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/08 18:03:38 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/09 10:39:24 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 		T_REDIRECT_APPEND_STDOUT, T_HEREDOC)
 **	RETURN
 		Returns a non malloced string containing the command.
-		Returns NULL if malloc error.
+		Returns NULL if no command found (ie. no T_STR token ever encountered).
 */
 
 static const char	*get_exec_name(t_owned_token *token)
