@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/09 10:41:45 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/09 17:27:03 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,5 @@ void	single_command(t_vector *tokens, int start, int stop,
 		msh_error("malloc");
 	table_print(execve_com_args);
 	execve(execve_command, execve_com_args, cominfo->envp);
+	msh_exit_child(cominfo->com_list);
 }
