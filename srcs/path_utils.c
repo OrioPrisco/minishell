@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 19:31:12 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/09 16:20:51 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/09 16:25:20 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <errno.h>
 #include "utils.h"
 #include "vector.h"
+#include <sys/stat.h>
 
 //concatenates a folder name with another string
 // the output will have a / between folder and item
@@ -75,4 +76,17 @@ int	get_dir_files(t_vector *dest, const char *folder)
 	if (errno)
 		return (vector_clear(dest), -1);
 	return (0);
+}
+
+//returns
+// -1 on error, and errno gets set
+// 0 if filename is not a directory
+// 1 if filename is a directory
+int	is_directory(const char *filename)
+{
+	struct stat	file_stat;
+
+	if (stat(filename, &file_stat))
+		return (-1);
+	return (S_ISDIR(file_stat.st_mode));
 }
