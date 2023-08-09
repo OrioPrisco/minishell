@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/08 12:22:23 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/09 16:46:33 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool	compile_wildcard_expr(const t_owned_token *src, t_vector *dest)
 }
 
 //filename is full filename, while curr is what is left to match
-bool	match_subexpression(t_token *token, const char *filename,
+bool	match_subexpression(const t_token *token, const char *filename,
 			const char *curr)
 {
 	if (token->type == T_END || token->type == T_DIR_SEP)
