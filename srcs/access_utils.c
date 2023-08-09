@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/09 10:39:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/09 17:40:48 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*check_access(const char *const *path, const char *command)
 		temp = path_concat(*path, command);
 		if (!temp)
 			return (NULL);
-		if (!access(temp, F_OK | X_OK))
+		if (!access(temp, F_OK | X_OK) && !is_directory(temp))
 			return (temp);
 		free(temp);
 		path++;
