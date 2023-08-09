@@ -6,12 +6,16 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 19:31:12 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/06 23:52:55 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/09 16:20:51 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "path.h"
+#include <dirent.h>
+#include <errno.h>
+#include "utils.h"
+#include "vector.h"
 
 //concatenates a folder name with another string
 // the output will have a / between folder and item
@@ -37,4 +41,38 @@ char	*path_concat(const char *folder, const char *item)
 	temp2 = ft_strjoin(temp, item);
 	free(temp);
 	return (temp2);
+}
+
+// gets all files in a directory
+// will return an empty vector if not given a directory
+// returns 0 on success and the vector will be initialised and populated
+// returns 1 on malloc error and the vector will be cleared
+// returns -1 in case of opendir/readdir/stat err and the vector will be cleared
+int	get_dir_files(t_vector *dest, const char *folder)
+{
+	DIR				*directory;
+	struct dirent	*dir_entry;
+	int				is_dir;
+	char			*str;
+
+	vector_init(dest, sizeof(char *));
+	is_dir = is_directory(folder);
+	if (is_dir <= 0)
+		return (is_dir);
+	errno = 0;
+	directory = opendir(folder);
+	if (!directory)
+		return (-1);
+	dir_entry = readdir(directory);
+	while (dir_entry)
+	{
+		str = ft_strdup(dir_entry->d_name);
+		if (!str || vector_append(dest, str))
+			return (closedir(directory), vector_free(dest, free_str), 1);
+		dir_entry = readdir(directory);
+	}
+	closedir(directory);
+	if (errno)
+		return (vector_clear(dest), -1);
+	return (0);
 }
