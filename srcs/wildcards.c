@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/10 19:52:08 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/10 21:00:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static bool	match_subexpression(const t_token *token, const char *filename,
 	while (*curr)
 		if (match_subexpression(token + 1, filename, curr++))
 			return (1);
-	return (0);
+	return (match_subexpression(token + 1, filename, curr));
 }
 
 // helper for expand wildcard
