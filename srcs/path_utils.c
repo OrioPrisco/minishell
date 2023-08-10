@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 19:31:12 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/09 16:25:20 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/10 20:51:11 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	get_dir_files(t_vector *dest, const char *folder)
 	while (dir_entry)
 	{
 		str = ft_strdup(dir_entry->d_name);
-		if (!str || vector_append(dest, str))
+		if (!str || vector_append(dest, &str))
 			return (closedir(directory), vector_free(dest, free_str), 1);
 		dir_entry = readdir(directory);
 	}
