@@ -106,7 +106,7 @@ static	bool	subexpression_matches(const t_token *expr, const char *cwd,
 		if (expr->type != T_END && expand_wildcard(expr, path, dest))
 			return (free(path), 1);
 	}
-	if (expr->type == T_END && vector_append(dest, path))
+	if (expr->type == T_END && vector_append(dest, &path))
 		return (free(path), 1);
 	return (0);
 }
