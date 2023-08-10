@@ -6,13 +6,15 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/09 16:46:33 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/10 19:41:31 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
 #include "vector.h"
 #include "libft.h"
+#include "path.h"
+#include "wildcards.h"
 
 static bool	split_str_token(const char *str, t_vector *dest)
 {
@@ -76,5 +78,64 @@ bool	match_subexpression(const t_token *token, const char *filename,
 	while (*curr)
 		if (match_subexpression(token + 1, filename, curr++))
 			return (1);
+	return (0);
+}
+
+// helper for expand wildcard
+// vector must be initialized, results are char *
+// returns 0 on success and the vector will be populated
+// return 1 error and the vector will be cleared
+static	bool	subexpression_matches(const t_token *expr, const char *cwd,
+					const char *filename, t_vector *dest)
+{
+	char	*path;
+	int		res;
+
+	while (expr->type != T_DIR_SEP && expr->type != T_END)
+		expr++;
+	path = path_concat(cwd, filename);
+	if (!path)
+		return (1);
+	if (expr->type == T_DIR_SEP)
+	{
+		expr += 1;
+		res = is_directory(path);
+		if (res <= 0)
+			return (free(path), 0);
+		if (expr->type != T_END && expand_wildcard(expr, path, dest))
+			return (free(path), 1);
+	}
+	if (expr->type == T_END && vector_append(dest, path))
+		return (free(path), 1);
+	return (0);
+}
+
+// takes a wildcard expression and returns a vector of all matches
+// vector must be initialized, results are char *
+// returns 0 on success and the vector will be populated
+// return 1 error and the vector will NOT be cleared
+bool	expand_wildcard(const t_token *expr, const char *cwd, t_vector *dest)
+{
+	t_vector	files;
+	int			res;
+	size_t		i;
+	const char	*filename;
+
+	vector_init(&files, sizeof(char *));
+	res = is_directory(cwd);
+	if (res <= 0)
+		return (0);
+	res = get_dir_files(&files, cwd);
+	if (res != 0)
+		return (res > 0);
+	i = 0;
+	while (i < files.size)
+	{
+		filename = ((char **)files.data)[i];
+		if (match_subexpression(expr, filename, filename)
+			&& subexpression_matches(expr, cwd, filename, dest))
+			return (1);
+		i++;
+	}
 	return (0);
 }
