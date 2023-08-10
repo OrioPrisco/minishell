@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/10 19:42:58 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/10 19:52:08 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ bool	compile_wildcard_expr(const t_owned_token *src, t_vector *dest)
 		else if (is_text_type(src->type))
 			if (split_str_token(src->str, dest))
 				return (vector_clear(dest), 1);
+		src++;
 	}
 	token = (t_token){{NULL, 0}, T_END};
 	if (vector_append(dest, &token))
