@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/05 16:22:29 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/10 13:57:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,28 @@ int	redir_stdin_token_found(char *filename)
 		msh_error(filename);
 	dup2(open_fd, 0);
 	close(open_fd);
+	return (0);
+}
+
+/*
+	NAME
+		final_dup_redir_stdout
+	DESCRIPTION
+		
+	RETURN
+		
+*/
+
+bool	final_dup_redir_stdout(t_vector *vec_fds)
+{
+	int	last;
+
+	last = 1;
+	if (vec_fds->size > 0)
+	{
+		last = ((t_fds *)vec_fds->data + vec_fds->size - 1)->fd;
+		ft_printf("last fd: %d\n", last);
+		dup2(last, 1);
+	}
 	return (0);
 }

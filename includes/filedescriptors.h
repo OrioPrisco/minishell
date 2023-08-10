@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/05 14:21:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:18:35 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void	print_open_redirects(t_fds *fds, int size);
 int		close_open_redirects(t_vector *vec_fds);
 int		dup_to_lget(t_vector *vec_fds, t_fds *current);
 int		redir_stdin_token_found(char *filename);
+bool	final_dup_redir_stdout(t_vector *vec_fds);
 
 #endif

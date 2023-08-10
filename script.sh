@@ -1,2 +1,2 @@
 #!/bin/bash
-echo $1 $2 $3 $4 $5
+ls > file1 > file2 > file3 | cat file3
