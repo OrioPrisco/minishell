@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/11 12:53:06 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/11 13:21:47 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,20 +126,19 @@ bool	expand_wildcard(const t_token *expr, const char *cwd, t_vector *dest)
 	const char	*filename;
 
 	vector_init(&files, sizeof(char *));
-	res = is_directory(cwd);
-	if (res <= 0)
-		return (0);
-	res = get_dir_files(&files, cwd);
+	if (*cwd)
+		res = get_dir_files(&files, cwd);
+	else
+		res = get_dir_files(&files, ".");
 	if (res != 0)
 		return (res > 0);
 	i = 0;
 	while (i < files.size)
 	{
-		filename = ((char **)files.data)[i];
+		filename = ((char **)files.data)[i++];
 		if (match_subexpression(expr, filename, filename)
 			&& subexpression_matches(expr, cwd, filename, dest))
 			return (vector_free(&files, free_str), 1);
-		i++;
 	}
 	return (vector_free(&files, free_str), 0);
 }
