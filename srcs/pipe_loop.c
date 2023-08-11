@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 17:15:30 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/04 17:03:47 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "tokens.h"
 #include "vector.h"
 #include "libft.h"
+#include "child.h"
 
 /*
 **	get_command_segment
@@ -90,27 +91,29 @@ int	pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes)
 
 /*
 **	fork_loop
-**	
+**	Errors not handled yet. think about return in case of fork failure or malloc
+		failure.
 */
 
 int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 {
 	t_vector		pipes;
 	int				ret;
-	int				i;
 
-	i = 0;
 	ret = 0;
-	(void)pids;
-	while (((t_owned_token *)tokens->data + i)->type != T_END)
-		i++;
 	vector_init(&pipes, sizeof(int));
 	ret = load_pipe_vec(&pipes, tokens);
 	if (ret < 0)
 		return (vector_clear(&pipes), -1);
 	else if (ret > 0)
-		pipe_loop(tokens, cominfo, &pipes);
+	{
+		if (multi_fork(tokens, cominfo, pids))
+			return (-1);
+	}
 	else
-		single_command(tokens, 0, i, cominfo);
+	{
+		if (single_fork(tokens, cominfo, pids))
+			return (-1);
+	}
 	return (vector_clear(&pipes), ret);
 }

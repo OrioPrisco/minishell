@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/08/06 23:50:53 by OrioPrisco       ###   ########.fr        #
+#    Updated: 2023/08/07 12:26:43 by dpentlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,11 @@ SRC				=	minishell.c \
 					fd_utils_2.c \
 					pipe_loop.c \
 					fork_utils.c \
+					fork_utils_2.c \
 					heredoc_utils.c \
 					access_utils.c \
 					access_utils_2.c \
+					child_proc_utils.c \
 					path_utils.c\
 
 NAME			=	minishell

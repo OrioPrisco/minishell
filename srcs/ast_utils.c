@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:14:31 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/05 12:35:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "ft_printf.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
@@ -28,7 +29,8 @@ static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 	{
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_REDIRECT_STDOUT
-			|| current->type == T_REDIRECT_STDOUT_APPEND)
+			|| current->type == T_REDIRECT_STDOUT_APPEND
+			|| current->type == T_REDIRECT_STDIN)
 			return (1);
 		i++;
 	}
@@ -64,43 +66,6 @@ void	cleanup_redirects(t_vector *vec_fds)
 {
 	close_open_redirects(vec_fds);
 	vector_clear(vec_fds);
-}
-
-/*	
-**	tokens is pointer to token space
-**	return could be return status of command?
-**	print_relavent_tokens(tokens, start, stop);
-**	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
-**	RETURN
-**		Returns 0 on success and return int from called functions on error.
-**/
-
-int	single_command(t_vector *tokens, int start, int stop, t_cominfo *cominfo)
-{
-	t_vector	vec_fds;
-	int			ret;
-	int			here_doc_contents;
-	char		*execve_command;
-
-	ret = 0;
-	execve_command = 0;
-	vector_init(&vec_fds, sizeof(t_fds));
-	here_doc_contents = check_and_open_heredoc(tokens, start, stop, cominfo);
-	if (here_doc_contents < 0)
-		return (-1);
-	if (here_doc_contents)
-		print_here_doc_contents(here_doc_contents);
-	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
-	if (ret)
-		return (ret);
-	execve_command = access_loop((t_owned_token *)tokens->data + start,
-			cominfo->envp);
-	if (!execve_command)
-		return (perror("malloc"), -1);
-	print_access_debug(execve_command);
-	free(execve_command);
-	cleanup_redirects(&vec_fds);
-	return (0);
 }
 
 /*	

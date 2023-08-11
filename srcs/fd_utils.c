@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/23 17:11:53 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/05 14:20:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	open_append(t_fds *fds, const char *fn, int flags)
 	return (0);
 }
 
-static int	redir_token_found(t_owned_token *owned_token,
+static int	redir_stdout_token_found(t_owned_token *owned_token,
 							t_vector *vec_fds, char *fn_start)
 {
 	int		(*redir)(t_fds *, const char *, int);
@@ -88,9 +88,14 @@ int	open_redirects(t_vector *tokens, int start, int stop, t_vector *vec_fds)
 	{
 		current = (t_owned_token *)tokens->data + i;
 		if (current->type == T_REDIRECT_STDOUT
-			|| current->type == T_REDIRECT_STDOUT_APPEND)
+			|| current->type == T_REDIRECT_STDOUT_APPEND
+			|| current->type == T_REDIRECT_STDIN)
 		{
-			ret = redir_token_found(current, vec_fds, (current + 1)->str);
+			if (current->type == T_REDIRECT_STDIN)
+				ret = redir_stdin_token_found((current + 1)->str);
+			else
+				ret = redir_stdout_token_found(current, vec_fds,
+						(current + 1)->str);
 			if (ret)
 				return (ret);
 		}

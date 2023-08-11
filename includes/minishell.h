@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 22:25:45 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/08 18:08:03 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ typedef struct s_cominfo
 	char		**envp;
 	t_vector	*com_list;
 }				t_cominfo;
+
+typedef struct s_com_segment
+{
+	t_vector	*tokens;
+	int			start;
+	int			stop;
+}				t_com_segment;
 
 //	Defines
 # define HISTORY_FILE_PATH "HOME"
@@ -47,8 +54,9 @@ void	sigquit_handler(int signum);
 
 //	ast_utils.c
 int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
-int		single_command(t_vector *tokens, int start, int stop,
-			t_cominfo *cominfo);
+void	cleanup_redirects(t_vector *vec_fds);
+int		check_and_open_redirects(t_vector *tokens, t_vector *vec_fds,
+			int start, int stop);
 
 //	pipe_loop.c
 int		pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes);
@@ -56,6 +64,10 @@ int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 
 //	fork_utils.c
 int		msh_wait(t_vector *pids);
+int		print_execve_args(char **execve_com_args);
+char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args);
+int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
+int		multi_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 
 //	heredoc_utils.c
 int		print_here_doc_contents(int heredoc_fd);
@@ -64,6 +76,8 @@ int		check_and_open_heredoc(t_vector *tokens, int start, int stop,
 
 //	access_utils.c
 void	print_access_debug(char *execve_command);
-char	*access_loop(t_owned_token *token, char **envp);
+char	*access_loop(const char *command, char **envp);
+char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment);
+void	access_error_print(const char *exec_name);
 
 #endif
