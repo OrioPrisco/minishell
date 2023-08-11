@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/10 21:00:25 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/11 12:53:06 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "libft.h"
 #include "path.h"
 #include "wildcards.h"
+#include "utils.h"
 
 static bool	split_str_token(const char *str, t_vector *dest)
 {
@@ -108,6 +109,8 @@ static	bool	subexpression_matches(const t_token *expr, const char *cwd,
 	}
 	if (expr->type == T_END && vector_append(dest, &path))
 		return (free(path), 1);
+	if (expr->type != T_END)
+		free(path);
 	return (0);
 }
 
@@ -135,8 +138,8 @@ bool	expand_wildcard(const t_token *expr, const char *cwd, t_vector *dest)
 		filename = ((char **)files.data)[i];
 		if (match_subexpression(expr, filename, filename)
 			&& subexpression_matches(expr, cwd, filename, dest))
-			return (1);
+			return (vector_free(&files, free_str), 1);
 		i++;
 	}
-	return (0);
+	return (vector_free(&files, free_str), 0);
 }
