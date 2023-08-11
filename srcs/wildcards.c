@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/11 13:21:47 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/11 14:27:00 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static	bool	subexpression_matches(const t_token *expr, const char *cwd,
 					const char *filename, t_vector *dest)
 {
 	char	*path;
-	int		res;
+	char	*temp;
 
 	while (expr->type != T_DIR_SEP && expr->type != T_END)
 		expr++;
@@ -100,17 +100,20 @@ static	bool	subexpression_matches(const t_token *expr, const char *cwd,
 		return (1);
 	if (expr->type == T_DIR_SEP)
 	{
+		temp = path_concat(path, "");
+		free(path);
+		if (!temp)
+			return (1);
+		path = temp;
 		expr += 1;
-		res = is_directory(path);
-		if (res <= 0)
+		if (is_directory(path) <= 0)
 			return (free(path), 0);
-		if (expr->type != T_END && expand_wildcard(expr, path, dest))
+		if (expr->type != T_END && (expand_wildcard(expr, path, dest)
+				|| (free(path), 0)))
 			return (free(path), 1);
 	}
 	if (expr->type == T_END && vector_append(dest, &path))
 		return (free(path), 1);
-	if (expr->type != T_END)
-		free(path);
 	return (0);
 }
 
