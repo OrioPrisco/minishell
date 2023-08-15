@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:43:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/15 21:48:26 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/15 22:13:59 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	substitute_one_wildcard(t_vector *vector, size_t i)
 		return (vector_clear(&wildcard_expr),
 			vector_free(&wildcard_result, free_str), 1);
 	vector_clear(&wildcard_expr);
-	while (is_text_type((((t_owned_token *)vector->data) + i)->type)
+	while (is_wildcard_expr_type((((t_owned_token *)vector->data) + i)->type)
 		&& i < vector->size)
 		vector_pop_n(vector, i, 1);
 	tok.type = T_STR;
