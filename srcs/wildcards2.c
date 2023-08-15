@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:43:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/15 22:24:55 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/15 22:43:18 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,14 @@ static bool	merge_if_no_result(t_vector *result, t_vector *expr)
 	return (0);
 }
 
+static bool	expand_wildcard_wrapper(const t_token *expr, const char *cwd,
+				t_vector *dest)
+{
+	if (expr->type == T_DIR_SEP)
+		return (expand_wildcard(expr + 1, "/", dest));
+	return (expand_wildcard(expr, cwd, dest));
+}
+
 static bool	substitute_one_wildcard(t_vector *vector, size_t i)
 {
 	t_vector		wildcard_expr;
@@ -55,9 +63,8 @@ static bool	substitute_one_wildcard(t_vector *vector, size_t i)
 	if (compile_wildcard_expr(((t_owned_token *)vector->data + i),
 			&wildcard_expr))
 		return (1);
-	if (expand_wildcard(wildcard_expr.data,
-			&"/"[((t_token *)wildcard_expr.data)->type != T_DIR_SEP],
-			vector_init(&wildcard_result, sizeof(char *)))
+	vector_init(&wildcard_result, sizeof(char *));
+	if (expand_wildcard_wrapper(wildcard_expr.data, "", &wildcard_result)
 		|| (!wildcard_result.size
 			&& merge_if_no_result(&wildcard_result, &wildcard_expr)))
 		return (vector_clear(&wildcard_expr),
