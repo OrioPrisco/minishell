@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 12:58:33 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/15 21:41:06 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/15 22:25:24 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ typedef struct s_vector			t_vector;
 
 bool	expand_wildcard(const t_token *expr, const char *cwd, t_vector *dest);
 bool	compile_wildcard_expr(const t_owned_token *src, t_vector *dest);
-bool	substitute_one_wildcard(t_vector *vector, size_t i);
+bool	substitute_all_wildcards(t_vector *vector);
 #endif

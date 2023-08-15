@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:43:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/15 22:13:59 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/15 22:24:55 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static bool	merge_if_no_result(t_vector *result, t_vector *expr)
 	return (0);
 }
 
-bool	substitute_one_wildcard(t_vector *vector, size_t i)
+static bool	substitute_one_wildcard(t_vector *vector, size_t i)
 {
 	t_vector		wildcard_expr;
 	t_vector		wildcard_result;
@@ -73,4 +73,32 @@ bool	substitute_one_wildcard(t_vector *vector, size_t i)
 			return (free_owned_token(&tok),
 				vector_free(&wildcard_result, free_str), 1);
 	return (vector_free(&wildcard_result, free_str), 0);
+}
+
+// finds and substitutes all wildcards expressions in the vector
+// returns 0 on sucess
+// returns 1 on error, and does not clear the vector
+bool	substitute_all_wildcards(t_vector *vector)
+{
+	size_t			i;
+	size_t			j;
+	t_owned_token	*tok;
+
+	i = 0;
+	j = 0;
+	while (i < vector->size)
+	{
+		tok = ((t_owned_token *)vector->data) + i;
+		if (tok->type == T_WILDCARD)
+		{
+			if (substitute_one_wildcard(vector, j))
+				return (1);
+			i = j;
+		}
+		else if (tok->type == T_SPACE)
+			j = i++;
+		else
+			i++;
+	}
+	return (0);
 }
