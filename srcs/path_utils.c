@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 19:31:12 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/10 20:51:11 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/17 14:48:37 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,21 @@ int	is_directory(const char *filename)
 	if (stat(filename, &file_stat))
 		return (-1);
 	return (S_ISDIR(file_stat.st_mode));
+}
+
+//returns whether the following path refers to something in the cwd
+//doesn't check that such a file exists
+//if the path leaves and re-enters cwd, that i still considered not in cwd
+bool	is_in_cwd(const char *path)
+{
+	if (*path == '/')
+		return (0);
+	while (!ft_strncmp(path, "./", 2))
+		path += 2;
+	path = ft_strchrnul(path, '/');
+	if (!*path)
+		return (1);
+	if (!*(path + 1))
+		return (1);
+	return (0);
 }
