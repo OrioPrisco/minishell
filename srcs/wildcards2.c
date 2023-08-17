@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:43:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/15 22:43:18 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/17 14:59:37 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "vector.h"
 #include "utils.h"
 #include "tokens.h"
+#include "path.h"
+#include <stdlib.h>
 
 void	sort_wildcards(t_vector *vector)
 {
@@ -46,12 +48,35 @@ static bool	merge_if_no_result(t_vector *result, t_vector *expr)
 	return (0);
 }
 
+// calls expand_wildcard with correct arguments,
+// sorts the result and optionally remove elements not in cwd
+// returns are the same as expand_wildcard
 static bool	expand_wildcard_wrapper(const t_token *expr, const char *cwd,
 				t_vector *dest)
 {
-	if (expr->type == T_DIR_SEP)
-		return (expand_wildcard(expr + 1, "/", dest));
-	return (expand_wildcard(expr, cwd, dest));
+	size_t	i;
+	char	*path;
+
+	if (expr->type == T_DIR_SEP && expand_wildcard(expr + 1, "/", dest))
+		return (1);
+	if (expr->type != T_DIR_SEP && expand_wildcard(expr, cwd, dest))
+		return (1);
+	sort_wildcards(dest);
+	if (!WILDCARD_IN_CWD)
+		return (0);
+	i = 0;
+	while (i < dest->size)
+	{
+		path = ((char **)dest->data)[i];
+		if (!is_in_cwd(path))
+		{
+			free(path);
+			vector_pop_n(dest, i, 1);
+		}
+		else
+			i++;
+	}
+	return (0);
 }
 
 static bool	substitute_one_wildcard(t_vector *vector, size_t i)

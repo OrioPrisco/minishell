@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 12:58:33 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/15 22:25:24 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/17 15:02:55 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <stdbool.h>
 # include <stddef.h>
+
+# ifndef WILDCARD_IN_CWD
+#  define WILDCARD_IN_CWD 1
+# endif
 
 typedef struct s_owned_token	t_owned_token;
 typedef struct s_token			t_token;
