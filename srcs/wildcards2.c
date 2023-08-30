@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:43:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/17 14:59:37 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/30 11:59:21 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ bool	substitute_all_wildcards(t_vector *vector)
 			i = j;
 		}
 		else if (tok->type == T_SPACE)
-			j = i++;
+			j = ++i;
 		else
 			i++;
 	}
