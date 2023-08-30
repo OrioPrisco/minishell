@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:34:07 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/14 18:08:23 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/30 17:37:25 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,5 @@ int	compare_str(void *a, void *b)
 
 	astr = a;
 	bstr = b;
-	return (ft_strcmp(*astr, *bstr));
+	return (-ft_fake_strcoll(*astr, *bstr));
 }
