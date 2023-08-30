@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:43:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/30 11:59:21 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/08/30 12:16:37 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,8 @@ static bool	expand_wildcard_wrapper(const t_token *expr, const char *cwd,
 		return (1);
 	if (expr->type != T_DIR_SEP && expand_wildcard(expr, cwd, dest))
 		return (1);
-	sort_wildcards(dest);
 	if (!WILDCARD_IN_CWD)
-		return (0);
+		return (sort_wildcards(dest), 0);
 	i = 0;
 	while (i < dest->size)
 	{
@@ -76,7 +75,7 @@ static bool	expand_wildcard_wrapper(const t_token *expr, const char *cwd,
 		else
 			i++;
 	}
-	return (0);
+	return (sort_wildcards(dest), 0);
 }
 
 static bool	substitute_one_wildcard(t_vector *vector, size_t i)
