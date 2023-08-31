@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/31 17:18:27 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:10:22 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,7 @@ static int	redir_stdout_token_found(t_owned_token *owned_token,
 	}
 	else
 		return (vector_free(vec_fds, free_fds), ret);
-	ret = dup_to_lget(vec_fds, &current);
-	if (ret)
-		return (ret);
-	return (0);
+	return (dup_to_lget(vec_fds, &current));
 }
 
 /*	
