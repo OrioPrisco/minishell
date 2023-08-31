@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/21 17:45:05 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/05 20:30:48 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ bool	split_to_tokens(const char *str, t_vector *vec_token)
 	{
 		curr = get_one_token(str);
 		if (vector_append(vec_token, &curr))
-			return (vector_clear(vec_token), NULL);
+			return (vector_clear(vec_token), 1);
 		str = curr.strview.start + curr.strview.size;
 	}
 	curr = (t_token){{str, 0}, T_END};
 	if (vector_append(vec_token, &curr))
-		return (vector_clear(vec_token), NULL);
+		return (vector_clear(vec_token), 1);
 	return (0);
 }
 

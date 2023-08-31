@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:17:16 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/21 17:41:54 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/05 20:30:58 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ bool	process_redirect(t_token *token)
 			next++->type = T_STR;
 		}
 	}
-	token = next;
 	return (0);
 }
 
