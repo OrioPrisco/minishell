@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/07 14:48:59 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:10:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args)
 	while (token->type != T_END && token->type != T_PIPE)
 	{
 		if (is_redirect_type(token->type))
-			token ++;
+			token += 2;
 		else if (token->type == T_STR)
 		{
 			execve_com_args = add_item_to_com_table(

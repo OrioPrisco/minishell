@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/09 17:27:03 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:08:25 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	msh_exit_child(t_vector *com_list)
 		msh_exit_child(cominfo->envp, cominfo->com_list);
 	if (here_doc_contents)
 		print_here_doc_contents(here_doc_contents);
+	//print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
+	//table_print(execve_com_args);
 **/
 
 void	single_command(t_vector *tokens, int start, int stop,
@@ -60,6 +62,7 @@ void	single_command(t_vector *tokens, int start, int stop,
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		msh_exit_child(cominfo->com_list);
+	redir_stdout_and_clean(&vec_fds);
 	execve_command = find_executable(cominfo,
 			(t_com_segment){tokens, start, stop});
 	if (!execve_command)
@@ -71,7 +74,6 @@ void	single_command(t_vector *tokens, int start, int stop,
 			(t_com_segment){tokens, start, stop}, execve_com_args);
 	if (!execve_com_args)
 		msh_error("malloc");
-	table_print(execve_com_args);
 	execve(execve_command, execve_com_args, cominfo->envp);
 	msh_exit_child(cominfo->com_list);
 }
