@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/31 17:10:49 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:42:32 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,14 @@ int	dup_to_lget(t_vector *vec_fds, t_fds *current)
 	return (0);
 }
 
-int	redir_stdin_token_found(char *filename)
+int	redir_stdin_token_found(t_owned_token *current)
 {
-	int	open_fd;
+	int		open_fd;
+	char	*filename;
 
+	while (!current->str)
+		current = current + 1;
+	filename = current->str;
 	open_fd = open(filename, O_RDONLY);
 	if (open_fd < 0)
 		msh_error(filename);
@@ -132,7 +136,7 @@ int	redir_stdin_token_found(char *filename)
 		
 */
 
-bool	final_dup_redir_stdout(t_vector *vec_fds)
+bool	redir_stdout_and_clean(t_vector *vec_fds)
 {
 	int	last;
 
@@ -140,8 +144,8 @@ bool	final_dup_redir_stdout(t_vector *vec_fds)
 	if (vec_fds->size > 0)
 	{
 		last = ((t_fds *)vec_fds->data + vec_fds->size - 1)->fd;
-		//ft_printf("last fd: %d\n", last);
 		dup2(last, 1);
 	}
+	cleanup_redirects(vec_fds);
 	return (0);
 }

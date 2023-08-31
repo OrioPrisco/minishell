@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/09 17:40:48 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:48:39 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static const char	*get_exec_name(t_owned_token *token)
 	while (token->type != T_END && token->type != T_PIPE)
 	{
 		if (is_redirect_type(token->type))
-			token ++;
+			token = token + 2;
 		else if (token->type == T_STR)
 			return (token->str);
 		token++;
@@ -119,17 +119,7 @@ char	*access_loop(const char *command, char **envp)
 	NAME
 		find_executable
 	DESCRIPTION
-		Looks for abs path of executable command.
-		First looks in the command itself looking for a relative path.
-		if no releative path is found, we check for the executable in the PATH
-		varaible with the access_loop function.
-		If nothing is found by the end, we print 'command not found' and
-		return NULL
 	RETURN
-		Returns a malloced string containing the abs path of the command to
-		execute.
-		Returns NULL in case of no executaeble found, or no command given,
-		or malloc error inside of a function.
 */
 
 char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)

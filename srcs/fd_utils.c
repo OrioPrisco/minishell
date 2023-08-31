@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/31 15:19:32 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:18:27 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	open_redirects(t_vector *tokens, int start, int stop, t_vector *vec_fds)
 			|| current->type == T_REDIRECT_STDIN)
 		{
 			if (current->type == T_REDIRECT_STDIN)
-				ret = redir_stdin_token_found((current + 1)->str);
+				ret = redir_stdin_token_found(current);
 			else
 				ret = redir_stdout_token_found(current, vec_fds);
 			if (ret)

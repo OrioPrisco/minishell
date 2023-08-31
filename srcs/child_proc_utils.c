@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/31 16:46:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:43:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	single_command(t_vector *tokens, int start, int stop,
 	ret = check_and_open_redirects(tokens, &vec_fds, start, stop);
 	if (ret)
 		msh_exit_child(cominfo->com_list);
+	redir_stdout_and_clean(&vec_fds);
 	execve_command = find_executable(cominfo,
 			(t_com_segment){tokens, start, stop});
 	if (!execve_command)
@@ -72,7 +73,6 @@ void	single_command(t_vector *tokens, int start, int stop,
 			(t_com_segment){tokens, start, stop}, execve_com_args);
 	if (!execve_com_args)
 		msh_error("malloc");
-	final_dup_redir_stdout(&vec_fds);
 	//table_print(execve_com_args);
 	execve(execve_command, execve_com_args, cominfo->envp);
 	msh_exit_child(cominfo->com_list);
