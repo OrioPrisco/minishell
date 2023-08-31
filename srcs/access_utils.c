@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/31 17:48:39 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 18:40:14 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,8 @@ char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
 		return (NULL);
+	if (check_for_builtins(exec_name))
+		ft_printf("Found a builtin!\n");
 	execve_command = access_loop(exec_name, cominfo->envp);
 	if (!execve_command)
 		return (NULL);
