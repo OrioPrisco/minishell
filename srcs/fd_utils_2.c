@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/10 13:57:06 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/31 17:10:49 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ bool	final_dup_redir_stdout(t_vector *vec_fds)
 	if (vec_fds->size > 0)
 	{
 		last = ((t_fds *)vec_fds->data + vec_fds->size - 1)->fd;
-		ft_printf("last fd: %d\n", last);
+		//ft_printf("last fd: %d\n", last);
 		dup2(last, 1);
 	}
 	return (0);
