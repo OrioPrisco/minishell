@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/18 16:16:26 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/07/21 17:45:05 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ static t_token	get_one_token(const char *str)
 		return ((t_token){{str, 2}, *(str) + 1});
 	else if (ft_strchr("<>|", *str))
 		return ((t_token){{str, 1}, *str});
-	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|")}, T_STR});
+	else if (*str == '*')
+		return ((t_token){{str, ft_strspn(str, "*")}, T_WILDCARD});
+	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|*")}, T_STR});
 }
 
 //output tokens may be nonsensical, like unterminated quote tokens

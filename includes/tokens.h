@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/23 17:11:33 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/10 20:13:16 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef enum e_token_type {
 	T_REDIRECT_STDOUT_APPEND = '>' + 1,
 	T_PIPE = '|',
 	T_VAR,
+	T_WILDCARD,
+	T_DIR_SEP,
 }	t_token_type;
 
 // internal to parse line
@@ -50,6 +52,14 @@ void		print_relavent_tokens(t_vector *owned_tokens, int start, int stop);
 void		free_owned_token(void *owned_token);
 bool		is_text_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
+bool		is_wildcard_expr_type(t_token_type type);
+
+//internal to token_type_to_str
+typedef struct s_tok_map_entry
+{
+	t_token_type	type;
+	const char		*str;
+}	t_tok_map_entry;
 
 // -- parse_line internals
 

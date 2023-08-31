@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/18 14:33:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/08/10 20:20:40 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,34 @@ char	*next_non_identifier(const char *str)
 	return ((char *)str);
 }
 
+static const t_tok_map_entry	g_token_map[] = {
+{T_SPACE, "SPACE"},
+{T_Q_STR, "Q_STR"},
+{T_DQ_STR, "DQ_STR"},
+{T_STR, "STR"},
+{T_END, "END"},
+{T_REDIRECT_STDOUT, ">"},
+{T_REDIRECT_STDIN, "<"},
+{T_HEREDOC, "<<"},
+{T_REDIRECT_STDOUT_APPEND, ">>"},
+{T_PIPE, "|"},
+{T_VAR, "VAR"},
+{T_WILDCARD, "*"},
+{T_DIR_SEP, "/"},
+{0, NULL},
+};
+
 const char	*token_type_to_str(t_token_type token)
 {
-	if (token == T_SPACE)
-		return ("SPACE");
-	if (token == T_Q_STR)
-		return ("Q_STR");
-	if (token == T_DQ_STR)
-		return ("DQ_STR");
-	if (token == T_STR)
-		return ("STR");
-	if (token == T_END)
-		return ("END");
-	if (token == T_REDIRECT_STDOUT)
-		return (">");
-	if (token == T_REDIRECT_STDIN)
-		return ("<");
-	if (token == T_HEREDOC)
-		return ("<<");
-	if (token == T_REDIRECT_STDOUT_APPEND)
-		return (">>");
-	if (token == T_PIPE)
-		return ("|");
-	if (token == T_VAR)
-		return ("VAR");
+	const t_tok_map_entry	*entry;
+
+	entry = &g_token_map[0];
+	while (entry->str)
+	{
+		if (entry->type == token)
+			return (entry->str);
+		entry++;
+	}
 	return ("UNKNOWN");
 }
 
