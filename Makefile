@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/08/31 15:22:15 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/09/01 13:33:34 by dpentlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRC				=	minishell.c \
 					heredoc_utils.c \
 					access_utils.c \
 					access_utils_2.c \
+					access_utils_3.c \
 					child_proc_utils.c \
 					path_utils.c\
 					wildcards.c \

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/31 18:40:14 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/01 13:49:26 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "tokens.h"
 #include "utils.h"
 #include "path.h"
+#include "child.h"
 
 /*
 **	NAME
@@ -139,4 +140,32 @@ char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
 	if (!execve_command[0])
 		return (free(execve_command), access_error_print(exec_name), NULL);
 	return (execve_command);
+}
+
+/*
+	NAME
+		exec_command
+	DESCRIPTION
+		
+	RETURN
+		
+*/
+
+void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
+				t_vector *vec_fds)
+{
+	char		*execve_command;
+	char		**execve_com_args;
+
+	execve_com_args = 0;
+	execve_command = find_executable(cominfo, com_segment);
+	if (!execve_command)
+	{
+		cleanup_redirects(vec_fds);
+		msh_exit_child(cominfo->com_list);
+	}
+	execve_com_args = construct_execve_args(com_segment, execve_com_args);
+	if (!execve_com_args)
+		msh_error("malloc");
+	execve(execve_command, execve_com_args, cominfo->envp);
 }
