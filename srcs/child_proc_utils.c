@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/01 13:53:08 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/01 15:06:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,5 @@ void	single_command(t_vector *tokens, int start, int stop,
 		msh_exit_child(cominfo->com_list);
 	redir_stdout_and_clean(&vec_fds);
 	exec_command(cominfo, (t_com_segment){tokens, start, stop}, &vec_fds);
-	//msh_exit_child(cominfo->com_list);
+	msh_exit_child(cominfo->com_list);
 }

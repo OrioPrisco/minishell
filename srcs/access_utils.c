@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/01 13:49:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/01 15:06:43 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 		Returns NULL if no command found (ie. no T_STR token ever encountered).
 */
 
-static const char	*get_exec_name(t_owned_token *token)
+static char	*get_exec_name(t_owned_token *token)
 {
 	while (token->type != T_END && token->type != T_PIPE)
 	{
@@ -126,14 +126,14 @@ char	*access_loop(const char *command, char **envp)
 char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
 {
 	char			*execve_command;
-	const char		*exec_name;
+	char			*exec_name;
 
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
 		return (NULL);
 	if (check_for_builtins(exec_name))
-		ft_printf("Found a builtin!\n");
+		return (exec_name);
 	execve_command = access_loop(exec_name, cominfo->envp);
 	if (!execve_command)
 		return (NULL);
@@ -167,5 +167,8 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 	execve_com_args = construct_execve_args(com_segment, execve_com_args);
 	if (!execve_com_args)
 		msh_error("malloc");
-	execve(execve_command, execve_com_args, cominfo->envp);
+	if (check_for_builtins(execve_command))
+		builtin_commands(execve_command, execve_com_args, cominfo->envp);
+	else
+		execve(execve_command, execve_com_args, cominfo->envp);
 }
