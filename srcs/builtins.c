@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/01 16:04:47 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/01 16:20:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,22 @@
 #include "ft_printf.h"
 #include "utils.h"
 #include <stdlib.h>
+
+/*
+	NAME
+		exit
+	DESCRIPTION
+		
+	RETURN
+		
+*/
+
+void	exit_msh(char *execve_command, char **execve_com_args, char **envp)
+{
+	(void) execve_command;
+	(void) execve_com_args;
+	(void) envp;
+}
 
 /*
 	NAME
@@ -68,6 +84,8 @@ void	builtin_commands(char *execve_command, char **execve_com_args,
 {
 	if (!ft_strcmp(execve_command, "echo"))
 		echo(execve_command, execve_com_args, envp);
+	if (!ft_strcmp(execve_command, "exit"))
+		exit_msh(execve_command, execve_com_args, envp);
 	table_free(execve_com_args);
 	free(execve_command);
 }
