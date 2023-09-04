@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/04 16:13:06 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:22:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,10 @@ void	print_access_debug(char *execve_command);
 char	*access_loop(const char *command, char **envp);
 char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment);
 void	access_error_print(const char *exec_name);
+int		check_for_builtins(const char *exec_name);
+void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
+			t_vector *vec_fds);
+void	builtin_commands(char *execve_command, char **execve_com_args,
+			char **envp);
 
 #endif
