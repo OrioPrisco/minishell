@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/04 16:24:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:56:46 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,29 @@ void	msh_exit_child(t_vector *com_list)
 {
 	vector_free(com_list, free_str);
 	exit(EXIT_SUCCESS);
+}
+
+/*
+	NAME
+		pipe_dups
+	DESCRIPTION
+		
+	RETURN
+		
+*/
+
+int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
+{
+	if (com_seg->stop != com_seg->size)
+	{
+		dup2(pipeinfo->old_pipe, STDIN_FILENO);
+		dup2(pipeinfo->pipefd[1], STDOUT_FILENO);
+	}
+	if (com_seg->stop == com_seg->size)
+	{
+		dup2(pipeinfo->old_pipe, STDIN_FILENO);
+	}
+	return (0);
 }
 
 /*	
@@ -48,7 +71,8 @@ void	msh_exit_child(t_vector *com_list)
 	//table_print(execve_com_args);
 **/
 
-void	single_command(t_com_segment com_seg, t_cominfo *cominfo)
+void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
+			t_pipe_info *pipeinfo)
 {
 	t_vector	vec_fds;
 	int			ret;
@@ -58,6 +82,7 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo)
 			com_seg.stop);
 	if (ret)
 		msh_exit_child(cominfo->com_list);
+	pipe_dups(&com_seg, pipeinfo);
 	redir_stdout_and_clean(&vec_fds);
 	exec_command(cominfo, com_seg, &vec_fds);
 	msh_exit_child(cominfo->com_list);

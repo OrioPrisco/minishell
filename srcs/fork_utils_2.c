@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:44:53 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/04 16:16:49 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:04:22 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 #include <unistd.h>
 #include "libft.h"
 
-int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
+int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
+		t_pipe_info *pipeinfo)
 {
 	int				pid;
 	int				size;
@@ -31,7 +32,7 @@ int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 	if (vector_append(pids, (int *)&pid))
 		return (-1);
 	if (pid == 0)
-		single_command((t_com_segment){tokens, 0, size, size}, cominfo);
+		single_command((t_com_segment){tokens, 0, size, size}, cominfo, pipeinfo);
 	return (0);
 }
 
@@ -44,32 +45,30 @@ int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 		
 */
 
-int	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
+int	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
+		t_pipe_info *pipeinfo)
 {
 	int				size;
 	int				i;
 	int				j;
-	t_pipe_info		pipeinfo;
 
 	i = -1;
 	j = 0;
 	size = 0;
-	ft_bzero((void *)&pipeinfo, sizeof(pipeinfo));
-	pipeinfo.old_pipe = -1;
-	if (pipe(pipeinfo.pipefd))
-		return (-1);
 	while (((t_owned_token *)tokens->data + size)->type != T_END)
 		size++;
 	while (++i < size)
 	{
 		if (((t_owned_token *)tokens->data + i)->type == T_PIPE)
 		{
+			if (pipe(pipeinfo->pipefd))
+				return (-1);
 			multi_fork((t_com_segment){tokens, j, i, size}, cominfo,
-				pids, &pipeinfo);
+				pids, pipeinfo);
 			j = i + 1;
 		}
 	}
-	multi_fork((t_com_segment){tokens, j, i, size}, cominfo, pids, &pipeinfo);
+	multi_fork((t_com_segment){tokens, j, i, size}, cominfo, pids, pipeinfo);
 	return (0);
 }
 
@@ -91,7 +90,7 @@ int	multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids,
 	if (vector_append(pids, (int *)&pid))
 		return (-1);
 	if (pid == 0)
-		single_command(com_seg, cominfo);
+		single_command(com_seg, cominfo, pipeinfo);
 	else
 	{
 		close(pipeinfo->pipefd[1]);

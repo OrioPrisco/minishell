@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/04 16:15:28 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:34:23 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,20 +102,23 @@ int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 {
 	t_vector		pipes;
 	int				ret;
+	t_pipe_info		pipeinfo;
 
 	ret = 0;
 	vector_init(&pipes, sizeof(int));
+	ft_bzero((void *)&pipeinfo, sizeof(pipeinfo));
+	pipeinfo.old_pipe = -1;
 	ret = load_pipe_vec(&pipes, tokens);
 	if (ret < 0)
 		return (vector_clear(&pipes), -1);
 	else if (ret > 0)
 	{
-		if (pipe_setup(tokens, cominfo, pids))
+		if (pipe_setup(tokens, cominfo, pids, &pipeinfo))
 			return (-1);
 	}
 	else
 	{
-		if (single_fork(tokens, cominfo, pids))
+		if (single_fork(tokens, cominfo, pids, &pipeinfo))
 			return (-1);
 	}
 	return (vector_clear(&pipes), ret);
