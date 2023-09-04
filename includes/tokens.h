@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 20:39:25 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/05 20:40:54 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ bool		process_redirect(t_token *token);
 bool		validate_pipe(const t_token *token);
 bool		split_dquoted_tokens(t_vector *vec_token);
 void		expand_vars(t_vector *vec_token, char **envp);
-bool		merge_tokens(t_vector *dest_owned_tok, const t_vector *src_tokens);
 bool		process_one_token(t_token *token);
 // --
 bool		parse_line(const char *line, t_vector *dest, char **envp);
@@ -87,6 +86,9 @@ bool		parse_line(const char *line, t_vector *dest, char **envp);
 // new parse_line_internals
 // --
 int			parse_redirect(t_vector *dest, const t_token *tok, char **envp);
+bool		merge_tokens(char **dest, const t_token *src,
+				size_t to_merge, char **envp);
+int			seek_tokens_to_merge(const t_token *src);
 
 // --
 int			parse_line2(const char *line, t_vector *dest, char **envp);
