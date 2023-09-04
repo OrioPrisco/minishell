@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:44:53 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/04 13:01:12 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:16:49 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "child.h"
 #include "ft_printf.h"
 #include <unistd.h>
+#include "libft.h"
 
 int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 {
@@ -30,7 +31,7 @@ int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 	if (vector_append(pids, (int *)&pid))
 		return (-1);
 	if (pid == 0)
-		single_command((t_com_segment){tokens, 0, size}, cominfo);
+		single_command((t_com_segment){tokens, 0, size, size}, cominfo);
 	return (0);
 }
 
@@ -48,28 +49,27 @@ int	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 	int				size;
 	int				i;
 	int				j;
-	int				pipefd[2];
+	t_pipe_info		pipeinfo;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	size = 0;
-	if (pipe(pipefd))
+	ft_bzero((void *)&pipeinfo, sizeof(pipeinfo));
+	pipeinfo.old_pipe = -1;
+	if (pipe(pipeinfo.pipefd))
 		return (-1);
 	while (((t_owned_token *)tokens->data + size)->type != T_END)
 		size++;
-	while (i < size)
+	while (++i < size)
 	{
 		if (((t_owned_token *)tokens->data + i)->type == T_PIPE)
 		{
-			ft_printf("Passing command from %d to %d\n", j, i - 1);
-			multi_fork((t_com_segment){tokens, j, i}, cominfo, pids);
+			multi_fork((t_com_segment){tokens, j, i, size}, cominfo,
+				pids, &pipeinfo);
 			j = i + 1;
 		}
-		i++;
 	}
-	if (((t_owned_token *)tokens->data + i)->type == T_END)
-		ft_printf("Passing command from %d to %d\n", j, i);
-			multi_fork((t_com_segment){tokens, j, i}, cominfo, pids);
+	multi_fork((t_com_segment){tokens, j, i, size}, cominfo, pids, &pipeinfo);
 	return (0);
 }
 
@@ -80,14 +80,11 @@ int	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 **
 */
 
-int	multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids)
+int	multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids,
+				t_pipe_info *pipeinfo)
 {
 	int		pid;
-	int		size;
 
-	size = 0;
-	while (((t_owned_token *)com_seg.tokens->data + size)->type != T_END)
-		size++;
 	pid = fork();
 	if (pid < 0)
 		return (-1);
@@ -95,5 +92,12 @@ int	multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids)
 		return (-1);
 	if (pid == 0)
 		single_command(com_seg, cominfo);
+	else
+	{
+		close(pipeinfo->pipefd[1]);
+		if (pipeinfo->old_pipe != -1)
+			close(pipeinfo->old_pipe);
+		pipeinfo->old_pipe = pipeinfo->pipefd[0];
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/04 13:02:36 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:13:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,14 @@ typedef struct s_com_segment
 	t_vector	*tokens;
 	int			start;
 	int			stop;
+	int			size;
 }				t_com_segment;
+
+typedef struct s_pipe_info
+{
+	int			pipefd[2];
+	int			old_pipe;
+}				t_pipe_info;
 
 //	Defines
 # define HISTORY_FILE_PATH "HOME"
@@ -68,7 +75,8 @@ int		print_execve_args(char **execve_com_args);
 char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args);
 int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 int		pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
-int		multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids);
+int		multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids,
+			t_pipe_info *pipeinfo);
 
 //	heredoc_utils.c
 int		print_here_doc_contents(int heredoc_fd);

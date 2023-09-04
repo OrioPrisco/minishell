@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/04 13:02:58 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:15:28 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 **	
 **	I think this 
 */
-
+/*
 int	pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes)
 {
 	int				*pos;
@@ -88,11 +88,14 @@ int	pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes)
 	}
 	return (0);
 }
-
+*/
 /*
 **	fork_loop
 **	Errors not handled yet. think about return in case of fork failure or malloc
 		failure.
+	
+	Consider adding fourth argument as pointer to int to return the return of
+		executed process.
 */
 
 int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
