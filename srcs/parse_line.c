@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/04 12:38:59 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/04 15:22:44 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	process_one_token2(t_vector *dest, const t_token *tok, char **envp)
 	if (tok->type == T_SPACE)
 		return (1);
 	if (is_redirect_type(tok->type))
-		return (process_quote2(dest, tok, envp)); // pass hd_line for heredocs
+		return (parse_redirect(dest, tok, envp)); // pass hd_line for heredocs
 	if (tok->type == T_PIPE)
 		return (process_pipe2(dest, tok));
 	if (is_text_type(tok->type))

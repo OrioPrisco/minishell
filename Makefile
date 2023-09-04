@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/01 15:08:35 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/09/05 20:39:03 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC				=	minishell.c \
 					child_proc_utils.c \
 					path_utils.c\
 					wildcards.c \
+					parser/parse_redirect.c \
 
 NAME			=	minishell
 
@@ -85,6 +86,7 @@ COMP_COMMAND = $(CC) -c $(CFLAGS) $(addprefix -I,$(HEADERS_FOLDER)) -MMD -MP $< 
 CONCAT = awk 'FNR==1 && NR!=1 {print ","}{print}'
 
 $(OBJ_FOLDER)%.o $(OBJ_FOLDER)%.cc: $(SRC_FOLDER)%.c Makefile $(SUBMODULES)
+	@mkdir -p $(@D)
 	$(COMP_COMMAND)
 	@printf '{\n\t"directory" : "$(shell pwd)",\n\t"command" : "$(COMP_COMMAND)",\n\t"file" : "$<"\n}' > $(OBJ_FOLDER)$*.cc
 

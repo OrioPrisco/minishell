@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 20:35:19 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/05 20:39:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,9 @@ typedef struct s_token {
 }	t_token;
 
 bool		split_to_tokens(const char *str, t_vector *vec_token);
+
+// old parse_line internals
+// --
 bool		process_quote(t_token *token);
 bool		process_redirect(t_token *token);
 bool		validate_pipe(const t_token *token);
@@ -80,5 +83,12 @@ bool		merge_tokens(t_vector *dest_owned_tok, const t_vector *src_tokens);
 bool		process_one_token(t_token *token);
 // --
 bool		parse_line(const char *line, t_vector *dest, char **envp);
+
+// new parse_line_internals
+// --
+int			parse_redirect(t_vector *dest, const t_token *tok, char **envp);
+
+// --
+int			parse_line2(const char *line, t_vector *dest, char **envp);
 
 #endif
