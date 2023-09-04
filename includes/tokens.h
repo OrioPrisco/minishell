@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/10 20:13:16 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/05 20:35:19 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,20 @@ typedef struct s_vector	t_vector;
 // explicit values are used in code and shouldn't be changed
 typedef enum e_token_type {
 	T_SPACE,
-	T_Q_STR = '\'',
-	T_DQ_STR = '\"',
 	T_STR,
 	T_END,
+	T_Q_START,
+	T_Q_END,
+	T_DQ_START,
+	T_DQ_END,
+	T_VAR,
+	T_WILDCARD,
+	T_DIR_SEP,
 	T_REDIRECT_STDOUT = '>',
 	T_REDIRECT_STDIN = '<',
 	T_HEREDOC = '<' + 1,
 	T_REDIRECT_STDOUT_APPEND = '>' + 1,
 	T_PIPE = '|',
-	T_VAR,
-	T_WILDCARD,
-	T_DIR_SEP,
 }	t_token_type;
 
 // internal to parse line

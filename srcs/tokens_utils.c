@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/10 20:20:40 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/05 20:35:52 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ char	*next_non_identifier(const char *str)
 
 static const t_tok_map_entry	g_token_map[] = {
 {T_SPACE, "SPACE"},
-{T_Q_STR, "Q_STR"},
-{T_DQ_STR, "DQ_STR"},
+{T_Q_START, "Q_START"},
+{T_DQ_START, "DQ_START"},
+{T_Q_END, "Q_END"},
+{T_DQ_END, "DQ_END"},
 {T_STR, "STR"},
 {T_END, "END"},
 {T_REDIRECT_STDOUT, ">"},
@@ -80,9 +82,7 @@ bool	is_text_type(t_token_type type)
 {
 	return (0
 		|| type == T_STR
-		|| type == T_DQ_STR
 		|| type == T_VAR
-		|| type == T_Q_STR
 	);
 }
 
