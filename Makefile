@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/05 20:42:10 by OrioPrisco       ###   ########.fr        #
+#    Updated: 2023/09/05 20:43:17 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,7 @@ CC				=	cc
 
 SRC				=	minishell.c \
 					split_to_tokens.c \
-					validate_tokens.c \
 					get_env_var.c \
-					expand_vars.c \
-					split_dquoted_tokens.c \
 					merge_tokens.c \
 					tokens_utils.c \
 					tokens_utils_2.c \

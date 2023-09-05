@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 20:37:38 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/05 20:44:02 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,6 @@ typedef enum e_state
 // space and tabs are treated as whitespace
 // \v and \f are printed correctly, but do not count as whitespace
 //error out in case of unknown character ?
-//returns the next token in a string of text
-/*
-static t_token	get_one_token(const char *str)
-{
-X	if (ft_strchr("\t ", *str))
-X		return ((t_token){{str, ft_strspn(str, "\t ")}, T_SPACE});
-X	else if (*str == '$')
-X		return ((t_token){{str, next_non_identifier(str) - str}, T_VAR});
-	else if (ft_strchr("\"\'", *str))
-		return ((t_token){{str, 1 + ft_strchrnul(str + 1, *str) - str}, *str});
-X	else if (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2))
-X		return ((t_token){{str, 2}, *(str) + 1});
-X	else if (ft_strchr("<>|", *str))
-X		return ((t_token){{str, 1}, *str});
-X	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|")}, T_STR});
-}
-*/
-
 static	t_token	get_one_token(t_state	*state, const char *str)
 {
 	if (*state == NORMAL && *str == '\n')
@@ -105,7 +87,7 @@ bool	split_to_tokens(const char *str, t_vector *vec_token)
 	return (0);
 }
 
-
+/*
 #include <readline/readline.h>
 #include <stdio.h>
 #include "env_var.h"
@@ -136,3 +118,4 @@ int	main(int argc, char **argv, char **envp)
 	free(line);
 	vector_clear(&tokens);
 }
+*/
