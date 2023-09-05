@@ -43,6 +43,7 @@ SRC				=	minishell.c \
 					wildcards.c \
 					parser/parse_redirect.c \
 					parser/parse_pipe.c \
+					parser/parse_text.c \
 
 NAME			=	minishell
 
