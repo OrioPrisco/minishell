@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/01 15:25:48 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:44:47 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,4 +172,6 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 		builtin_commands(execve_command, execve_com_args, cominfo->envp);
 	else
 		execve(execve_command, execve_com_args, cominfo->envp);
+	free(execve_command);
+	table_free(execve_com_args);
 }
