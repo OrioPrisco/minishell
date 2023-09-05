@@ -28,6 +28,7 @@ void	msh_exit(t_cominfo *cominfo)
 {
 	save_history((char **)cominfo->env_vec->data, cominfo->com_list);
 	vector_free(cominfo->com_list, free_str);
+	vector_free(cominfo->env_vec, free_str);
 	ft_putstr_fd("exit\n", 1);
 	exit(EXIT_SUCCESS);
 }
