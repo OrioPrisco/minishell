@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 15:53:31 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/05 17:44:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ void	msh_exit_child(t_vector *com_list)
 {
 	vector_free(com_list, free_str);
 	exit(EXIT_SUCCESS);
+}
+
+void	exec_error(t_vector *vec_fds, t_cominfo *cominfo)
+{
+	cleanup_redirects(vec_fds);
+	msh_exit_child(cominfo->com_list);
 }
 
 /*
