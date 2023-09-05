@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/05 19:57:40 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/05 21:47:45 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,13 @@ int	parse_line(const char *line, t_vector *dest, char **envp)
 		// need to pass envp for vars...
 		consumed = process_one_token(dest, token, envp); // also pass hd_line for heredocs
 		if (consumed <= 0)
-			return (vector_clear(&vec_token), vector_clear(dest),
-				(consumed == -1) - (consumed == 0));
+			return (vector_clear(&vec_token), vector_free(dest,
+					free_owned_token), (consumed == -1) - (consumed == 0));
 		token += consumed;
 	}
 	tok = (t_owned_token){NULL, T_END};
 	if (vector_append(dest, &tok))
-		return (vector_clear(&vec_token), vector_clear(dest), 1);
+		return (vector_clear(&vec_token),
+			vector_free(dest, free_owned_token), 1);
 	return (vector_clear(&vec_token), 0);
 }
