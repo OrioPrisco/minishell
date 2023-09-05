@@ -47,6 +47,7 @@ int	parse_line(const char *line, t_vector *dest, char **envp)
 	//char		*hd_line
 
 	vector_init(&vec_token, sizeof(t_token));
+	vector_init(dest, sizeof(t_owned_token));
 	// rework to make it not choke on newline
 	// have it return a pointer to where the parsing stopped for hd_line
 	if (split_to_tokens(line, &vec_token)) 
