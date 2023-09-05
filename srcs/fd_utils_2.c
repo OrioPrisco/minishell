@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/31 17:42:32 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/05 21:26:41 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,14 +111,10 @@ int	dup_to_lget(t_vector *vec_fds, t_fds *current)
 	return (0);
 }
 
-int	redir_stdin_token_found(t_owned_token *current)
+int	redir_stdin_token_found(const char *filename)
 {
 	int		open_fd;
-	char	*filename;
 
-	while (!current->str)
-		current = current + 1;
-	filename = current->str;
 	open_fd = open(filename, O_RDONLY);
 	if (open_fd < 0)
 		msh_error(filename);
