@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 12:17:37 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:49:35 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,14 @@ typedef struct s_com_segment
 	t_vector	*tokens;
 	int			start;
 	int			stop;
+	int			size;
 }				t_com_segment;
+
+typedef struct s_pipe_info
+{
+	int			pipefd[2];
+	int			old_pipe;
+}				t_pipe_info;
 
 //	Defines
 # define HISTORY_FILE_PATH "HOME"
@@ -66,8 +73,12 @@ int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 int		msh_wait(t_vector *pids);
 int		print_execve_args(char **execve_com_args);
 char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args);
-int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
-int		multi_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
+int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
+			t_pipe_info *pipeinfo);
+int		pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
+			t_pipe_info *pipeinfo);
+int		multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids,
+			t_pipe_info *pipeinfo);
 
 //	heredoc_utils.c
 int		print_here_doc_contents(int heredoc_fd);
@@ -79,5 +90,10 @@ void	print_access_debug(char *execve_command);
 char	*access_loop(const char *command, char **envp);
 char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment);
 void	access_error_print(const char *exec_name);
+int		check_for_builtins(const char *exec_name);
+void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
+			t_vector *vec_fds);
+void	builtin_commands(char *execve_command, char **execve_com_args,
+			char **envp);
 
 #endif

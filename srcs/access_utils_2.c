@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/11 14:44:38 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/31 18:39:26 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,27 @@ void	access_error_print(const char *exec_name)
 		ft_dprintf(2, "%s: Permission denied\n", exec_name);
 	else
 		ft_dprintf(2, "%s: command not found\n", exec_name);
+}
+
+/*
+	NAME
+		check_for_builtins
+	DESCRIPTION
+		
+	RETURN
+		
+*/
+
+int	check_for_builtins(const char *exec_name)
+{
+	if (0
+		|| !ft_strcmp(exec_name, "echo")
+		|| !ft_strcmp(exec_name, "cd")
+		|| !ft_strcmp(exec_name, "pwd")
+		|| !ft_strcmp(exec_name, "export")
+		|| !ft_strcmp(exec_name, "unset")
+		|| !ft_strcmp(exec_name, "env")
+		|| !ft_strcmp(exec_name, "exit"))
+		return (1);
+	return (0);
 }

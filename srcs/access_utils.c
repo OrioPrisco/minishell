@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 12:15:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:52:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "tokens.h"
 #include "utils.h"
 #include "path.h"
+#include "child.h"
 
 /*
 **	NAME
@@ -33,7 +34,7 @@
 		Returns NULL if no command found (ie. no T_STR token ever encountered).
 */
 
-static const char	*get_exec_name(t_owned_token *token)
+static char	*get_exec_name(t_owned_token *token)
 {
 	while (token->type != T_END && token->type != T_PIPE)
 	{
@@ -125,16 +126,52 @@ char	*access_loop(const char *command, char **envp)
 char	*find_executable(t_cominfo *cominfo, t_com_segment com_segment)
 {
 	char			*execve_command;
-	const char		*exec_name;
+	char			*exec_name;
 
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
 		return (NULL);
+	if (check_for_builtins(exec_name))
+		return (exec_name);
 	execve_command = access_loop(exec_name, (char **)cominfo->env_vec->data);
 	if (!execve_command)
 		return (NULL);
 	if (!execve_command[0])
 		return (free(execve_command), access_error_print(exec_name), NULL);
 	return (execve_command);
+}
+
+/*
+	NAME
+		exec_command
+	DESCRIPTION
+		
+	RETURN
+		
+*/
+
+void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
+				t_vector *vec_fds)
+{
+	char		*execve_command;
+	char		**execve_com_args;
+
+	execve_com_args = 0;
+	execve_command = find_executable(cominfo, com_segment);
+	if (!execve_command)
+	{
+		cleanup_redirects(vec_fds);
+		msh_exit_child(cominfo->com_list);
+	}
+	execve_com_args = construct_execve_args(com_segment, execve_com_args);
+	if (!execve_com_args)
+		msh_error("malloc");
+	free(cominfo->command);
+	if (check_for_builtins(execve_command))
+		builtin_commands(execve_command, execve_com_args,
+			(char **)cominfo->env_vec->data);
+	else
+		execve(execve_command, execve_com_args,
+			(char **)cominfo->env_vec->data);
 }
