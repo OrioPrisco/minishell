@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/08 18:08:03 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/05 12:17:37 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_vector	t_vector;
 typedef struct s_cominfo
 {
 	char		*command;
-	char		**envp;
+	t_vector	*env_vec;
 	t_vector	*com_list;
 }				t_cominfo;
 
@@ -41,7 +41,7 @@ int		prompt_loop(char **env);
 
 //	error_utils.c
 void	msh_error(const char *message);
-void	msh_exit(char **envp, t_vector *com_list);
+void	msh_exit(t_cominfo *cominfo);
 
 //	history.c
 bool	save_history(char **env, t_vector *com_list);
