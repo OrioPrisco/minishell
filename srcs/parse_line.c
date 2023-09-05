@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/05 18:28:43 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/05 19:57:40 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	parse_line(const char *line, t_vector *dest, char **envp)
 
 	vector_init(&vec_token, sizeof(t_token));
 	vector_init(dest, sizeof(t_owned_token));
-	// rework to make it not choke on newline
 	// have it return a pointer to where the parsing stopped for hd_line
 	if (split_to_tokens(line, &vec_token)) 
 		return (vector_clear(&vec_token), 1);
@@ -58,7 +57,7 @@ int	parse_line(const char *line, t_vector *dest, char **envp)
 	{
 		// need to pass envp for vars...
 		consumed = process_one_token(dest, token, envp); // also pass hd_line for heredocs
-		if (consumed <= 0) // consuming 0 tokens should means parsing error, what else could it mean
+		if (consumed <= 0)
 			return (vector_clear(&vec_token), vector_clear(dest),
 				(consumed == -1) - (consumed == 0));
 		token += consumed;
