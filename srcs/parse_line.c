@@ -41,9 +41,10 @@ static int	process_one_token(t_vector *dest, const t_token *tok, char **envp)
 //returns  0 on success, and the vector will be populated
 int	parse_line(const char *line, t_vector *dest, char **envp)
 {
-	t_vector	vec_token;
-	t_token		*token;
-	int			consumed;
+	t_vector		vec_token;
+	t_token			*token;
+	int				consumed;
+	t_owned_token	tok;
 	//char		*hd_line
 
 	vector_init(&vec_token, sizeof(t_token));
@@ -62,5 +63,8 @@ int	parse_line(const char *line, t_vector *dest, char **envp)
 				(consumed == -1) - (consumed == 0));
 		token += consumed;
 	}
+	tok = (t_owned_token){NULL, T_END};
+	if (vector_append(dest, &tok))
+		return (vector_clear(&vec_token), vector_clear(dest), 1);
 	return (vector_clear(&vec_token), 0);
 }
