@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/05 20:39:03 by OrioPrisco       ###   ########.fr        #
+#    Updated: 2023/09/05 20:42:10 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRC				=	minishell.c \
 					path_utils.c\
 					wildcards.c \
 					parser/parse_redirect.c \
+					parser/parse_pipe.c \
 
 NAME			=	minishell
 

@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 20:40:54 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/05 20:42:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ bool		parse_line(const char *line, t_vector *dest, char **envp);
 // new parse_line_internals
 // --
 int			parse_redirect(t_vector *dest, const t_token *tok, char **envp);
+int			parse_pipe(t_vector *dest, const t_token *tok);
 bool		merge_tokens(char **dest, const t_token *src,
 				size_t to_merge, char **envp);
 int			seek_tokens_to_merge(const t_token *src);
