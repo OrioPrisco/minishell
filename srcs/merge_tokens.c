@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/06 20:42:41 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 20:44:00 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ bool	merge_tokens(char **dest, const t_token *src, size_t to_merge,
 		if (merge_one_token(&sbuilder, src, envp))
 			return (vector_clear(&sbuilder), 1);
 		to_merge--;
+		src++;
 	}
 	if (vector_null_term(&sbuilder))
 		return (vector_clear(&sbuilder), 1);
