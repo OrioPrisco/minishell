@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 20:44:02 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 23:02:13 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,17 @@ typedef enum e_state
 // space and tabs are treated as whitespace
 // \v and \f are printed correctly, but do not count as whitespace
 //error out in case of unknown character ?
+static	t_token	get_one_token_cont(t_state	*state, const char *str)
+{
+	if (*str == '/')
+		return ((t_token){{str, 1}, T_DIR_SEP});
+	if (*state == DQUOTE)
+		return ((t_token){{str, ft_strcspn(str, "$\"/")}, T_STR});
+	if (*state == QUOTE)
+		return ((t_token){{str, ft_strcspn(str, "\'/")}, T_STR});
+	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|*")}, T_STR});
+}
+
 static	t_token	get_one_token(t_state	*state, const char *str)
 {
 	if (*state == NORMAL && *str == '\n')
@@ -41,8 +52,6 @@ static	t_token	get_one_token(t_state	*state, const char *str)
 		return (*state = DQUOTE, (t_token){{str, 1}, T_DQ_START});
 	if (*state == DQUOTE && *str == '\"')
 		return (*state = NORMAL, (t_token){{str, 1}, T_DQ_END});
-	if (*state == QUOTE && *str != '\'')
-		return ((t_token){{str, ft_strcspn(str, "\'")}, T_STR});
 	if (*state == QUOTE && *str == '\'')
 		return (*state = NORMAL, (t_token){{str, 1}, T_Q_END});
 	if (*state == NORMAL && ft_strchr(" \t", *str))
@@ -55,9 +64,7 @@ static	t_token	get_one_token(t_state	*state, const char *str)
 		return ((t_token){{str, 1}, *str});
 	if (*state == NORMAL && *str == '*')
 		return ((t_token){{str, ft_strspn(str, "*")}, T_WILDCARD});
-	if (*state == DQUOTE)
-		return ((t_token){{str, ft_strcspn(str, "$\"")}, T_STR});
-	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|*")}, T_STR});
+	return (get_one_token_cont(state, str));
 }
 
 //output tokens may be nonsensical, like unterminated quote tokens
