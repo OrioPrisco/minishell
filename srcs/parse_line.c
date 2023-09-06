@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/05 21:47:45 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 20:23:51 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	process_one_token(t_vector *dest, const t_token *tok, char **envp)
 		return (parse_redirect(dest, tok, envp)); // pass hd_line for heredocs
 	if (tok->type == T_PIPE)
 		return (parse_pipe(dest, tok));
-	if (is_text_type(tok->type))
+	if (is_textexpr_type(tok->type))
 		return (parse_text(dest, tok, envp));
 	ft_dprintf(2, "No muncher for type %s\n", token_type_to_str(tok->type));
 	return (-1);

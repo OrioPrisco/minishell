@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 20:41:31 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 21:20:50 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,14 @@ const char	*token_type_to_str(t_token_type token)
 	return ("UNKNOWN");
 }
 
-bool	is_text_type(t_token_type type)
+bool	is_textexpr_type(t_token_type type)
 {
 	return (0
-		|| type == T_STR
-		|| type == T_VAR
+		|| is_text_type(type)
 		|| type == T_Q_START
 		|| type == T_Q_END
 		|| type == T_DQ_START
-		|| type == T_Q_END
+		|| type == T_DQ_END
 	);
 }
 

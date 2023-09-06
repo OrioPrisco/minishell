@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 20:43:30 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 20:26:24 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ char		*next_non_identifier(const char *str);
 void		print_tokens(t_vector *owned_tokens);
 void		print_relavent_tokens(t_vector *owned_tokens, int start, int stop);
 void		free_owned_token(void *owned_token);
+bool		is_textexpr_type(t_token_type type);
 bool		is_text_type(t_token_type type);
 bool		is_redirect_type(t_token_type type);
-bool		is_wildcard_expr_type(t_token_type type);
 
 //internal to token_type_to_str
 typedef struct s_tok_map_entry

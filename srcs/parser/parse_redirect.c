@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/05 16:55:46 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 20:24:56 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	parse_redirect(t_vector *dest, const t_token *tok, char **envp)
 	(void)envp;
 	token = (t_owned_token){NULL, tok->type};
 	next = next_tok(tok);
-	if (!is_text_type(next->type))
+	if (!is_textexpr_type(next->type))
 		return (ft_dprintf(2, "Parse error near %s",
 				token_type_to_str(next->type)), -1);
 	// could possibly put the filename in the redir token here
