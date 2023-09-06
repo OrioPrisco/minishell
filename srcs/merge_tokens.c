@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 20:40:36 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 20:42:41 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ int	seek_tokens_to_merge(const t_token *src)
 	to_munch = src->type == T_SPACE;
 	if (src->type == T_SPACE)
 		src++;
-	while (src->type != T_END && src->type != T_SPACE
-		&& !is_redirect_type(src->type))
+	while (is_textexpr_type(src->type))
 	{
 		if (src->type == T_DQ_START)
 			state = DQUOTE;
@@ -67,9 +66,10 @@ static int	merge_one_token(t_vector *sbuilder, const t_token *src, char **envp)
 		if (vector_append_elems(sbuilder, env_var, ft_strlen(env_var)))
 			return (1);
 	}
-	else if (vector_append_elems(sbuilder,
-			src->strview.start, src->strview.size))
-		return (1);
+	else if (is_text_type(src->type))
+		if (vector_append_elems(sbuilder,
+				src->strview.start, src->strview.size))
+			return (1);
 	return (0);
 }
 
