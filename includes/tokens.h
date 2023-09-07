@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/06 20:26:24 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/07 16:53:52 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 
 # include "stringview.h"
 # include <stdbool.h>
+# include "vector.h"
+
+//	current environment and the previous process return value.
+
+typedef struct s_env_ret
+{
+	t_vector	*env_vec;
+	int			prev_ret;
+}				t_env_ret;
 
 typedef struct s_vector	t_vector;
 
@@ -82,6 +91,6 @@ int			parse_text(t_vector *dest, const t_token *tok, char **envp);
 int			seek_tokens_to_merge(const t_token *src);
 
 // --
-int			parse_line(const char *line, t_vector *dest, char **envp);
+int			parse_line(const char *line, t_vector *dest, t_env_ret env_ret);
 
 #endif
