@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 14:53:59 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:04:37 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ void	msh_exit_child(t_vector *com_list)
 	exit(EXIT_SUCCESS);
 }
 
+void	exec_error(t_vector *vec_fds, t_cominfo *cominfo)
+{
+	cleanup_redirects(vec_fds);
+	msh_exit_child(cominfo->com_list);
+}
+
 /*
 	NAME
 		pipe_dups
@@ -36,14 +42,12 @@ void	msh_exit_child(t_vector *com_list)
 
 int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 {
-	if (com_seg->stop != com_seg->size)
+	if (com_seg->stop == com_seg->size)
+		dup2(pipeinfo->old_pipe, STDIN_FILENO);
+	else
 	{
 		dup2(pipeinfo->old_pipe, STDIN_FILENO);
 		dup2(pipeinfo->pipefd[1], STDOUT_FILENO);
-	}
-	if (com_seg->stop == com_seg->size)
-	{
-		dup2(pipeinfo->old_pipe, STDIN_FILENO);
 	}
 	return (0);
 }
