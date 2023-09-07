@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:33:01 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 18:36:27 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 20:30:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,12 @@ void	print_relavent_tokens(t_vector *owned_tokens, int start, int stop)
 	}
 }
 
-bool	is_wildcard_expr_type(t_token_type type)
+bool	is_text_type(t_token_type type)
 {
-	return (is_text_type(type) || type == T_WILDCARD || type == T_DIR_SEP);
+	return (0
+		|| type == T_STR
+		|| type == T_VAR
+		|| type == T_DIR_SEP
+		|| type == T_WILDCARD
+	);
 }
