@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 12:29:31 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:32:51 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ static int	init_envp_vec(char **envp, t_vector *env_vec)
 	while (envp[i])
 	{
 		buf = ft_strdup(envp[i]);
-		if (!buf)
-			return (-1);
-		if (vector_append(env_vec, &buf))
-			return (vector_clear(env_vec), 0);
+		if (!buf || vector_append(env_vec, &buf))
+			return (free(buf), vector_free(env_vec, free_str), -1);
 		i++;
 	}
 	vector_null_term(env_vec);
