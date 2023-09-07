@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 14:32:51 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:36:21 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	prompt_loop(char **envp)
 	while (1)
 	{
 		str_input = readline("minishell> ");
-		ft_bzero((void *)&cominfo, sizeof(cominfo));
 		cominfo = (t_cominfo){str_input, &env_vec, &com_list};
 		if (!str_input)
 			msh_exit(&cominfo);
