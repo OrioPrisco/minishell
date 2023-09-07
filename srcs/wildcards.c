@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/07 18:43:30 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/07 21:34:52 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static bool	match_subexpression(const t_owned_token *token,
 
 	if (token->type == T_END || token->type == T_DIR_SEP)
 		return (!*curr);
-	if (is_text_type(token->type))
+	if (token->type == T_STR)
 	{
 		len = ft_strlen(token->str);
 		if (!ft_strncmp(curr, token->str, len))
