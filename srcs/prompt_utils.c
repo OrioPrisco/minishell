@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 16:55:44 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:01:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static int	init_prompt_loop(char **envp, t_vector *env_vec)
 
 int	prompt_loop(char **envp)
 {
-	char			*str_input;
 	t_vector		com_list;
 	t_vector		owned_tokens;
 	t_vector		env_vec;
@@ -79,15 +78,16 @@ int	prompt_loop(char **envp)
 	int				prev_ret;
 
 	prev_ret = 0;
+	cominfo = (t_cominfo){NULL, NULL, NULL};
 	init_prompt_loop(envp, &env_vec);
 	vector_init(&com_list, sizeof(char *));
 	while (1)
 	{
-		str_input = readline("minishell> ");
-		cominfo = (t_cominfo){str_input, &env_vec, &com_list};
-		if (!str_input)
+		cominfo.command = readline("minishell> ");
+		cominfo = (t_cominfo){cominfo.command, &env_vec, &com_list};
+		if (!cominfo.command)
 			msh_exit(&cominfo);
-		if (parse_line(str_input, &owned_tokens,
+		if (parse_line(cominfo.command, &owned_tokens,
 				(t_env_ret){&env_vec, prev_ret}))
 			return (1);
 		tree_crawler(&owned_tokens, &cominfo);
