@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   fd_utils_3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
+/*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 15:35:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/05 11:08:30 by dpentlan         ###   ########.fr       */
+/*   Created: 2023/09/07 14:54:41 by dpentlan          #+#    #+#             */
+/*   Updated: 2023/09/07 14:57:26 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
-# include "vector.h"
+#include "filedescriptors.h"
+#include <unistd.h>
 
-void		free_str(void *data);
-void		table_free(char **table);
-void		table_print(char **table);
-
-#endif
+int	cleanup_pipes(t_pipe_info *pipeinfo)
+{
+	(void) pipeinfo;
+	close (pipeinfo->pipefd[0]);
+	close (pipeinfo->pipefd[1]);
+	return (0);
+}

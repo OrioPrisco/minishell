@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 16:47:52 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:06:15 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_vector	t_vector;
 typedef struct s_cominfo
 {
 	char		*command;
-	char		**envp;
+	t_vector	*env_vec;
 	t_vector	*com_list;
 }				t_cominfo;
 
@@ -48,7 +48,7 @@ int		prompt_loop(char **env);
 
 //	error_utils.c
 void	msh_error(const char *message);
-void	msh_exit(char **envp, t_vector *com_list);
+void	msh_exit(t_cominfo *cominfo);
 
 //	history.c
 bool	save_history(char **env, t_vector *com_list);
@@ -88,7 +88,8 @@ int		check_and_open_heredoc(t_vector *tokens, int start, int stop,
 //	access_utils.c
 void	print_access_debug(char *execve_command);
 char	*access_loop(const char *command, char **envp);
-char	*search_env(char *exec_name, t_cominfo *cominfo);
+char	*search_env(char *exec_name, t_cominfo *cominfo,
+			t_com_segment *com_segment);
 void	access_error_print(const char *exec_name);
 int		check_for_builtins(const char *exec_name);
 void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,

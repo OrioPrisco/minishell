@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 21:36:08 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/07 14:52:31 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	redir_stdin_token_found(const char *filename)
 		
 */
 
-bool	redir_stdout_and_clean(t_vector *vec_fds)
+bool	redir_stdout_and_clean(t_vector *vec_fds, t_pipe_info *pipeinfo)
 {
 	int	last;
 
@@ -143,5 +143,6 @@ bool	redir_stdout_and_clean(t_vector *vec_fds)
 		dup2(last, 1);
 	}
 	cleanup_redirects(vec_fds);
+	cleanup_pipes(pipeinfo);
 	return (0);
 }

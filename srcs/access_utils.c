@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 16:50:11 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:12:27 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,18 @@ char	*access_loop(const char *command, char **envp)
 	RETURN
 */
 
-char	*search_env(char *exec_name, t_cominfo *cominfo)
+char	*search_env(char *exec_name, t_cominfo *cominfo,
+				t_com_segment *com_segment)
 {
 	char			*execve_command;
 
-	execve_command = access_loop(exec_name, cominfo->envp);
+	exec_name = get_exec_name(
+			(t_owned_token *)com_segment->tokens->data + com_segment->start);
+	if (!exec_name)
+		return (NULL);
+	if (check_for_builtins(exec_name))
+		return (exec_name);
+	execve_command = access_loop(exec_name, (char **)cominfo->env_vec->data);
 	if (!execve_command)
 		return (NULL);
 	if (!execve_command[0])
@@ -161,12 +168,12 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 		msh_error("malloc");
 	if (check_for_builtins(exec_name))
 	{
-		builtin_commands(exec_name, execve_com_args, cominfo->envp);
+		builtin_commands(exec_name, execve_com_args, cominfo->env_vec->data);
 		msh_exit_child(cominfo->com_list);
 	}
-	execve_command = search_env(exec_name, cominfo);
+	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)
 		exec_error(vec_fds, cominfo);
 	free(cominfo->command);
-	execve(execve_command, execve_com_args, cominfo->envp);
+	execve(execve_command, execve_com_args, (char **)cominfo->env_vec->data);
 }
