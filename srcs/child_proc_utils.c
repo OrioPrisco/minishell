@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 13:06:46 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:52:10 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 			com_seg.stop);
 	if (ret)
 		msh_exit_child(cominfo->com_list);
-	redir_stdout_and_clean(&vec_fds);
+	redir_stdout_and_clean(&vec_fds, pipeinfo);
 	exec_command(cominfo, com_seg, &vec_fds);
 	msh_exit_child(cominfo->com_list);
 }

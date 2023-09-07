@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 21:33:35 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/07 14:55:31 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FILEDESCRIPTORS_H
 
 # include "tokens.h"
+# include "minishell.h"
 
 typedef struct s_vector	t_vector;
 
@@ -39,6 +40,9 @@ void	print_open_redirects(t_fds *fds, int size);
 int		close_open_redirects(t_vector *vec_fds);
 int		dup_to_lget(t_vector *vec_fds, t_fds *current);
 int		redir_stdin_token_found(const char *current);
-bool	redir_stdout_and_clean(t_vector *vec_fds);
+bool	redir_stdout_and_clean(t_vector *vec_fds, t_pipe_info *pipeinfo);
+
+//	fd_utils_3.c
+int	cleanup_pipes(t_pipe_info *pipeinfo);
 
 #endif
