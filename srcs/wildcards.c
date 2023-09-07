@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/11 14:27:00 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/06 21:38:19 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	compile_wildcard_expr(const t_owned_token *src, t_vector *dest)
 	t_token		token;
 
 	vector_init(dest, sizeof(t_token));
-	while (is_wildcard_expr_type(src->type))
+	while (0)//is_wildcard_expr_type(src->type))
 	{
 		if (src->type == T_WILDCARD)
 		{
