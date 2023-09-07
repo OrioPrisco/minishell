@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 03:40:11 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 03:40:38 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int			parse_pipe(t_vector *dest, const t_token *tok);
 bool		merge_tokens(char **dest, const t_token *src,
 				size_t to_merge, char **envp);
 int			parse_text(t_vector *dest, const t_token *tok, char **envp);
-int			parse_wildcard(t_vector *dest, const t_token *tok, char **envp);
+int			parse_wildcard(t_vector *dest, const t_token *tok, char **envp,
+				int to_merge);
 int			seek_tokens_to_merge(const t_token *src);
 
 // --
