@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 17:01:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:06:58 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	prompt_loop(char **envp)
 	int				prev_ret;
 
 	prev_ret = 0;
-	cominfo = (t_cominfo){NULL, NULL, NULL};
+	ft_bzero(&cominfo, sizeof(cominfo));
 	init_prompt_loop(envp, &env_vec);
 	vector_init(&com_list, sizeof(char *));
 	while (1)
