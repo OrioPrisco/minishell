@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/06 23:02:13 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 00:02:01 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static	t_token	get_one_token_cont(t_state	*state, const char *str)
 		return ((t_token){{str, ft_strcspn(str, "$\"/")}, T_STR});
 	if (*state == QUOTE)
 		return ((t_token){{str, ft_strcspn(str, "\'/")}, T_STR});
-	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|*")}, T_STR});
+	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|*/")}, T_STR});
 }
 
 static	t_token	get_one_token(t_state	*state, const char *str)
