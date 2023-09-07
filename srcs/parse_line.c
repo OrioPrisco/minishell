@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/06 20:23:51 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/07 16:54:29 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	process_one_token(t_vector *dest, const t_token *tok, char **envp)
 //returns  1 on malloc error and free the vector
 //returns -1 on parsing error, frees the vector, and prints an error to stderr
 //returns  0 on success, and the vector will be populated
-int	parse_line(const char *line, t_vector *dest, char **envp)
+int	parse_line(const char *line, t_vector *dest, t_env_ret env_ret)
 {
 	t_vector		vec_token;
 	t_token			*token;
@@ -57,7 +57,7 @@ int	parse_line(const char *line, t_vector *dest, char **envp)
 	while (token->type != T_END)
 	{
 		// need to pass envp for vars...
-		consumed = process_one_token(dest, token, envp); // also pass hd_line for heredocs
+		consumed = process_one_token(dest, token, (char **)env_ret.env_vec->data); // also pass hd_line for heredocs
 		if (consumed <= 0)
 			return (vector_clear(&vec_token), vector_free(dest,
 					free_owned_token), (consumed == -1) - (consumed == 0));
