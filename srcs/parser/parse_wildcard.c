@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 18:10:24 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/07 21:19:04 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/07 21:41:45 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static bool	expand_wildcard_wrapper(const t_owned_token *expr, t_vector *dest)
 	vector_init(dest, sizeof(t_owned_token));
 	if (expr->type == T_DIR_SEP && expand_wildcard(expr + 1, "/", dest))
 		return (vector_free(dest, free_owned_token));
-	if (expr->type != T_DIR_SEP && expand_wildcard(expr, ".", dest))
+	if (expr->type != T_DIR_SEP && expand_wildcard(expr, "", dest))
 		return (vector_free(dest, free_owned_token));
 	if (!WILDCARD_IN_CWD)
 		return (sort_wildcards(dest), 0);
