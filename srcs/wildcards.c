@@ -87,16 +87,18 @@ bool	compile_wildcard_expr(const t_token *src, t_vector *dest, char **envp,
 }
 
 //filename is full filename, while curr is what is left to match
-static bool	match_subexpression(const t_token *token, const char *filename,
-			const char *curr)
+static bool	match_subexpression(const t_owned_token *token,
+			const char *filename, const char *curr)
 {
+	size_t	len;
+
 	if (token->type == T_END || token->type == T_DIR_SEP)
 		return (!*curr);
 	if (is_text_type(token->type))
 	{
-		if (!ft_strncmp(curr, token->strview.start, token->strview.size))
-			return (match_subexpression
-				(token + 1, filename, curr + token->strview.size));
+		len = ft_strlen(token->str);
+		if (!ft_strncmp(curr, token->str, len))
+			return (match_subexpression(token + 1, filename, curr + len));
 		return (0);
 	}
 	if (token->type != T_WILDCARD
@@ -112,8 +114,8 @@ static bool	match_subexpression(const t_token *token, const char *filename,
 // vector must be initialized, results are char *
 // returns 0 on success and the vector will be populated
 // return 1 error and the vector will be cleared
-static	bool	subexpression_matches(const t_token *expr, const char *cwd,
-					const char *filename, t_vector *dest)
+static	bool	subexpression_matches(const t_owned_token *expr,
+					const char *cwd, const char *filename, t_vector *dest)
 {
 	char	*path;
 	char	*temp;
@@ -146,7 +148,8 @@ static	bool	subexpression_matches(const t_token *expr, const char *cwd,
 // vector must be initialized, results are char *
 // returns 0 on success and the vector will be populated
 // return 1 error and the vector will NOT be cleared
-bool	expand_wildcard(const t_token *expr, const char *cwd, t_vector *dest)
+bool	expand_wildcard(const t_owned_token *expr, const char *cwd,
+			t_vector *dest)
 {
 	t_vector	files;
 	int			res;
