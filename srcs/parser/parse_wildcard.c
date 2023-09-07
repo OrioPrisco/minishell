@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 18:10:24 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/07 21:41:45 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/07 22:46:12 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ static bool	expand_wildcard_wrapper(const t_owned_token *expr, t_vector *dest)
 	size_t	i;
 	char	*path;
 
-	vector_init(dest, sizeof(t_owned_token));
+	vector_init(dest, sizeof(char *));
 	if (expr->type == T_DIR_SEP && expand_wildcard(expr + 1, "/", dest))
-		return (vector_free(dest, free_owned_token));
+		return (vector_free(dest, free_str));
 	if (expr->type != T_DIR_SEP && expand_wildcard(expr, "", dest))
-		return (vector_free(dest, free_owned_token));
+		return (vector_free(dest, free_str));
 	if (!WILDCARD_IN_CWD)
 		return (sort_wildcards(dest), 0);
 	i = 0;
@@ -74,5 +74,5 @@ int	parse_wildcard(t_vector *dest, const t_token *tok, char **envp,
 		if (vector_append(dest, &token))
 			return (vector_free(&wildcard_result, free_str), 0);
 	}
-	return (vector_free(&wildcard_result, free_str), to_merge);
+	return (vector_clear(&wildcard_result), to_merge);
 }
