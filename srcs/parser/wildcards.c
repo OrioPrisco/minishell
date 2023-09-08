@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 02:51:58 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 03:46:13 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	merge_text(const t_token *src, char **dest, char **envp,
 
 	max_merge = to_merge;
 	vector_init(&sbuilder, sizeof(char));
-	while (to_merge-- && src->type != T_WILDCARD && src->type != T_DIR_SEP)
+	while (to_merge && src->type != T_WILDCARD && src->type != T_DIR_SEP)
 	{
 		if (src->type == T_VAR)
 		{
@@ -43,6 +43,7 @@ static int	merge_text(const t_token *src, char **dest, char **envp,
 					src->strview.start, src->strview.size))
 				return (vector_clear(&sbuilder), 0);
 		src++;
+		to_merge--;
 	}
 	if (vector_null_term(&sbuilder))
 		return (vector_clear(&sbuilder), 0);
