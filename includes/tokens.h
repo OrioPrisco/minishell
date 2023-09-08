@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 03:40:38 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 13:56:46 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,8 @@
 
 //	current environment and the previous process return value.
 
-typedef struct s_vector	t_vector;
-
-typedef struct s_env_ret
-{
-	t_vector	*env_vec;
-	int			prev_ret;
-}				t_env_ret;
+typedef struct s_vector		t_vector;
+typedef struct s_env_ret	t_env_ret;
 
 // explicit values are used in code and shouldn't be changed
 typedef enum e_token_type {

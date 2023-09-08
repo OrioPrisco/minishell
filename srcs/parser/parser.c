@@ -6,13 +6,14 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/07 16:54:29 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/08 14:06:08 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
 #include "vector.h"
 #include "ft_printf.h"
+#include "env_var.h"
 
 // munches some tokens and appends an owned_token to dest
 //  returns 0  in case of malloc error (munching 0 tokens is nonsensical)

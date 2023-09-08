@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 17:06:58 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/08 14:05:23 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "vector.h"
 #include "tokens.h"
 #include "utils.h"
+#include "env_var.h"
 #include <readline/readline.h>
 
 static int	init_envp_vec(char **envp, t_vector *env_vec)
