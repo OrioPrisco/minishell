@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 14:35:40 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 16:36:33 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,6 @@ int			seek_tokens_to_merge(const t_token *src);
 
 // --
 int			parse_line(const char *line, t_vector *dest,
-				const t_env_ret *env_ret);
+				t_env_ret *env_ret);
 
 #endif
