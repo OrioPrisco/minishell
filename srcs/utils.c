@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:34:07 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/11 14:43:58 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/08/30 17:37:25 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,17 @@ void	table_print(char **table)
 		i++;
 	}
 	return ;
+}
+
+// TODO: Need the comparison to have a < A < b < B
+// Not adequate to compare things like ab/a vs a/ab
+// however the subject only requires wildcards in cwd, this will work
+int	compare_str(void *a, void *b)
+{
+	char	**astr;
+	char	**bstr;
+
+	astr = a;
+	bstr = b;
+	return (-ft_fake_strcoll(*astr, *bstr));
 }

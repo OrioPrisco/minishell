@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:39:05 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/07/18 17:15:29 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 02:50:10 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,15 @@ const char	*get_env_var(char **envp, const char *name, size_t name_size)
 		envp++;
 	}
 	return (NULL);
+}
+
+// same as get_env_var but returns an empty string instead of null
+const char	*get_env_varnul(char **envp, const char *name, size_t name_size)
+{
+	const char	*ret;
+
+	ret = get_env_var(envp, name, name_size);
+	if (!ret)
+		return ("");
+	return (ret);
 }

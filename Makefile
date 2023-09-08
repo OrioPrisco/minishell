@@ -6,19 +6,16 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/07 14:55:43 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/09/08 03:41:34 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC				=	cc
 
 SRC				=	minishell.c \
-					split_to_tokens.c \
 					get_env_var.c \
-					merge_tokens.c \
 					tokens_utils.c \
 					tokens_utils_2.c \
-					parse_line.c \
 					prompt_utils.c \
 					error_utils.c \
 					history.c \
@@ -37,10 +34,14 @@ SRC				=	minishell.c \
 					builtins.c \
 					child_proc_utils.c \
 					path_utils.c\
-					wildcards.c \
 					parser/parse_redirect.c \
 					parser/parse_pipe.c \
 					parser/parse_text.c \
+					parser/parse_wildcard.c \
+					parser/wildcards.c \
+					parser/lexer.c \
+					parser/merge_tokens.c \
+					parser/parser.c \
 
 NAME			=	minishell
 

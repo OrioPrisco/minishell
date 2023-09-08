@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/07 16:53:52 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/08 03:40:38 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,16 @@
 
 # include "stringview.h"
 # include <stdbool.h>
-# include "vector.h"
 
 //	current environment and the previous process return value.
+
+typedef struct s_vector	t_vector;
 
 typedef struct s_env_ret
 {
 	t_vector	*env_vec;
 	int			prev_ret;
 }				t_env_ret;
-
-typedef struct s_vector	t_vector;
 
 // explicit values are used in code and shouldn't be changed
 typedef enum e_token_type {
@@ -88,6 +87,8 @@ int			parse_pipe(t_vector *dest, const t_token *tok);
 bool		merge_tokens(char **dest, const t_token *src,
 				size_t to_merge, char **envp);
 int			parse_text(t_vector *dest, const t_token *tok, char **envp);
+int			parse_wildcard(t_vector *dest, const t_token *tok, char **envp,
+				int to_merge);
 int			seek_tokens_to_merge(const t_token *src);
 
 // --

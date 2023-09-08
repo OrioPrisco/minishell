@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/06 20:44:00 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 02:53:55 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@ static int	merge_one_token(t_vector *sbuilder, const t_token *src, char **envp)
 
 	if (envp && src->type == T_VAR)
 	{
-		env_var = get_env_var(envp, src->strview.start, src->strview.size);
-		if (env_var == NULL)
-			env_var = "";
+		env_var = get_env_varnul(envp, src->strview.start, src->strview.size);
 		if (vector_append_elems(sbuilder, env_var, ft_strlen(env_var)))
 			return (1);
 	}
