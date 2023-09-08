@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/07 12:58:31 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 14:47:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ static const t_token	*next_tok(const t_token *tok)
 // will need to take hd_line
 // -1 means parse  error
 // 0  means malloc error
-int	parse_redirect(t_vector *dest, const t_token *tok, char **envp)
+int	parse_redirect(t_vector *dest, const t_token *tok,
+		const t_env_ret *env_ret)
 {
 	t_owned_token	token;
 	int				to_merge;
 	const t_token	*next;
 	char			*hd_sep;
 
-	(void)envp;
 	token = (t_owned_token){NULL, tok->type};
 	next = next_tok(tok);
 	if (!is_textexpr_type(next->type))
@@ -46,7 +46,7 @@ int	parse_redirect(t_vector *dest, const t_token *tok, char **envp)
 	to_merge = seek_tokens_to_merge(tok);
 	if (to_merge == -1)
 		return (-1);
-	if (merge_tokens(&hd_sep, tok, to_merge, envp))
+	if (merge_tokens(&hd_sep, tok, to_merge, env_ret))
 		return (0);
 	token = ((t_owned_token){hd_sep, T_STR});
 	//TODO  call the heredoc function here instead of pushing a token

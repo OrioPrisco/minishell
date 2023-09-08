@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 18:10:24 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/07 22:51:46 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 14:52:20 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,15 @@ static bool	expand_wildcard_wrapper(const t_owned_token *expr, t_vector *dest)
 
 // 0  means malloc error
 // -1 means no result
-int	parse_wildcard(t_vector *dest, const t_token *tok, char **envp,
-		int to_merge)
+int	parse_wildcard(t_vector *dest, const t_token *tok,
+		const t_env_ret *env_ret, int to_merge)
 {
 	t_vector		wildcard_expr;
 	t_vector		wildcard_result;
 	size_t			i;
 	t_owned_token	token;
 
-	if (compile_wildcard_expr(tok, &wildcard_expr, envp, to_merge))
+	if (compile_wildcard_expr(tok, &wildcard_expr, env_ret, to_merge))
 		return (0);
 	if (expand_wildcard_wrapper(wildcard_expr.data, &wildcard_result))
 		return (vector_free(&wildcard_expr, free_owned_token), 0);

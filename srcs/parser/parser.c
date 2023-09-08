@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/08 14:06:08 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 14:36:55 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,17 @@
 //  returns the number of munched tokens on success
 // could theoritcally use an array of function pointers,
 //  but there are gaps in the token_type enum
-static int	process_one_token(t_vector *dest, const t_token *tok, char **envp)
+static int	process_one_token(t_vector *dest, const t_token *tok,
+				const t_env_ret *env_ret)
 {
 	if (tok->type == T_SPACE)
 		return (1);
 	if (is_redirect_type(tok->type))
-		return (parse_redirect(dest, tok, envp)); // pass hd_line for heredocs
+		return (parse_redirect(dest, tok, env_ret)); // pass hd_line for heredocs
 	if (tok->type == T_PIPE)
 		return (parse_pipe(dest, tok));
 	if (is_textexpr_type(tok->type))
-		return (parse_text(dest, tok, envp));
+		return (parse_text(dest, tok, env_ret));
 	ft_dprintf(2, "No muncher for type %s\n", token_type_to_str(tok->type));
 	return (-1);
 }
@@ -40,7 +41,7 @@ static int	process_one_token(t_vector *dest, const t_token *tok, char **envp)
 //returns  1 on malloc error and free the vector
 //returns -1 on parsing error, frees the vector, and prints an error to stderr
 //returns  0 on success, and the vector will be populated
-int	parse_line(const char *line, t_vector *dest, t_env_ret env_ret)
+int	parse_line(const char *line, t_vector *dest, const t_env_ret *env_ret)
 {
 	t_vector		vec_token;
 	t_token			*token;
@@ -57,8 +58,7 @@ int	parse_line(const char *line, t_vector *dest, t_env_ret env_ret)
 	consumed = 0;
 	while (token->type != T_END)
 	{
-		// need to pass envp for vars...
-		consumed = process_one_token(dest, token, (char **)env_ret.env_vec->data); // also pass hd_line for heredocs
+		consumed = process_one_token(dest, token, env_ret); // also pass hd_line for heredocs
 		if (consumed <= 0)
 			return (vector_clear(&vec_token), vector_free(dest,
 					free_owned_token), (consumed == -1) - (consumed == 0));

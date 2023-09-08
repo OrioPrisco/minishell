@@ -6,19 +6,24 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:39:05 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 02:50:10 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 14:29:54 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "env_var.h"
+#include "vector.h"
 
 //does not check that name is a valid identifier
 //has special cases for $ and $?
 // TODO : handle $? properly
 //name size hs te be correct
-const char	*get_env_var(char **envp, const char *name, size_t name_size)
+const char	*get_env_var(const t_env_ret *env_ret, const char *name,
+				size_t name_size)
 {
+	size_t	i;
+	char	**envp;
+
 	if (name_size == 1 && *name == '$')
 		return ("$");
 	if (name_size == 2 && !ft_memcmp(name, "$?", 2))
@@ -28,21 +33,24 @@ const char	*get_env_var(char **envp, const char *name, size_t name_size)
 		name++;
 		name_size--;
 	}
-	while (*envp)
+	i = 0;
+	envp = env_ret->env_vec.data;
+	while (i < env_ret->env_vec.size)
 	{
-		if (!ft_memcmp(name, *envp, name_size) && (*envp)[name_size] == '=')
-			return (*envp + name_size + 1);
-		envp++;
+		if (!ft_memcmp(name, envp[i], name_size) && envp[i][name_size] == '=')
+			return (envp[i] + name_size + 1);
+		i++;
 	}
 	return (NULL);
 }
 
 // same as get_env_var but returns an empty string instead of null
-const char	*get_env_varnul(char **envp, const char *name, size_t name_size)
+const char	*get_env_varnul(const t_env_ret *env_ret, const char *name,
+				size_t name_size)
 {
 	const char	*ret;
 
-	ret = get_env_var(envp, name, name_size);
+	ret = get_env_var(env_ret, name, name_size);
 	if (!ret)
 		return ("");
 	return (ret);

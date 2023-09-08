@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 11:12:27 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/08 14:46:27 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,13 @@ static char	*check_access(const char *const *path, const char *command)
 **	
 **/
 
-char	*access_loop(const char *command, char **envp)
+char	*access_loop(const char *command, const t_env_ret *env_ret)
 {
 	char		**path_tab;
 	const char	*path;
 	char		*command_path;
 
-	path = get_env_var(envp, "PATH", ft_strlen("PATH"));
+	path = get_env_var(env_ret, "PATH", ft_strlen("PATH"));
 	if (!path)
 		return (0);
 	path_tab = ft_split(path, ':');
@@ -134,7 +134,7 @@ char	*search_env(char *exec_name, t_cominfo *cominfo,
 		return (NULL);
 	if (check_for_builtins(exec_name))
 		return (exec_name);
-	execve_command = access_loop(exec_name, (char **)cominfo->env_vec->data);
+	execve_command = access_loop(exec_name, cominfo->env_ret);
 	if (!execve_command)
 		return (NULL);
 	if (!execve_command[0])
@@ -168,12 +168,14 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 		msh_error("malloc");
 	if (check_for_builtins(exec_name))
 	{
-		builtin_commands(exec_name, execve_com_args, cominfo->env_vec->data);
+		builtin_commands(exec_name, execve_com_args,
+			(char **)cominfo->env_ret->env_vec.data);
 		msh_exit_child(cominfo->com_list);
 	}
 	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)
 		exec_error(vec_fds, cominfo);
 	free(cominfo->command);
-	execve(execve_command, execve_com_args, (char **)cominfo->env_vec->data);
+	execve(execve_command, execve_com_args,
+		(char **)cominfo->env_ret->env_vec.data);
 }

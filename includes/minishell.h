@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 11:06:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/08 14:45:46 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 # include <stdbool.h>
 # include "tokens.h"
 
-typedef struct s_vector	t_vector;
+typedef struct s_vector		t_vector;
+typedef struct s_env_ret	t_env_ret;
 
 typedef struct s_cominfo
 {
 	char		*command;
-	t_vector	*env_vec;
+	t_env_ret	*env_ret;
 	t_vector	*com_list;
 }				t_cominfo;
 
@@ -44,15 +45,15 @@ typedef struct s_pipe_info
 # define HISTORY_FILE_NAME ".msh_history"
 
 //	prompt_utils.c
-int		prompt_loop(char **env);
+int		prompt_loop(char **envp);
 
 //	error_utils.c
 void	msh_error(const char *message);
 void	msh_exit(t_cominfo *cominfo);
 
 //	history.c
-bool	save_history(char **env, t_vector *com_list);
-bool	load_in_history(char **env);
+bool	save_history(const t_env_ret *env_ret, t_vector *com_list);
+bool	load_in_history(const t_env_ret *env_ret);
 void	history_loop_logic(t_cominfo *cominfo);
 
 //	signal_utils.c
@@ -87,7 +88,7 @@ int		check_and_open_heredoc(t_vector *tokens, int start, int stop,
 
 //	access_utils.c
 void	print_access_debug(char *execve_command);
-char	*access_loop(const char *command, char **envp);
+char	*access_loop(const char *command, const t_env_ret *env_ret);
 char	*search_env(char *exec_name, t_cominfo *cominfo,
 			t_com_segment *com_segment);
 void	access_error_print(const char *exec_name);
