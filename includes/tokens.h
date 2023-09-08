@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 16:36:33 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 21:34:01 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,12 @@ typedef struct s_token {
 }	t_token;
 
 // tokenizer
-bool		split_to_tokens(const char *str, t_vector *vec_token);
+bool		split_to_tokens(const char *str, t_vector *vec_token,
+				const char **hd_line);
 
 // parse_line_internals
 int			parse_redirect(t_vector *dest, const t_token *tok,
-				const t_env_ret *env_ret);
+				const t_env_ret *env_ret, const char **hd_line);
 int			parse_pipe(t_vector *dest, const t_token *tok);
 bool		merge_tokens(char **dest, const t_token *src, size_t to_merge,
 				const t_env_ret *env_ret);

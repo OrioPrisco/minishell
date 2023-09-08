@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/08 16:37:52 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 21:33:47 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@
 // could theoritcally use an array of function pointers,
 //  but there are gaps in the token_type enum
 static int	process_one_token(t_vector *dest, const t_token *tok,
-				const t_env_ret *env_ret)
+				const t_env_ret *env_ret, const char **hd_line)
 {
 	if (tok->type == T_SPACE)
 		return (1);
 	if (is_redirect_type(tok->type))
-		return (parse_redirect(dest, tok, env_ret)); // pass hd_line for heredocs
+		return (parse_redirect(dest, tok, env_ret, hd_line));
 	if (tok->type == T_PIPE)
 		return (parse_pipe(dest, tok));
 	if (is_textexpr_type(tok->type))
@@ -42,24 +42,24 @@ static int	process_one_token(t_vector *dest, const t_token *tok,
 //returns  1 on malloc error and free the vector
 //returns -1 on parsing error, frees the vector, and prints an error to stderr
 //returns  0 on success, and the vector will be populated
-static int	parse_line_int(const char *line, t_vector *dest, const t_env_ret *env_ret)
+static int	parse_line_int(const char *line, t_vector *dest,
+				const t_env_ret *env_ret)
 {
 	t_vector		vec_token;
 	t_token			*token;
 	int				consumed;
 	t_owned_token	tok;
-	//char		*hd_line
+	const char		*hd_line;
 
 	vector_init(&vec_token, sizeof(t_token));
 	vector_init(dest, sizeof(t_owned_token));
-	// have it return a pointer to where the parsing stopped for hd_line
-	if (split_to_tokens(line, &vec_token)) 
+	if (split_to_tokens(line, &vec_token, &hd_line))
 		return (vector_clear(&vec_token), 1);
 	token = vec_token.data;
 	consumed = 0;
 	while (token->type != T_END)
 	{
-		consumed = process_one_token(dest, token, env_ret); // also pass hd_line for heredocs
+		consumed = process_one_token(dest, token, env_ret, &hd_line);
 		if (consumed <= 0)
 			return (vector_clear(&vec_token), vector_free(dest,
 					free_owned_token), consumed);
