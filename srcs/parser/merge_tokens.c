@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 02:53:55 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 13:54:22 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ int	seek_tokens_to_merge(const t_token *src)
 	return (to_munch);
 }
 
-static int	merge_one_token(t_vector *sbuilder, const t_token *src, char **envp)
+static int	merge_one_token(t_vector *sbuilder, const t_token *src,
+				const t_env_ret *env_ret)
 {
 	const char	*env_var;
 
-	if (envp && src->type == T_VAR)
+	if (env_ret && src->type == T_VAR)
 	{
-		env_var = get_env_varnul(envp, src->strview.start, src->strview.size);
+		env_var = get_env_varnul(env_ret, src->strview.start,
+				src->strview.size);
 		if (vector_append_elems(sbuilder, env_var, ft_strlen(env_var)))
 			return (1);
 	}
@@ -81,7 +83,7 @@ static int	merge_one_token(t_vector *sbuilder, const t_token *src, char **envp)
 // completely trusts that to_merge is correct
 // skips the first token if it is a space
 bool	merge_tokens(char **dest, const t_token *src, size_t to_merge,
-		char **envp)
+		const t_env_ret *env_ret)
 {
 	t_vector	sbuilder;
 
@@ -93,7 +95,7 @@ bool	merge_tokens(char **dest, const t_token *src, size_t to_merge,
 	vector_init(&sbuilder, sizeof(char));
 	while (src->type != T_END && src->type != T_SPACE && to_merge)
 	{
-		if (merge_one_token(&sbuilder, src, envp))
+		if (merge_one_token(&sbuilder, src, env_ret))
 			return (vector_clear(&sbuilder), 1);
 		to_merge--;
 		src++;

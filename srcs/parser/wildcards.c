@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 03:46:13 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 14:58:08 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 // 0 means malloc error
 // returns tokens munched
-static int	merge_text(const t_token *src, char **dest, char **envp,
-	int to_merge)
+static int	merge_text(const t_token *src, char **dest,
+	const t_env_ret *env, int to_merge)
 {
 	t_vector	sbuilder;
 	const char	*text;
@@ -34,7 +34,7 @@ static int	merge_text(const t_token *src, char **dest, char **envp,
 	{
 		if (src->type == T_VAR)
 		{
-			text = get_env_varnul(envp, src->strview.start, src->strview.size);
+			text = get_env_varnul(env, src->strview.start, src->strview.size);
 			if (vector_append_elems(&sbuilder, text, ft_strlen(text)))
 				return (vector_clear(&sbuilder), 0);
 		}
@@ -56,8 +56,8 @@ static int	merge_text(const t_token *src, char **dest, char **envp,
 // on failre returns 1 and the vector will be cleared
 // returns 0 on sucess
 // returns 1 on error
-bool	compile_wildcard_expr(const t_token *src, t_vector *dest, char **envp,
-			int to_merge)
+bool	compile_wildcard_expr(const t_token *src, t_vector *dest,
+			const t_env_ret *env, int to_merge)
 {
 	t_owned_token	token;
 	int				merged;
@@ -70,7 +70,7 @@ bool	compile_wildcard_expr(const t_token *src, t_vector *dest, char **envp,
 		token = (t_owned_token){NULL, T_STR};
 		if (src[merged].type != T_WILDCARD && src[merged].type != T_DIR_SEP)
 		{
-			ret = merge_text(src + merged, &token.str, envp, to_merge - merged);
+			ret = merge_text(src + merged, &token.str, env, to_merge - merged);
 			if (ret == 0)
 				return (0);
 			merged += ret;

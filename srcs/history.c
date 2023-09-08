@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/06 20:34:06 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 14:21:44 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@
 **		Pointer to malloced string for history file path.
 **/
 
-static char	*history_file_path(char **envp, const char *envp_var,
+static char	*history_file_path(const t_env_ret *env_ret, const char *envp_var,
 						const char *h_fn)
 {
 	const char	*home;
 
-	home = get_env_var(envp, envp_var, ft_strlen(envp_var));
+	home = get_env_var(env_ret, envp_var, ft_strlen(envp_var));
 	if (!home)
 		return (0);
 	return (path_concat(home, h_fn));
@@ -66,13 +66,14 @@ static char	*history_file_path(char **envp, const char *envp_var,
  *     (if any) is set to NULL. ))
  */
 
-bool	load_in_history(char **envp)
+bool	load_in_history(const t_env_ret *env_ret)
 {
 	int		history_fd;
 	char	*history_fn;
 	char	*gnl_line;
 
-	history_fn = history_file_path(envp, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
+	history_fn = history_file_path(env_ret, HISTORY_FILE_PATH,
+			HISTORY_FILE_NAME);
 	history_fd = open(history_fn, O_RDONLY);
 	free(history_fn);
 	if (history_fd < 2)
@@ -118,13 +119,13 @@ static bool	history_newline_check(const char *str, int history_fd)
 **	access $HOME.
 */
 
-bool	save_history(char **envp, t_vector *com_list)
+bool	save_history(const t_env_ret *env_ret, t_vector *com_list)
 {
 	char	*history_fn;
 	int		history_fd;
 	size_t	i;
 
-	history_fn = history_file_path(envp, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
+	history_fn = history_file_path(env_ret, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
 	history_fd = open(history_fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	free(history_fn);
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 13:56:46 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 14:35:40 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,19 @@ typedef struct s_token {
 bool		split_to_tokens(const char *str, t_vector *vec_token);
 
 // parse_line_internals
-int			parse_redirect(t_vector *dest, const t_token *tok, char **envp);
+int			parse_redirect(t_vector *dest, const t_token *tok,
+				const t_env_ret *env_ret);
 int			parse_pipe(t_vector *dest, const t_token *tok);
-bool		merge_tokens(char **dest, const t_token *src,
-				size_t to_merge, char **envp);
-int			parse_text(t_vector *dest, const t_token *tok, char **envp);
-int			parse_wildcard(t_vector *dest, const t_token *tok, char **envp,
-				int to_merge);
+bool		merge_tokens(char **dest, const t_token *src, size_t to_merge,
+				const t_env_ret *env_ret);
+int			parse_text(t_vector *dest, const t_token *tok,
+				const t_env_ret *env_ret);
+int			parse_wildcard(t_vector *dest, const t_token *tok,
+				const t_env_ret *env_ret, int to_merge);
 int			seek_tokens_to_merge(const t_token *src);
 
 // --
-int			parse_line(const char *line, t_vector *dest, t_env_ret env_ret);
+int			parse_line(const char *line, t_vector *dest,
+				const t_env_ret *env_ret);
 
 #endif

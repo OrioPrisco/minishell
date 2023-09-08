@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/08 14:05:23 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 14:39:24 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,16 @@
 #include "env_var.h"
 #include <readline/readline.h>
 
-static int	init_envp_vec(char **envp, t_vector *env_vec)
+static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 {
 	int			i;
 	char		*buf;
+	t_vector	*env_vec;
 
 	i = 0;
+	env_vec = &env_ret->env_vec;
 	vector_init(env_vec, sizeof(char *));
+	env_ret->prev_ret = 0;
 	while (envp[i])
 	{
 		buf = ft_strdup(envp[i]);
@@ -47,19 +50,19 @@ static int	init_envp_vec(char **envp, t_vector *env_vec)
 **	provides more information than the signal function.
 **/
 
-static int	init_prompt_loop(char **envp, t_vector *env_vec)
+static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 {
 	void		(*sig_return)(int);
 
-	load_in_history(envp);
+	if (init_envp_vec(envp, env_ret))
+		msh_error("malloc");
+	load_in_history(env_ret);
 	sig_return = signal(SIGINT, &sigint_handler);
 	if (sig_return == SIG_ERR)
 		msh_error("signal error");
 	sig_return = signal(SIGQUIT, &sigquit_handler);
 	if (sig_return == SIG_ERR)
 		msh_error("signal error");
-	if (init_envp_vec(envp, env_vec))
-		msh_error("malloc");
 	return (0);
 }
 
@@ -74,22 +77,19 @@ int	prompt_loop(char **envp)
 {
 	t_vector		com_list;
 	t_vector		owned_tokens;
-	t_vector		env_vec;
 	t_cominfo		cominfo;
-	int				prev_ret;
+	t_env_ret		env_ret;
 
-	prev_ret = 0;
 	ft_bzero(&cominfo, sizeof(cominfo));
-	init_prompt_loop(envp, &env_vec);
+	init_prompt_loop(envp, &env_ret);
 	vector_init(&com_list, sizeof(char *));
 	while (1)
 	{
 		cominfo.command = readline("minishell> ");
-		cominfo = (t_cominfo){cominfo.command, &env_vec, &com_list};
+		cominfo = (t_cominfo){cominfo.command, &env_ret, &com_list};
 		if (!cominfo.command)
 			msh_exit(&cominfo);
-		if (parse_line(cominfo.command, &owned_tokens,
-				(t_env_ret){&env_vec, prev_ret}))
+		if (parse_line(cominfo.command, &owned_tokens, &env_ret))
 			return (1);
 		tree_crawler(&owned_tokens, &cominfo);
 		history_loop_logic(&cominfo);
@@ -108,7 +108,7 @@ int main(int argc, char **argv, char **epnvp)
 	(void)argc;
 	(void)argv;
 	i = 0;
-	if (parse_line(readline("minishell >"), &owned_tokens, envp))
+	if (parse_line(readline("minishell >"), &owned_tokens, env_ret))
 		return (1);
 	while (i < owned_tokens.size)
 	{
