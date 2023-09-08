@@ -6,14 +6,13 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/08 03:39:24 by OrioPrisco       ###   ########.fr        #
+#    Updated: 2023/09/08 03:40:59 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC				=	cc
 
 SRC				=	minishell.c \
-					split_to_tokens.c \
 					get_env_var.c \
 					merge_tokens.c \
 					tokens_utils.c \
@@ -42,6 +41,7 @@ SRC				=	minishell.c \
 					parser/parse_pipe.c \
 					parser/parse_text.c \
 					parser/parse_wildcard.c \
+					parser/lexer.c \
 
 NAME			=	minishell
 
