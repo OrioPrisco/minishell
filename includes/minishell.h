@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/08 14:45:46 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/12 11:35:15 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ void	history_loop_logic(t_cominfo *cominfo);
 
 //	signal_utils.c
 void	sigint_handler(int signum);
+void	sigint_setup(void);
 void	sigquit_handler(int signum);
+void	sigquit_setup(void);
 
 //	ast_utils.c
 int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
