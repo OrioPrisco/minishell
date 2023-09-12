@@ -6,13 +6,15 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:03:56 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/07/18 15:52:17 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/12 11:38:50 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <readline/readline.h>
 #include "libft.h"
+#include <signal.h>
+#include <stdlib.h>
 
 /*	
 **	The signal raised by Ctrl-c is SIGINT
@@ -43,14 +45,28 @@ void	sigint_handler(int signum)
 	rl_redisplay();
 }
 
-/*	
-**	The signal raised by Ctrl-\ is SIGQUIT
-**	Per the subject, this signal should "do nothing".
-**/
-
-void	sigquit_handler(int signum)
+void	sigint_setup(void)
 {
-	if (signum)
+	struct sigaction	sa;
+
+	sa.sa_handler = sigint_handler;
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
+		perror("sigaction");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	sigquit_setup(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+		exit(EXIT_FAILURE);
 	}
 }

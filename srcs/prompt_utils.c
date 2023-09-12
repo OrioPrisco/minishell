@@ -6,13 +6,12 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/08 14:39:24 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/12 11:36:33 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-#include <signal.h>
 #include "vector.h"
 #include "tokens.h"
 #include "utils.h"
@@ -52,17 +51,11 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 
 static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 {
-	void		(*sig_return)(int);
-
 	if (init_envp_vec(envp, env_ret))
 		msh_error("malloc");
 	load_in_history(env_ret);
-	sig_return = signal(SIGINT, &sigint_handler);
-	if (sig_return == SIG_ERR)
-		msh_error("signal error");
-	sig_return = signal(SIGQUIT, &sigquit_handler);
-	if (sig_return == SIG_ERR)
-		msh_error("signal error");
+	sigint_setup();
+	sigquit_setup();
 	return (0);
 }
 
