@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 11:35:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/12 17:35:11 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ void	history_loop_logic(t_cominfo *cominfo);
 
 //	signal_utils.c
 void	sigint_handler(int signum);
-void	sigint_setup(void);
+int		sigint_parent(void);
 void	sigquit_handler(int signum);
-void	sigquit_setup(void);
+int		sigquit_parent(void);
+int		sigint_child(void);
 
 //	ast_utils.c
 int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
@@ -95,9 +96,13 @@ char	*search_env(char *exec_name, t_cominfo *cominfo,
 			t_com_segment *com_segment);
 void	access_error_print(const char *exec_name);
 int		check_for_builtins(const char *exec_name);
+int		check_for_builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo);
 void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 			t_vector *vec_fds);
 void	builtin_commands(char *execve_command, char **execve_com_args,
 			char **envp);
+char	*get_exec_name(t_owned_token *token);
+void	builtins_pre_fork(char *exec_name, t_com_segment com_segment,
+			t_cominfo *cominfo);
 
 #endif
