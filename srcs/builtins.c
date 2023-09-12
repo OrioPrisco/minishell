@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 16:49:24 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/12 12:39:04 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	builtin_commands(char *execve_command, char **execve_com_args,
 	if (!ft_strcmp(execve_command, "echo"))
 		echo(execve_command, execve_com_args, envp);
 	if (!ft_strcmp(execve_command, "exit"))
-		exit_msh(execve_command, execve_com_args, envp);
+		return ;
 	table_free(execve_com_args);
 	free(execve_command);
 }

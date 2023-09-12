@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/08/31 18:39:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/12 13:06:33 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "ft_printf.h"
 #include "path.h"
 #include <unistd.h>
+#include "vector.h"
 
 void	print_access_debug(char *execve_command)
 {
@@ -64,5 +65,20 @@ int	check_for_builtins(const char *exec_name)
 		|| !ft_strcmp(exec_name, "env")
 		|| !ft_strcmp(exec_name, "exit"))
 		return (1);
+	return (0);
+}
+
+int	check_for_builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
+{
+	char	*exec_name;
+
+	exec_name = get_exec_name(
+			(t_owned_token *)com_segment.tokens->data + com_segment.start);
+	if (0
+		|| !ft_strcmp(exec_name, "cd")
+		|| !ft_strcmp(exec_name, "pwd")
+		|| !ft_strcmp(exec_name, "export")
+		|| !ft_strcmp(exec_name, "exit"))
+		builtins_pre_fork(com_segment, cominfo);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/08 14:46:27 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/12 12:46:26 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 		Returns NULL if no command found (ie. no T_STR token ever encountered).
 */
 
-static char	*get_exec_name(t_owned_token *token)
+char	*get_exec_name(t_owned_token *token)
 {
 	while (token->type != T_END && token->type != T_PIPE)
 	{
