@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:44:53 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 13:07:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/12 16:15:07 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 	if (check_for_builtins_pre_fork((t_com_segment){tokens, 0, size, size},
 		cominfo))
 		return (0);
+	sigint_child();
 	pid = fork();
 	if (pid < 0)
 		return (-1);
@@ -91,6 +92,7 @@ int	multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids,
 {
 	int		pid;
 
+	sigint_child();
 	pid = fork();
 	if (pid < 0)
 		return (-1);

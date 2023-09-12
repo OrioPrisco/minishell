@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:03:56 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 11:47:34 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/12 16:13:18 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,33 @@
 
 void	sigint_handler(int signum)
 {
-	if (signum)
-	{
-	}
+	(void) signum;
 	ft_putstr_fd("\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
-void	sigint_setup(void)
+void	sigint_handler_child(int signum)
+{
+	(void) signum;
+	ft_putstr_fd("\n", 1);
+}
+
+void	sigint_child(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = sigint_handler_child;
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	sigint_parent(void)
 {
 	struct sigaction	sa;
 
@@ -58,7 +75,7 @@ void	sigint_setup(void)
 	}
 }
 
-void	sigquit_setup(void)
+void	sigquit_parent(void)
 {
 	struct sigaction	sa;
 

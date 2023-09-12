@@ -6,11 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/09/12 15:33:09 by dpentlan         ###   ########.fr       */
-=======
-/*   Updated: 2023/09/12 11:35:15 by dpentlan         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2023/09/12 16:11:34 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +58,10 @@ void	history_loop_logic(t_cominfo *cominfo);
 
 //	signal_utils.c
 void	sigint_handler(int signum);
-void	sigint_setup(void);
+void	sigint_parent(void);
 void	sigquit_handler(int signum);
-void	sigquit_setup(void);
+void	sigquit_parent(void);
+void	sigint_child(void);
 
 //	ast_utils.c
 int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
