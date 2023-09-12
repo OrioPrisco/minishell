@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/08 14:21:44 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/12 11:55:42 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,8 @@ bool	save_history(const t_env_ret *env_ret, t_vector *com_list)
 	int		history_fd;
 	size_t	i;
 
-	history_fn = history_file_path(env_ret, HISTORY_FILE_PATH, HISTORY_FILE_NAME);
+	history_fn = history_file_path(env_ret,
+			HISTORY_FILE_PATH, HISTORY_FILE_NAME);
 	history_fd = open(history_fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	free(history_fn);
 	i = 0;
