@@ -6,13 +6,37 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:39:05 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 14:29:54 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 20:18:17 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "env_var.h"
 #include "vector.h"
+
+static void	putnbr_buff(char *buff, long int number)
+{
+	buff[1] = '\0';
+	if (number < 0)
+		putnbr_buff(buff + 1, -number);
+	else if (number >= 10)
+		putnbr_buff(buff + 1, number / 10);
+	buff[0] = "0123456789"[number % 10];
+}
+
+// will work as long as the string is duplicated
+// before this gets called with another value
+const char	*get_number(int number)
+{
+	static int	last;
+	static char	buffer[12] = "0";
+
+	if (number == last)
+		return (buffer);
+	putnbr_buff(buffer, number);
+	last = number;
+	return (buffer);
+}
 
 //does not check that name is a valid identifier
 //has special cases for $ and $?
@@ -27,7 +51,7 @@ const char	*get_env_var(const t_env_ret *env_ret, const char *name,
 	if (name_size == 1 && *name == '$')
 		return ("$");
 	if (name_size == 2 && !ft_memcmp(name, "$?", 2))
-		return ("TODO_RETURN_CODE");
+		return (get_number(env_ret->prev_ret));
 	if (*name == '$')
 	{
 		name++;

@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/08 14:36:55 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/08 16:37:52 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "vector.h"
 #include "ft_printf.h"
 #include "env_var.h"
+#include "error.h"
 
 // munches some tokens and appends an owned_token to dest
 //  returns 0  in case of malloc error (munching 0 tokens is nonsensical)
@@ -41,7 +42,7 @@ static int	process_one_token(t_vector *dest, const t_token *tok,
 //returns  1 on malloc error and free the vector
 //returns -1 on parsing error, frees the vector, and prints an error to stderr
 //returns  0 on success, and the vector will be populated
-int	parse_line(const char *line, t_vector *dest, const t_env_ret *env_ret)
+static int	parse_line_int(const char *line, t_vector *dest, const t_env_ret *env_ret)
 {
 	t_vector		vec_token;
 	t_token			*token;
@@ -61,7 +62,7 @@ int	parse_line(const char *line, t_vector *dest, const t_env_ret *env_ret)
 		consumed = process_one_token(dest, token, env_ret); // also pass hd_line for heredocs
 		if (consumed <= 0)
 			return (vector_clear(&vec_token), vector_free(dest,
-					free_owned_token), (consumed == -1) - (consumed == 0));
+					free_owned_token), consumed);
 		token += consumed;
 	}
 	tok = (t_owned_token){NULL, T_END};
@@ -69,4 +70,16 @@ int	parse_line(const char *line, t_vector *dest, const t_env_ret *env_ret)
 		return (vector_clear(&vec_token),
 			vector_free(dest, free_owned_token), 1);
 	return (vector_clear(&vec_token), 0);
+}
+
+int	parse_line(const char *line, t_vector *dest, t_env_ret *env_ret)
+{
+	int	ret;
+
+	ret = parse_line_int(line, dest, env_ret);
+	if (ret == -1)
+		env_ret->prev_ret = PARSE_ERROR;
+	else
+		env_ret->prev_ret = 0;
+	return (ret);
 }
