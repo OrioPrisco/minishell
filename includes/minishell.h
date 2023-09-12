@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 13:06:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/12 15:33:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 void	builtin_commands(char *execve_command, char **execve_com_args,
 			char **envp);
 char	*get_exec_name(t_owned_token *token);
-void	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo);
+void	builtins_pre_fork(char *exec_name, t_com_segment com_segment,
+			t_cominfo *cominfo);
 
 #endif
