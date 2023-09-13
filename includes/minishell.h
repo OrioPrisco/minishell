@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 13:41:49 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:10:21 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 //	fork_utils.c
 int		msh_wait(t_vector *pids);
 int		print_execve_args(char **execve_com_args);
-char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args);
+char	**construct_execve_args(t_com_segment com_seg);
 int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 			t_pipe_info *pipeinfo);
 int		pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
@@ -96,8 +96,7 @@ char	*search_env(char *exec_name, t_cominfo *cominfo,
 void	access_error_print(const char *exec_name);
 int		check_for_builtins(const char *exec_name);
 int		check_for_builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo);
-void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
-			t_vector *vec_fds);
+void	exec_command(t_cominfo *cominfo, t_com_segment com_segment);
 void	builtin_commands(char *execve_command, char **execve_com_args,
 			char **envp);
 char	*get_exec_name(t_owned_token *token);
