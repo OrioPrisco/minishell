@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 12:46:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 13:00:04 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 	{
 		builtin_commands(exec_name, execve_com_args,
 			(char **)cominfo->env_ret->env_vec.data);
-		msh_exit_child(cominfo->com_list);
+		builtins_cleanup(cominfo->com_list, &com_segment);
 	}
 	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)

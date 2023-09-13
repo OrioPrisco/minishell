@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 11:52:30 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 12:33:48 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	prompt_loop(char **envp)
 	t_vector		owned_tokens;
 	t_cominfo		cominfo;
 	t_env_ret		env_ret;
+	int				ret;
 
 	ft_bzero(&cominfo, sizeof(cominfo));
 	if (init_prompt_loop(envp, &env_ret))
@@ -84,8 +85,11 @@ int	prompt_loop(char **envp)
 		cominfo = (t_cominfo){cominfo.command, &env_ret, &com_list};
 		if (!cominfo.command)
 			msh_exit(&cominfo);
-		if (parse_line(cominfo.command, &owned_tokens, &env_ret))
+		ret = parse_line(cominfo.command, &owned_tokens, &env_ret);
+		if (ret < 0)
 			continue ;
+		else if (ret == 1)
+			return (-1);
 		tree_crawler(&owned_tokens, &cominfo);
 		if (history_loop_logic(&cominfo))
 			return (-1);
