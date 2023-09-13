@@ -6,11 +6,12 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 12:46:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:33:40 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
+#include <readline/history.h>
 #include <stdbool.h>
 #include "ft_printf.h"
 #include "libft.h"
@@ -151,8 +152,7 @@ char	*search_env(char *exec_name, t_cominfo *cominfo,
 		
 */
 
-void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
-				t_vector *vec_fds)
+void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 {
 	char		*execve_command;
 	char		**execve_com_args;
@@ -162,19 +162,19 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
-		exec_error(vec_fds, cominfo);
-	execve_com_args = construct_execve_args(com_segment, execve_com_args);
+		msh_exit_child(cominfo->com_list);
+	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
 		msh_error("malloc");
 	if (check_for_builtins(exec_name))
 	{
 		builtin_commands(exec_name, execve_com_args,
 			(char **)cominfo->env_ret->env_vec.data);
-		msh_exit_child(cominfo->com_list);
+		builtins_cleanup(cominfo, &com_segment);
 	}
 	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)
-		exec_error(vec_fds, cominfo);
+		msh_exit_child(cominfo->com_list);
 	free(cominfo->command);
 	execve(execve_command, execve_com_args,
 		(char **)cominfo->env_ret->env_vec.data);

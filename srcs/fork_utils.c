@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 13:29:51 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:12:36 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,80 +61,37 @@ int	print_execve_args(char **execve_com_args)
 	return (0);
 }
 
-/*
-**	NAME
-		*dup_and_add_to_com_table
-**	DESCRIPTION
-		
-**	RETURN
-		
-*/
-
-char	**dup_and_add_to_com_table(char **execve_com_args, char *str)
+bool	add_item_to_com_table(t_vector *args, const char *str)
 {
-	char	**new_table;
-	size_t	tab_size;
+	char	*buf;
 
-	tab_size = 0;
-	new_table = 0;
-	while (execve_com_args[tab_size])
-		tab_size++;
-	new_table = (char **)malloc(sizeof(char *) * (tab_size + 2));
-	if (!new_table)
-		return (NULL);
-	ft_bzero((void *)new_table, sizeof(char *) * (tab_size + 2));
-	ft_memcpy(new_table, execve_com_args, sizeof(char **) * tab_size);
-	new_table[tab_size] = str;
-	free(execve_com_args);
-	return (new_table);
+	buf = ft_strdup(str);
+	if (!buf)
+		return (1);
+	if (vector_append(args, &buf))
+		return (free(buf), 1);
+	return (0);
 }
 
-char	**add_item_to_com_table(char **execve_com_args, char *str)
-{
-	if (!execve_com_args)
-	{
-		execve_com_args = (char **)malloc(sizeof(char *) * 2);
-		if (!execve_com_args)
-			return (NULL);
-		ft_bzero((void *)execve_com_args, sizeof(char *) * 2);
-		execve_com_args[0] = ft_strdup(str);
-		if (!execve_com_args[0])
-			return (NULL);
-	}
-	else
-	{
-		execve_com_args = dup_and_add_to_com_table(execve_com_args, str);
-		if (!execve_com_args)
-			return (table_free(execve_com_args), NULL);
-	}
-	return (execve_com_args);
-}
-
-/*
-**	
-**	check the token logic. here I'm adding 1 if < > >> << so that we skip over 
-		certain words
-		CHECK THESE CASES
-**	Look over returns and errors.
-*/
-
-char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args)
+char	**construct_execve_args(t_com_segment com_seg)
 {
 	t_owned_token	*token;
+	t_vector		args;
 
 	token = (t_owned_token *)com_seg.tokens->data + com_seg.start;
+	vector_init(&args, sizeof(char *));
 	while (token->type != T_END && token->type != T_PIPE)
 	{
 		if (is_redirect_type(token->type))
 			token++;
 		else if (token->type == T_STR)
 		{
-			execve_com_args = add_item_to_com_table(
-					execve_com_args, token->str);
-			if (!execve_com_args)
-				return (0);
+			if (add_item_to_com_table(&args, token->str))
+				return (vector_free(&args, free_str), NULL);
 		}
 		token++;
 	}
-	return (execve_com_args);
+	if (vector_null_term(&args))
+		return (vector_free(&args, free_str), NULL);
+	return (vector_move_data(&args));
 }

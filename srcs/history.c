@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 11:55:42 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:49:25 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,13 @@ static char	*history_file_path(const t_env_ret *env_ret, const char *envp_var,
 
 	home = get_env_var(env_ret, envp_var, ft_strlen(envp_var));
 	if (!home)
-		return (0);
+	{
+		home = (char *)malloc(sizeof(char));
+		if (!home)
+			return (NULL);
+		ft_bzero((void *)home, sizeof(char));
+		return ((char *)home);
+	}
 	return (path_concat(home, h_fn));
 }
 
@@ -66,7 +72,7 @@ static char	*history_file_path(const t_env_ret *env_ret, const char *envp_var,
  *     (if any) is set to NULL. ))
  */
 
-bool	load_in_history(const t_env_ret *env_ret)
+int	load_in_history(const t_env_ret *env_ret)
 {
 	int		history_fd;
 	char	*history_fn;
@@ -74,10 +80,14 @@ bool	load_in_history(const t_env_ret *env_ret)
 
 	history_fn = history_file_path(env_ret, HISTORY_FILE_PATH,
 			HISTORY_FILE_NAME);
+	if (!history_fn)
+		return (msh_error("malloc"), -1);
+	if (!*history_fn)
+		return (free(history_fn), 0);
 	history_fd = open(history_fn, O_RDONLY);
 	free(history_fn);
 	if (history_fd < 2)
-		return (1);
+		return (msh_error("open"), -1);
 	gnl_line = get_next_line(history_fd);
 	while (gnl_line)
 	{
@@ -87,8 +97,7 @@ bool	load_in_history(const t_env_ret *env_ret)
 		free(gnl_line);
 		gnl_line = get_next_line(history_fd);
 	}
-	close(history_fd);
-	return (0);
+	return (close(history_fd), 0);
 }
 
 /*	
@@ -101,15 +110,12 @@ bool	load_in_history(const t_env_ret *env_ret)
 **	
 **/
 
-static bool	history_newline_check(const char *str, int history_fd)
+static int	history_newline_check(const char *str, int history_fd)
 {
 	if (str[ft_strlen(str)] != '\n' && *str)
 	{
 		if (write(history_fd, "\n", 1) < 0)
-		{
-			close(history_fd);
-			msh_error("write");
-		}
+			return (msh_error("write"), -1);
 	}
 	return (0);
 }
@@ -119,7 +125,7 @@ static bool	history_newline_check(const char *str, int history_fd)
 **	access $HOME.
 */
 
-bool	save_history(const t_env_ret *env_ret, t_vector *com_list)
+int	save_history(const t_env_ret *env_ret, t_vector *com_list)
 {
 	char	*history_fn;
 	int		history_fd;
@@ -134,30 +140,23 @@ bool	save_history(const t_env_ret *env_ret, t_vector *com_list)
 	{
 		if (write(history_fd, ((char **)com_list->data)[i],
 			ft_strlen(((char **)com_list->data)[i])) < 0)
-		{
-			close(history_fd);
-			msh_error("write");
-		}
-		history_newline_check(((char **)com_list->data)[i], history_fd);
+			return (close(history_fd), msh_error("write"), -1);
+		if (history_newline_check(((char **)com_list->data)[i], history_fd))
+			break ;
 		i++;
 	}
-	close(history_fd);
-	return (0);
+	return (close(history_fd), 0);
 }
 
-void	history_loop_logic(t_cominfo *cominfo)
+int	history_loop_logic(t_cominfo *cominfo)
 {
-	char		*str_input;
-	t_vector	*com_list;
-
-	str_input = cominfo->command;
-	com_list = cominfo->com_list;
-	if (*str_input)
+	if (*(cominfo->command))
 	{
-		if (vector_append(com_list, &str_input))
-			msh_error("malloc");
-		add_history(str_input);
+		if (vector_append(cominfo->com_list, &(cominfo->command)))
+			return (msh_error("malloc"), -1);
+		add_history(cominfo->command);
 	}
 	else
-		free(str_input);
+		free(cominfo->command);
+	return (0);
 }

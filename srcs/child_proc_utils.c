@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 14:52:10 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:36:01 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include "utils.h"
 #include "ft_printf.h"
+#include "tokens.h"
+#include "env_var.h"
 
 void	msh_exit_child(t_vector *com_list)
 {
@@ -25,20 +27,12 @@ void	msh_exit_child(t_vector *com_list)
 	exit(EXIT_SUCCESS);
 }
 
-void	exec_error(t_vector *vec_fds, t_cominfo *cominfo)
+void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg)
 {
-	cleanup_redirects(vec_fds);
+	vector_free(com_seg->tokens, free_owned_token);
+	vector_free(&cominfo->env_ret->env_vec, free_str);
 	msh_exit_child(cominfo->com_list);
 }
-
-/*
-	NAME
-		pipe_dups
-	DESCRIPTION
-		
-	RETURN
-		
-*/
 
 int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 {
@@ -51,31 +45,6 @@ int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 	}
 	return (0);
 }
-
-/*	
-**	tokens is pointer to token space
-**	return could be return status of command?
-**	print_relavent_tokens(tokens, start, stop);
-**	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
-
-**	RETURN
-**		Function does not return, child process should terminate here in some way.
-
-	These lines were removed after vector init. The heredoc stuff should be moved
-		to parsing. Keeping here for the moment for reference.
-
-	int			here_doc_contents;
-	
-	here_doc_contents = check_and_open_heredoc(tokens, start, stop, cominfo);
-	if (here_doc_contents < 0)
-		msh_exit_child(cominfo->envp, cominfo->com_list);
-	if (here_doc_contents)
-		print_here_doc_contents(here_doc_contents);
-	//print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
-	//table_print(execve_com_args);
-	//ft_printf("pipeinfo: %d %d %d\n", pipeinfo->pipefd[0], pipeinfo->pipefd[1],
-	//	pipeinfo->old_pipe);
-**/
 
 void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 			t_pipe_info *pipeinfo)
@@ -91,6 +60,6 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	if (ret)
 		msh_exit_child(cominfo->com_list);
 	redir_stdout_and_clean(&vec_fds, pipeinfo);
-	exec_command(cominfo, com_seg, &vec_fds);
+	exec_command(cominfo, com_seg);
 	msh_exit_child(cominfo->com_list);
 }
