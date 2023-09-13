@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 12:46:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:48:52 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
 	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)
 		exec_error(vec_fds, cominfo);
-	free(cominfo->command);
 	execve(execve_command, execve_com_args,
 		(char **)cominfo->env_ret->env_vec.data);
 }

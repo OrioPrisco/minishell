@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 11:55:42 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:58:50 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,19 +145,12 @@ bool	save_history(const t_env_ret *env_ret, t_vector *com_list)
 	return (0);
 }
 
-void	history_loop_logic(t_cominfo *cominfo)
+void	history_loop_logic(t_vector *com_list, const char *str)
 {
-	char		*str_input;
-	t_vector	*com_list;
-
-	str_input = cominfo->command;
-	com_list = cominfo->com_list;
-	if (*str_input)
+	if (*str)
 	{
-		if (vector_append(com_list, &str_input))
+		if (vector_append(com_list, &str))
 			msh_error("malloc");
-		add_history(str_input);
+		add_history(str);
 	}
-	else
-		free(str_input);
 }

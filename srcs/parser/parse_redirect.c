@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/13 13:09:13 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/13 17:05:09 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static const t_token	*next_tok(const t_token *tok)
 // 0  means malloc error
 // could possibly put the filename in the redir token here
 int	parse_redirect(t_vector *dest, const t_token *tok,
-		const t_env_ret *env_ret, const char **hd_line)
+		const t_env_ret *env_ret, t_ft_rl *rlinfo)
 {
 	t_owned_token	token;
 	int				to_merge;
@@ -50,7 +50,7 @@ int	parse_redirect(t_vector *dest, const t_token *tok,
 		return (0);
 	token = ((t_owned_token){hd_sep, T_STR, 0});
 	//TODO  call the heredoc function here instead of pushing a token
-	(void)hd_line;
+	(void)rlinfo;
 	if (vector_append(dest, &token))
 		return (free(hd_sep), 0);
 	return (to_merge + 1);

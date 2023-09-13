@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 13:29:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:06:42 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "utils.h"
 #include "env_var.h"
 #include <signal.h>
-#include <readline/readline.h>
+#include "ft_readline.h"
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 {
@@ -73,20 +73,21 @@ int	prompt_loop(char **envp)
 	t_vector		owned_tokens;
 	t_cominfo		cominfo;
 	t_env_ret		env_ret;
+	t_ft_rl			rlinfo;
 
+	ft_rl_init(&rlinfo);
 	ft_bzero(&cominfo, sizeof(cominfo));
 	init_prompt_loop(envp, &env_ret);
 	vector_init(&com_list, sizeof(char *));
+	cominfo = (t_cominfo){&env_ret, &com_list};
 	while (1)
 	{
-		cominfo.command = readline("minishell> ");
-		cominfo = (t_cominfo){cominfo.command, &env_ret, &com_list};
-		if (!cominfo.command)
+		if (!ft_readline(&rlinfo, "minishell> "))
 			msh_exit(&cominfo);
-		if (parse_line(cominfo.command, &owned_tokens, &env_ret))
+		if (parse_line(rlinfo.line, &owned_tokens, &env_ret, &rlinfo))
 			return (1);
 		tree_crawler(&owned_tokens, &cominfo);
-		history_loop_logic(&cominfo);
+		history_loop_logic(cominfo.com_list, ft_strdup("TODO REPLACE ME"));
 		vector_free(&owned_tokens, free_owned_token);
 	}
 	return (0);

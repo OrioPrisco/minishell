@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/13 13:08:55 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/13 17:04:38 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 typedef struct s_vector		t_vector;
 typedef struct s_env_ret	t_env_ret;
+typedef struct s_ft_rl		t_ft_rl;
 
 // explicit values are used in code and shouldn't be changed
 typedef enum e_token_type {
@@ -80,7 +81,7 @@ bool		split_to_tokens(const char *str, t_vector *vec_token,
 
 // parse_line_internals
 int			parse_redirect(t_vector *dest, const t_token *tok,
-				const t_env_ret *env_ret, const char **hd_line);
+				const t_env_ret *env_ret, t_ft_rl *rlinfo);
 int			parse_pipe(t_vector *dest, const t_token *tok);
 bool		merge_tokens(char **dest, const t_token *src, size_t to_merge,
 				const t_env_ret *env_ret);
@@ -92,6 +93,6 @@ int			seek_tokens_to_merge(const t_token *src);
 
 // --
 int			parse_line(const char *line, t_vector *dest,
-				t_env_ret *env_ret);
+				t_env_ret *env_ret, t_ft_rl *rlinfo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:00:30 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 12:17:20 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:03:34 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	check_for_heredoc(t_vector *tokens, int start, int stop)
 **	add_nl_to_com_list
 **	
 */
-
+/*
 bool	append_str_to_com_list(char *str, t_cominfo *cominfo)
 {
 	char	*swap;
@@ -86,7 +86,7 @@ bool	append_str_to_com_list(char *str, t_cominfo *cominfo)
 	if (!cominfo->command)
 		return (1);
 	return (0);
-}
+}*/
 
 /*
 **	here_doc_input_loop
@@ -106,9 +106,9 @@ int	here_doc_input_loop(int *pipefd, char *limiter, t_cominfo *cominfo)
 		if (!str_input)
 			return (close(pipefd[1]), close(pipefd[0]),
 				msh_exit(cominfo), -1);
-		if (append_str_to_com_list("\n", cominfo)
-			|| append_str_to_com_list(str_input, cominfo))
-			return (free(str_input), -1);
+//		if (append_str_to_com_list("\n", cominfo)
+//			|| append_str_to_com_list(str_input, cominfo))
+//			return (free(str_input), -1);
 		if (!ft_strcmp(str_input, limiter))
 			return (free(str_input), 0);
 		ft_dprintf(pipefd[1], "%s\n", str_input);
