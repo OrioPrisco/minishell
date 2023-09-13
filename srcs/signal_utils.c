@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:03:56 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 17:35:27 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 13:25:26 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "libft.h"
 #include <signal.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 /*	
 **	The signal raised by Ctrl-c is SIGINT
@@ -34,7 +35,7 @@
 **	usually after outputting a newline.
 **/
 
-void	sigint_handler(int signum)
+void	sigint_handler_parent(int signum)
 {
 	(void) signum;
 	ft_putstr_fd("\n", 1);
@@ -49,38 +50,20 @@ void	sigint_handler_child(int signum)
 	ft_putstr_fd("\n", 1);
 }
 
-int	sigint_child(void)
+void	sigint_handler_heredoc(int signum)
 {
-	struct sigaction	sa;
-
-	ft_bzero((void *)&sa, sizeof(sa));
-	sa.sa_handler = sigint_handler_child;
-	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (perror("sigaction"), -1);
-	return (0);
+	(void) signum;
+	close(STDIN_FILENO);
 }
 
-int	sigint_parent(void)
+int	signal_assign(int signal, void (*f)(int))
 {
 	struct sigaction	sa;
 
 	ft_bzero((void *)&sa, sizeof(sa));
-	sa.sa_handler = sigint_handler;
+	sa.sa_handler = f;
 	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (perror("sigaction"), -1);
-	return (0);
-}
-
-int	sigquit_parent(void)
-{
-	struct sigaction	sa;
-
-	ft_bzero((void *)&sa, sizeof(sa));
-	sa.sa_handler = SIG_IGN;
-	sa.sa_flags = 0;
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	if (sigaction(signal, &sa, NULL) == -1)
 		return (perror("sigaction"), -1);
 	return (0);
 }

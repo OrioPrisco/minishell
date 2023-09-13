@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 12:33:48 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 13:42:22 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "tokens.h"
 #include "utils.h"
 #include "env_var.h"
+#include <signal.h>
 #include <readline/readline.h>
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
@@ -55,8 +56,8 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 		return (msh_error("malloc"), -1);
 	if (load_in_history(env_ret))
 		return (-1);
-	sigint_parent();
-	sigquit_parent();
+	signal_assign(SIGINT, sigint_handler_parent);
+	signal_assign(SIGQUIT, SIG_IGN);
 	return (0);
 }
 
