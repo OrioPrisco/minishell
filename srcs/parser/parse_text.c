@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 17:47:53 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 14:47:56 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/13 13:09:45 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	parse_text(t_vector *dest, const t_token *tok,
 	}
 	if (merge_tokens(&text, tok, to_merge, env_ret))
 		return (0);
-	token = (t_owned_token){text, T_STR};
+	token = (t_owned_token){text, T_STR, 0};
 	if (vector_append(dest, &token))
 		return (free(text), 0);
 	return (to_merge);

@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 16:48:18 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 21:34:01 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/13 13:08:55 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef enum e_token_type {
 typedef struct s_owned_token {
 	char			*str;
 	t_token_type	type;
+	int				hd;
 }	t_owned_token;
 
 // -- utils

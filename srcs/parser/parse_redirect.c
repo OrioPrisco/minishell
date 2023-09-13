@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/08 21:33:37 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/13 13:09:13 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	parse_redirect(t_vector *dest, const t_token *tok,
 	const t_token	*next;
 	char			*hd_sep;
 
-	token = (t_owned_token){NULL, tok->type};
+	token = (t_owned_token){NULL, tok->type, 0};
 	next = next_tok(tok);
 	if (!is_textexpr_type(next->type))
 		return (ft_dprintf(2, "Parse error near %s\n",
@@ -48,7 +48,7 @@ int	parse_redirect(t_vector *dest, const t_token *tok,
 		return (-1);
 	if (merge_tokens(&hd_sep, tok, to_merge, env_ret))
 		return (0);
-	token = ((t_owned_token){hd_sep, T_STR});
+	token = ((t_owned_token){hd_sep, T_STR, 0});
 	//TODO  call the heredoc function here instead of pushing a token
 	(void)hd_line;
 	if (vector_append(dest, &token))

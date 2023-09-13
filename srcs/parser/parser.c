@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/08 21:33:47 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/13 13:10:43 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	parse_line_int(const char *line, t_vector *dest,
 					free_owned_token), consumed);
 		token += consumed;
 	}
-	tok = (t_owned_token){NULL, T_END};
+	tok = (t_owned_token){NULL, T_END, 0};
 	if (vector_append(dest, &tok))
 		return (vector_clear(&vec_token),
 			vector_free(dest, free_owned_token), 1);

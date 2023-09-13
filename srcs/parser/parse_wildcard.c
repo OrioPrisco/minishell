@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 18:10:24 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 14:52:20 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/13 13:10:01 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	parse_wildcard(t_vector *dest, const t_token *tok,
 	i = 0;
 	while (i < wildcard_result.size)
 	{
-		token = (t_owned_token){((char **)wildcard_result.data)[i++], T_STR};
+		token = (t_owned_token){((char **)wildcard_result.data)[i++], T_STR, 0};
 		if (vector_append(dest, &token))
 			return (vector_free(&wildcard_result, free_str), 0);
 	}
