@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 15:36:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 15:05:38 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	check_for_builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
+	if (!exec_name)
+		return (0);
 	if (0
 		|| !ft_strcmp(exec_name, "cd")
 		|| !ft_strcmp(exec_name, "pwd")

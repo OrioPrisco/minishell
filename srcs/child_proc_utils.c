@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 12:57:23 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 15:09:52 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include "utils.h"
 #include "ft_printf.h"
+#include "tokens.h"
+#include "env_var.h"
 
 void	msh_exit_child(t_vector *com_list)
 {
@@ -31,10 +33,11 @@ void	exec_error(t_vector *vec_fds, t_cominfo *cominfo)
 	msh_exit_child(cominfo->com_list);
 }
 
-void	builtins_cleanup(t_vector *com_list, t_com_segment *com_seg)
+void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg)
 {
+	vector_clear(&cominfo->env_ret->env_vec);
 	vector_clear(com_seg->tokens);
-	msh_exit_child(com_list);
+	msh_exit_child(cominfo->com_list);
 }
 
 /*
