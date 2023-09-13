@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 11:19:28 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:28:59 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 {
 	if (init_envp_vec(envp, env_ret))
 		return (msh_error("malloc"), -1);
-	load_in_history(env_ret);
+	if (load_in_history(env_ret))
+		return (-1);
 	sigint_parent();
 	sigquit_parent();
 	return (0);
@@ -74,7 +75,8 @@ int	prompt_loop(char **envp)
 	t_env_ret		env_ret;
 
 	ft_bzero(&cominfo, sizeof(cominfo));
-	init_prompt_loop(envp, &env_ret);
+	if (init_prompt_loop(envp, &env_ret))
+		return (-1);
 	vector_init(&com_list, sizeof(char *));
 	while (1)
 	{

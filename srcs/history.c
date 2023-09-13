@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 11:15:04 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:29:28 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*history_file_path(const t_env_ret *env_ret, const char *envp_var,
 
 	home = get_env_var(env_ret, envp_var, ft_strlen(envp_var));
 	if (!home)
-		return (0);
+		return (NULL);
 	return (path_concat(home, h_fn));
 }
 
@@ -74,10 +74,12 @@ int	load_in_history(const t_env_ret *env_ret)
 
 	history_fn = history_file_path(env_ret, HISTORY_FILE_PATH,
 			HISTORY_FILE_NAME);
+	if (!history_fn)
+		return (msh_error("malloc"), -1);
 	history_fd = open(history_fn, O_RDONLY);
 	free(history_fn);
 	if (history_fd < 2)
-		return (-1);
+		return (msh_error("open"), -1);
 	gnl_line = get_next_line(history_fd);
 	while (gnl_line)
 	{
@@ -87,8 +89,7 @@ int	load_in_history(const t_env_ret *env_ret)
 		free(gnl_line);
 		gnl_line = get_next_line(history_fd);
 	}
-	close(history_fd);
-	return (0);
+	return (close(history_fd), 0);
 }
 
 /*	
@@ -139,7 +140,7 @@ int	save_history(const t_env_ret *env_ret, t_vector *com_list)
 	return (close(history_fd), 0);
 }
 
-void	history_loop_logic(t_cominfo *cominfo)
+int	history_loop_logic(t_cominfo *cominfo)
 {
 	char		*str_input;
 	t_vector	*com_list;
@@ -149,9 +150,10 @@ void	history_loop_logic(t_cominfo *cominfo)
 	if (*str_input)
 	{
 		if (vector_append(com_list, &str_input))
-			msh_error("malloc");
+			return (msh_error("malloc"), -1);
 		add_history(str_input);
 	}
 	else
 		free(str_input);
+	return (0);
 }
