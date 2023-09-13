@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 11:55:42 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:15:04 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static char	*history_file_path(const t_env_ret *env_ret, const char *envp_var,
  *     (if any) is set to NULL. ))
  */
 
-bool	load_in_history(const t_env_ret *env_ret)
+int	load_in_history(const t_env_ret *env_ret)
 {
 	int		history_fd;
 	char	*history_fn;
@@ -77,7 +77,7 @@ bool	load_in_history(const t_env_ret *env_ret)
 	history_fd = open(history_fn, O_RDONLY);
 	free(history_fn);
 	if (history_fd < 2)
-		return (1);
+		return (-1);
 	gnl_line = get_next_line(history_fd);
 	while (gnl_line)
 	{
@@ -101,15 +101,12 @@ bool	load_in_history(const t_env_ret *env_ret)
 **	
 **/
 
-static bool	history_newline_check(const char *str, int history_fd)
+static int	history_newline_check(const char *str, int history_fd)
 {
 	if (str[ft_strlen(str)] != '\n' && *str)
 	{
 		if (write(history_fd, "\n", 1) < 0)
-		{
-			close(history_fd);
-			msh_error("write");
-		}
+			return (msh_error("write"), -1);
 	}
 	return (0);
 }
@@ -119,7 +116,7 @@ static bool	history_newline_check(const char *str, int history_fd)
 **	access $HOME.
 */
 
-bool	save_history(const t_env_ret *env_ret, t_vector *com_list)
+int	save_history(const t_env_ret *env_ret, t_vector *com_list)
 {
 	char	*history_fn;
 	int		history_fd;
@@ -134,15 +131,12 @@ bool	save_history(const t_env_ret *env_ret, t_vector *com_list)
 	{
 		if (write(history_fd, ((char **)com_list->data)[i],
 			ft_strlen(((char **)com_list->data)[i])) < 0)
-		{
-			close(history_fd);
-			msh_error("write");
-		}
-		history_newline_check(((char **)com_list->data)[i], history_fd);
+			return (close(history_fd), msh_error("write"), -1);
+		if (history_newline_check(((char **)com_list->data)[i], history_fd))
+			break ;
 		i++;
 	}
-	close(history_fd);
-	return (0);
+	return (close(history_fd), 0);
 }
 
 void	history_loop_logic(t_cominfo *cominfo)
