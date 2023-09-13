@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 21:36:50 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/12 16:12:25 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	msh_wait(t_vector *pids)
 		waitpid(current_pid, NULL, 0);
 		vector_pop_n(pids, pids->size - 1, 1);
 	}
+	sigint_parent();
 	return (0);
 }
 
