@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/04 16:34:23 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 12:15:00 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "vector.h"
 #include "libft.h"
 #include "child.h"
+#include "ft_printf.h"
 
 /*
 **	get_command_segment
@@ -66,29 +67,24 @@ int	load_pipe_vec(t_vector *pipes, t_vector *tokens)
 	return (0);
 }
 
-/*
-**	pipe_loop
-**	
-			ft_printf("Pipe detected! Multiple commands:\n");
-**	
-		ft_printf("No pipe detected. Single command:\n");
-**	
-**	I think this 
-*/
-/*
-int	pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes)
+int	count_pipes(t_vector *tokens)
 {
-	int				*pos;
+	int				num_pipes;
+	int				i;
+	t_owned_token	*current;
 
-	while (pipes->size > 1)
+	num_pipes = 0;
+	i = 0;
+	while (i < (int)tokens->size)
 	{
-		pos = (int *)pipes->data;
-		single_command((t_com_segment){tokens, *pos + 1, *(pos + 1)}, cominfo);
-		vector_pop_n(pipes, 0, 1);
+		current = (t_owned_token *)tokens->data + i;
+		if (current->type == T_PIPE)
+			num_pipes++;
+		i++;
 	}
-	return (0);
+	return (num_pipes);
 }
-*/
+
 /*
 **	fork_loop
 **	Errors not handled yet. think about return in case of fork failure or malloc
@@ -100,26 +96,20 @@ int	pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes)
 
 int	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids)
 {
-	t_vector		pipes;
-	int				ret;
+	int				num_pipes;
 	t_pipe_info		pipeinfo;
 
-	ret = 0;
-	vector_init(&pipes, sizeof(int));
+	num_pipes = 0;
 	ft_bzero((void *)&pipeinfo, sizeof(pipeinfo));
 	pipeinfo.old_pipe = -1;
-	ret = load_pipe_vec(&pipes, tokens);
-	if (ret < 0)
-		return (vector_clear(&pipes), -1);
-	else if (ret > 0)
-	{
-		if (pipe_setup(tokens, cominfo, pids, &pipeinfo))
-			return (-1);
-	}
-	else
+	num_pipes = count_pipes(tokens);
+	if (num_pipes == 0)
 	{
 		if (single_fork(tokens, cominfo, pids, &pipeinfo))
 			return (-1);
 	}
-	return (vector_clear(&pipes), ret);
+	else
+		if (pipe_setup(tokens, cominfo, pids, &pipeinfo))
+			return (-1);
+	return (0);
 }
