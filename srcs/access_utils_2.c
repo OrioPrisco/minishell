@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 15:05:38 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:36:15 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ int	check_for_builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 		|| !ft_strcmp(exec_name, "pwd")
 		|| !ft_strcmp(exec_name, "export")
 		|| !ft_strcmp(exec_name, "exit"))
-		builtins_pre_fork(exec_name, com_segment, cominfo);
+	{
+		if (builtins_pre_fork(exec_name, com_segment, cominfo))
+			return (-1);
+	}
 	return (0);
 }
