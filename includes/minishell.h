@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/14 13:38:42 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 14:11:11 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int		signal_assign(int signal, void (*f)(int));
 
 //	ast_utils.c
 int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
-void	cleanup_redirects(t_vector *vec_fds);
 int		check_and_open_redirects(t_vector *tokens, t_vector *vec_fds,
 			int start, int stop);
 

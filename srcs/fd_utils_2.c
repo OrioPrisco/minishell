@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 15:35:34 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 14:13:33 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,44 +43,6 @@ void	print_open_redirects(t_fds *fds, int size)
 		}
 		i++;
 	}
-}
-
-/*	
-**	NOTE: since the the fds.fn is a pointer, these need to be freed here.
-**	This loop only frees 
-**	
-**	after close(fds[i].fd);
-**	ft_printf("closed fd: %d, fn %s, fd_cloexec %d\n",
-		fds[i].fd, fds[i].fn, fds[i].fd_cloexec);
-**	before free(fds[i].fn);
-*/
-
-int	close_open_redirects(t_vector *vec_fds)
-{
-	t_fds	*fds;
-	int		i;
-
-	if (!vec_fds || !vec_fds->data)
-		return (0);
-	i = vec_fds->size - 1;
-	fds = (t_fds *)vec_fds->data;
-	if (fds)
-	{
-		while (i >= 0)
-		{
-			if (fds[i].fd_cloexec)
-			{
-				close(fds[i].fd);
-				free(fds[i].fn);
-				vector_pop(vec_fds, i,
-					&(((t_fds *)vec_fds->data)[vec_fds->size]));
-			}
-			i--;
-		}
-	}
-	if (vec_fds->size <= 0)
-		vector_free(vec_fds, free_fds);
-	return (0);
 }
 
 /*	
@@ -142,7 +104,7 @@ bool	redir_stdout_and_clean(t_vector *vec_fds, t_pipe_info *pipeinfo)
 		last = ((t_fds *)vec_fds->data + vec_fds->size - 1)->fd;
 		dup2(last, 1);
 	}
-	cleanup_redirects(vec_fds);
+	vector_free(vec_fds, free_fds);
 	cleanup_pipes(pipeinfo);
 	return (0);
 }
