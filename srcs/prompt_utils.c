@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 13:42:22 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 11:33:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,24 +98,3 @@ int	prompt_loop(char **envp)
 	}
 	return (0);
 }
-
-/*
-int main(int argc, char **argv, char **epnvp)
-{
-	t_vector		owned_tokens;
-	size_t			i;
-	t_owned_token	*token;
-
-	(void)argc;
-	(void)argv;
-	i = 0;
-	if (parse_line(readline("minishell >"), &owned_tokens, env_ret))
-		return (1);
-	while (i < owned_tokens.size)
-	{
-		token = ((t_owned_token *)owned_tokens.data) + i;
-		printf("%s : %s\n", token_type_to_str(token->type), token->str);
-		i++;
-	}
-}
-*/

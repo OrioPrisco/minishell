@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 17:49:25 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:20:54 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*history_file_path(const t_env_ret *env_ret, const char *envp_var,
 	const char	*home;
 
 	home = get_env_var(env_ret, envp_var, ft_strlen(envp_var));
-	if (!home)
+	if (!home || !*home)
 	{
 		home = (char *)malloc(sizeof(char));
 		if (!home)
@@ -87,7 +87,7 @@ int	load_in_history(const t_env_ret *env_ret)
 	history_fd = open(history_fn, O_RDONLY);
 	free(history_fn);
 	if (history_fd < 2)
-		return (msh_error("open"), -1);
+		return (0);
 	gnl_line = get_next_line(history_fd);
 	while (gnl_line)
 	{
@@ -133,6 +133,10 @@ int	save_history(const t_env_ret *env_ret, t_vector *com_list)
 
 	history_fn = history_file_path(env_ret,
 			HISTORY_FILE_PATH, HISTORY_FILE_NAME);
+	if (!history_fn)
+		return (msh_error("malloc"), -1);
+	if (!*history_fn)
+		return (free(history_fn), 0);
 	history_fd = open(history_fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	free(history_fn);
 	i = 0;
