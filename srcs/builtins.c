@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 16:37:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 14:23:46 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,6 @@
 #include "ft_printf.h"
 #include "utils.h"
 #include <stdlib.h>
-
-/*
-	NAME
-		exit
-	DESCRIPTION
-		
-	RETURN
-		
-*/
-
-void	exit_msh(char *execve_command, char **execve_com_args, char **envp)
-{
-	(void) execve_command;
-	(void) execve_com_args;
-	(void) envp;
-}
 
 /*
 	NAME
