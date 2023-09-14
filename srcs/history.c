@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 16:58:50 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/14 12:47:55 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,12 +145,14 @@ bool	save_history(const t_env_ret *env_ret, t_vector *com_list)
 	return (0);
 }
 
-void	history_loop_logic(t_vector *com_list, const char *str)
+void	history_loop_logic(t_vector *com_list, char *str)
 {
-	if (*str)
+	if (*str != ' ' && *str)
 	{
 		if (vector_append(com_list, &str))
 			msh_error("malloc");
 		add_history(str);
 	}
+	else
+		free(str);
 }
