@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 11:55:21 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:50:54 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ int	tree_crawler(t_vector *tokens, t_cominfo *cominfo)
 
 	vector_init(&pids, sizeof(int));
 	if (fork_loop(tokens, cominfo, &pids))
-		return (-1);
-	msh_wait(&pids);
-	vector_clear(&pids);
-	return (0);
+		return (msh_wait(&pids), vector_clear(&pids), -1);
+	return (msh_wait(&pids), vector_clear(&pids), 0);
 }
