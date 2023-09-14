@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/12 11:36:33 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 11:33:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "tokens.h"
 #include "utils.h"
 #include "env_var.h"
+#include <signal.h>
 #include <readline/readline.h>
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
@@ -52,10 +53,11 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 {
 	if (init_envp_vec(envp, env_ret))
-		msh_error("malloc");
-	load_in_history(env_ret);
-	sigint_setup();
-	sigquit_setup();
+		return (msh_error("malloc"), -1);
+	if (load_in_history(env_ret))
+		return (-1);
+	signal_assign(SIGINT, sigint_handler_parent);
+	signal_assign(SIGQUIT, SIG_IGN);
 	return (0);
 }
 
@@ -72,9 +74,11 @@ int	prompt_loop(char **envp)
 	t_vector		owned_tokens;
 	t_cominfo		cominfo;
 	t_env_ret		env_ret;
+	int				ret;
 
 	ft_bzero(&cominfo, sizeof(cominfo));
-	init_prompt_loop(envp, &env_ret);
+	if (init_prompt_loop(envp, &env_ret))
+		return (-1);
 	vector_init(&com_list, sizeof(char *));
 	while (1)
 	{
@@ -82,32 +86,15 @@ int	prompt_loop(char **envp)
 		cominfo = (t_cominfo){cominfo.command, &env_ret, &com_list};
 		if (!cominfo.command)
 			msh_exit(&cominfo);
-		if (parse_line(cominfo.command, &owned_tokens, &env_ret))
-			return (1);
+		ret = parse_line(cominfo.command, &owned_tokens, &env_ret);
+		if (ret < 0)
+			continue ;
+		else if (ret == 1)
+			return (-1);
 		tree_crawler(&owned_tokens, &cominfo);
-		history_loop_logic(&cominfo);
+		if (history_loop_logic(&cominfo))
+			return (-1);
 		vector_free(&owned_tokens, free_owned_token);
 	}
 	return (0);
 }
-
-/*
-int main(int argc, char **argv, char **epnvp)
-{
-	t_vector		owned_tokens;
-	size_t			i;
-	t_owned_token	*token;
-
-	(void)argc;
-	(void)argv;
-	i = 0;
-	if (parse_line(readline("minishell >"), &owned_tokens, env_ret))
-		return (1);
-	while (i < owned_tokens.size)
-	{
-		token = ((t_owned_token *)owned_tokens.data) + i;
-		printf("%s : %s\n", token_type_to_str(token->type), token->str);
-		i++;
-	}
-}
-*/
