@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 21:20:32 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/14 12:33:04 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,36 +94,3 @@ bool	split_to_tokens(const char *str, t_vector *vec_token,
 		return (vector_clear(vec_token), 1);
 	return (*hd_line = str, 0);
 }
-
-/*
-#include <readline/readline.h>
-#include <stdio.h>
-#include "env_var.h"
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_vector		tokens;
-	size_t			i;
-	t_token			*token;
-	char			*line;
-
-	(void)envp;
-	(void)argc;
-	(void)argv;
-	i = 0;
-	line = readline("minishell> ");
-	if (!line)
-		return (1);
-	if (split_to_tokens(line, &tokens))
-		return (1);
-	while (i < tokens.size)
-	{
-		token = ((t_token *)tokens.data) + i;
-		printf("%s : %.*s\n", token_type_to_str(token->type),
-			(int)token->strview.size, token->strview.start);
-		i++;
-	}
-	free(line);
-	vector_clear(&tokens);
-}
-*/
