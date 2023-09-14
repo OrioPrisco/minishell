@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 17:49:25 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/14 11:52:40 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	load_in_history(const t_env_ret *env_ret)
 	history_fd = open(history_fn, O_RDONLY);
 	free(history_fn);
 	if (history_fd < 2)
-		return (msh_error("open"), -1);
+		return (0);
 	gnl_line = get_next_line(history_fd);
 	while (gnl_line)
 	{
