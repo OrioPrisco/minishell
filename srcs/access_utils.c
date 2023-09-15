@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:34:01 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/15 17:39:50 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,11 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
+	{
+		vector_free(&cominfo->env_ret->env_vec, free_str);
+		vector_free(com_segment.tokens, free_owned_token);
 		msh_exit_child(&cominfo->com_list, 1);
+	}
 	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
 		msh_error("malloc");
@@ -177,7 +181,11 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	}
 	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)
+	{
+		vector_free(&cominfo->env_ret->env_vec, free_str);
+		vector_free(com_segment.tokens, free_owned_token);
 		msh_exit_child(&cominfo->com_list, 127);
+	}
 	execve(execve_command, execve_com_args,
 		(char **)cominfo->env_ret->env_vec.data);
 }
