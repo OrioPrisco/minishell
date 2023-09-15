@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/14 11:33:09 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 14:27:23 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	prompt_loop(char **envp)
 			continue ;
 		else if (ret == 1)
 			return (-1);
-		tree_crawler(&owned_tokens, &cominfo);
+		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
 		if (history_loop_logic(&cominfo))
 			return (-1);
 		vector_free(&owned_tokens, free_owned_token);

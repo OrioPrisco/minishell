@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/14 14:13:22 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 14:20:02 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,10 @@ int	check_and_open_redirects(t_vector *tokens, t_vector *vec_fds,
 int	tree_crawler(t_vector *tokens, t_cominfo *cominfo)
 {
 	t_vector	pids;
+	int			ret;
 
+	ret = 0;
 	vector_init(&pids, sizeof(int));
-	if (fork_loop(tokens, cominfo, &pids))
-		return (msh_wait(&pids), vector_clear(&pids), -1);
-	return (msh_wait(&pids), vector_clear(&pids), 0);
+	ret = fork_loop(tokens, cominfo, &pids);
+	return (msh_wait(&pids), vector_clear(&pids), ret);
 }

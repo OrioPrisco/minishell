@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 13:19:18 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:36:42 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,6 @@ void	msh_exit_child(t_vector *com_list)
 {
 	vector_free(com_list, free_str);
 	exit(EXIT_SUCCESS);
-}
-
-void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg)
-{
-	vector_free(com_seg->tokens, free_owned_token);
-	vector_free(&cominfo->env_ret->env_vec, free_str);
-	msh_exit_child(cominfo->com_list);
 }
 
 int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)

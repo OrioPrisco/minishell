@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/14 14:11:11 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:26:55 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,7 @@ char	*access_loop(const char *command, const t_env_ret *env_ret);
 char	*search_env(char *exec_name, t_cominfo *cominfo,
 			t_com_segment *com_segment);
 void	access_error_print(const char *exec_name);
-int		check_for_builtins(const char *exec_name);
-int		check_for_builtins_pre_fork(t_com_segment com_segment,
-			t_cominfo *cominfo);
 void	exec_command(t_cominfo *cominfo, t_com_segment com_segment);
-void	builtin_commands(char *execve_command, char **execve_com_args,
-			char **envp);
 char	*get_exec_name(t_owned_token *token);
-int		builtins_pre_fork(char *exec_name, t_com_segment com_segment,
-			t_cominfo *cominfo);
 
 #endif

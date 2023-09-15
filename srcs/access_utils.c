@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 16:33:40 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:29:19 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include "utils.h"
 #include "path.h"
 #include "child.h"
+#include "builtins.h"
 
 /*
 **	NAME
