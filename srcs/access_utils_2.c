@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 12:42:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:46:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	access_error_print(const char *exec_name)
 			msh_error(exec_name);
 		else if (access(exec_name, F_OK | X_OK))
 			msh_error(exec_name);
-			//ft_dprintf(2, "%s: Permission denied\n", exec_name);
 	}
 	else
 		ft_dprintf(2, "%s: command not found\n", exec_name);
