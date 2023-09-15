@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/05 21:33:49 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/14 14:07:07 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ void	free_fds(void *to_free)
 	t_fds	*current;
 
 	current = to_free;
+	close(current->fd);
 	free(current->fn);
 }

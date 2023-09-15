@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 17:13:42 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/15 16:48:10 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	msh_error(const char *message);
 void	msh_exit(t_cominfo *cominfo);
 
 //	history.c
-bool	save_history(const t_env_ret *env_ret, t_vector *com_list);
-bool	load_in_history(const t_env_ret *env_ret);
-void	history_loop_logic(t_vector *com_list, char *str);
+int		save_history(const t_env_ret *env_ret, t_vector *com_list);
+int		load_in_history(const t_env_ret *env_ret);
+int		history_loop_logic(t_vector *com_list, char *str);
 
 //	signal_utils.c
 void	sigint_handler_parent(int signum);
@@ -63,7 +63,6 @@ int		signal_assign(int signal, void (*f)(int));
 
 //	ast_utils.c
 int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
-void	cleanup_redirects(t_vector *vec_fds);
 int		check_and_open_redirects(t_vector *tokens, t_vector *vec_fds,
 			int start, int stop);
 
@@ -74,7 +73,7 @@ int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 //	fork_utils.c
 int		msh_wait(t_vector *pids);
 int		print_execve_args(char **execve_com_args);
-char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args);
+char	**construct_execve_args(t_com_segment com_seg);
 int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 			t_pipe_info *pipeinfo);
 int		pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
@@ -93,14 +92,7 @@ char	*access_loop(const char *command, const t_env_ret *env_ret);
 char	*search_env(char *exec_name, t_cominfo *cominfo,
 			t_com_segment *com_segment);
 void	access_error_print(const char *exec_name);
-int		check_for_builtins(const char *exec_name);
-int		check_for_builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo);
-void	exec_command(t_cominfo *cominfo, t_com_segment com_segment,
-			t_vector *vec_fds);
-void	builtin_commands(char *execve_command, char **execve_com_args,
-			char **envp);
+void	exec_command(t_cominfo *cominfo, t_com_segment com_segment);
 char	*get_exec_name(t_owned_token *token);
-void	builtins_pre_fork(char *exec_name, t_com_segment com_segment,
-			t_cominfo *cominfo);
 
 #endif

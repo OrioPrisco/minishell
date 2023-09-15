@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 17:15:06 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/15 16:36:37 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	msh_error(const char *message)
 {
 	ft_putstr_fd("minishell: ", 2);
 	perror(message);
-	exit(EXIT_FAILURE);
 }
 
 void	msh_exit(t_cominfo *cominfo)
