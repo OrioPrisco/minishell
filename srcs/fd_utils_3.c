@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:54:41 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/08 15:03:34 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 13:18:31 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,7 @@ int	cleanup_pipes(t_pipe_info *pipeinfo)
 		close (pipeinfo->pipefd[0]);
 	if (pipeinfo->pipefd[1])
 		close (pipeinfo->pipefd[1]);
+	if (pipeinfo->old_pipe != -1)
+		close (pipeinfo->old_pipe);
 	return (0);
 }
