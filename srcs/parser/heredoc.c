@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/15 14:02:11 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/15 16:11:16 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 		// ft_putstr_fd(str_input, pipefd[1]);
 		// ft_putstr_fd("\n", pipefd[1]);
 */
-
+// TODO : substitute env vars
 static int	here_doc_input_loop(int pipefd, const char *limiter,
 		const t_env_ret *env_ret, t_rlinfo_com rlinfo_com)
 {
@@ -40,7 +40,6 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		ft_rl_set_offset(rlinfo_com.rlinfo, str_input + input_len
 			+ (str_input[input_len] == '\n'));
 		(void)env_ret;
-		//TODO: substitute env vars here
 		if (vector_append_elems(rlinfo_com.command, str_input, input_len)
 			|| vector_append(rlinfo_com.command, "\n"))
 			return (1);
@@ -62,7 +61,7 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		-2 on parsing error.
 		-1 on malloc  error.
 **/
-
+// TODO : handle signals
 int	open_heredoc(const char *limiter, const t_env_ret *env_ret,
 		t_rlinfo_com rlinfo_com)
 {
@@ -76,7 +75,7 @@ int	open_heredoc(const char *limiter, const t_env_ret *env_ret,
 	if (ret == 1)
 		return (close(pipefd[1]), close(pipefd[0]), perror("malloc"), -1);
 	if (ret == -1)
-		return (close(pipefd[1]), close(pipefd[0]), -2); // error message ?
+		return (close(pipefd[1]), close(pipefd[0]), -2);
 	if (vector_null_term(rlinfo_com.command))
 		return (close(pipefd[1]), close(pipefd[0]), perror("malloc"), -1);
 	close(pipefd[1]);
