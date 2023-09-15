@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 15:09:29 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:19:09 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	cd_msh(char *execve_command, char **execve_com_args, char **envp)
 	table_print(execve_com_args);
 	if (chdir(execve_com_args[1]))
 		return (msh_error(""), -1);
-	return (0);
+	return (123);
 }
 
 int	pwd_msh(char *execve_command, char **execve_com_args, char **envp)

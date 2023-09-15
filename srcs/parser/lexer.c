@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/18 13:14:53 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 16:01:38 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static	t_token	get_one_token(t_state	*state, const char *str)
 
 bool	finish_lex(t_rlinfo_com rlinfo_com, const char *str, const char *og_str)
 {
-	ft_rl_set_offset(rlinfo_com.rlinfo, str);
+	rlinfo_com.rlinfo->offset += str - og_str;
 	if (vector_append_elems(rlinfo_com.command, og_str, str - og_str))
 		return (1);
 	if (vector_null_term(rlinfo_com.command))
