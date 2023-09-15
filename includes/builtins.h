@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:24:26 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 14:17:29 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:07:26 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo);
 int		check_for_builtins(const char *exec_name);
 int		builtin_commands(char *execve_command, char **execve_com_args,
 			char **envp);
-void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg);
+void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg, int ret);
 
 void	exit_msh(t_cominfo *cominfo, t_com_segment *com_segment);
 int		echo_msh(char *execve_command, char **execve_com_args, char **envp);
