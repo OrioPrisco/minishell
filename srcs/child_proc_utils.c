@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/07 14:52:10 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:15:47 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	msh_exit_child(t_vector *com_list)
 void	exec_error(t_vector *vec_fds, t_cominfo *cominfo)
 {
 	cleanup_redirects(vec_fds);
-	msh_exit_child(cominfo->com_list);
+	msh_exit_child(&cominfo->com_list);
 }
 
 /*
@@ -89,8 +89,8 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	ret = check_and_open_redirects(com_seg.tokens, &vec_fds, com_seg.start,
 			com_seg.stop);
 	if (ret)
-		msh_exit_child(cominfo->com_list);
+		msh_exit_child(&cominfo->com_list);
 	redir_stdout_and_clean(&vec_fds, pipeinfo);
 	exec_command(cominfo, com_seg, &vec_fds);
-	msh_exit_child(cominfo->com_list);
+	msh_exit_child(&cominfo->com_list);
 }

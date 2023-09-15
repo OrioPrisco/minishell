@@ -15,14 +15,14 @@
 
 # include <stdbool.h>
 # include "tokens.h"
+# include "vector.h"
 
-typedef struct s_vector		t_vector;
 typedef struct s_env_ret	t_env_ret;
 
 typedef struct s_cominfo
 {
 	t_env_ret	*env_ret;
-	t_vector	*com_list;
+	t_vector	com_list;
 }				t_cominfo;
 
 typedef struct s_com_segment

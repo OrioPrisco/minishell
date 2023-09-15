@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 17:06:42 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/13 17:12:59 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,25 +69,25 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 
 int	prompt_loop(char **envp)
 {
-	t_vector		com_list;
 	t_vector		owned_tokens;
 	t_cominfo		cominfo;
 	t_env_ret		env_ret;
 	t_ft_rl			rlinfo;
+	char			*command;
 
 	ft_rl_init(&rlinfo);
 	ft_bzero(&cominfo, sizeof(cominfo));
 	init_prompt_loop(envp, &env_ret);
-	vector_init(&com_list, sizeof(char *));
-	cominfo = (t_cominfo){&env_ret, &com_list};
+	vector_init(&cominfo.com_list, sizeof(char *));
+	cominfo.env_ret = &env_ret;
 	while (1)
 	{
 		if (!ft_readline(&rlinfo, "minishell> "))
 			msh_exit(&cominfo);
-		if (parse_line(rlinfo.line, &owned_tokens, &env_ret, &rlinfo))
+		if (parse_line(&command, &owned_tokens, &env_ret, &rlinfo))
 			return (1);
 		tree_crawler(&owned_tokens, &cominfo);
-		history_loop_logic(cominfo.com_list, ft_strdup("TODO REPLACE ME"));
+		history_loop_logic(&cominfo.com_list, command);
 		vector_free(&owned_tokens, free_owned_token);
 	}
 	return (0);

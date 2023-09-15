@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/13 17:04:12 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/14 12:39:03 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
 // could theoritcally use an array of function pointers,
 //  but there are gaps in the token_type enum
 static int	process_one_token(t_vector *dest, const t_token *tok,
-				const t_env_ret *env_ret, t_ft_rl *rlinfo)
+				const t_env_ret *env_ret, t_rlinfo_com rlinfocom)
 {
 	if (tok->type == T_SPACE)
 		return (1);
 	if (is_redirect_type(tok->type))
-		return (parse_redirect(dest, tok, env_ret, rlinfo));
+		return (parse_redirect(dest, tok, env_ret, rlinfocom));
 	if (tok->type == T_PIPE)
 		return (parse_pipe(dest, tok));
 	if (is_textexpr_type(tok->type))
@@ -43,25 +43,24 @@ static int	process_one_token(t_vector *dest, const t_token *tok,
 //returns  1 on malloc error and free the vector
 //returns -1 on parsing error, frees the vector, and prints an error to stderr
 //returns  0 on success, and the vector will be populated
-static int	parse_line_int(const char *line, t_vector *dest,
+static int	parse_line_int(t_vector *command, t_vector *dest,
 				const t_env_ret *env_ret, t_ft_rl *rlinfo)
 {
 	t_vector		vec_token;
 	t_token			*token;
 	int				consumed;
 	t_owned_token	tok;
-	const char		*hd_line;
+	t_rlinfo_com	rlinfo_com;
 
+	rlinfo_com = (t_rlinfo_com){rlinfo, command};
 	vector_init(&vec_token, sizeof(t_token));
-	vector_init(dest, sizeof(t_owned_token));
-	if (split_to_tokens(line, &vec_token, &hd_line))
+	if (split_to_tokens(rlinfo->line + rlinfo->offset, &vec_token, rlinfo_com))
 		return (vector_clear(&vec_token), 1);
-	ft_rl_set_offset(rlinfo, hd_line);
 	token = vec_token.data;
 	consumed = 0;
 	while (token->type != T_END)
 	{
-		consumed = process_one_token(dest, token, env_ret, rlinfo);
+		consumed = process_one_token(dest, token, env_ret, rlinfo_com);
 		if (consumed <= 0)
 			return (vector_clear(&vec_token), vector_free(dest,
 					free_owned_token), consumed);
@@ -74,15 +73,19 @@ static int	parse_line_int(const char *line, t_vector *dest,
 	return (vector_clear(&vec_token), 0);
 }
 
-int	parse_line(const char *line, t_vector *dest, t_env_ret *env_ret,
+int	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 		t_ft_rl *rlinfo)
 {
-	int	ret;
+	int			ret;
+	t_vector	command;
 
-	ret = parse_line_int(line, dest, env_ret, rlinfo);
+	vector_init(&command, sizeof(char));
+	vector_init(dest, sizeof(t_owned_token));
+	ret = parse_line_int(&command, dest, env_ret, rlinfo);
 	if (ret == -1)
 		env_ret->prev_ret = PARSE_ERROR;
 	else
 		env_ret->prev_ret = 0;
+	*parsed = vector_move_data(&command);
 	return (ret);
 }
