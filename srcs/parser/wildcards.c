@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 14:58:08 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/13 13:10:26 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	compile_wildcard_expr(const t_token *src, t_vector *dest,
 	vector_init(dest, sizeof(t_owned_token));
 	while (merged < to_merge)
 	{
-		token = (t_owned_token){NULL, T_STR};
+		token = (t_owned_token){NULL, T_STR, 0};
 		if (src[merged].type != T_WILDCARD && src[merged].type != T_DIR_SEP)
 		{
 			ret = merge_text(src + merged, &token.str, env, to_merge - merged);
@@ -76,11 +76,11 @@ bool	compile_wildcard_expr(const t_token *src, t_vector *dest,
 			merged += ret;
 		}
 		else
-			token = (t_owned_token){NULL, src[merged++].type};
+			token = (t_owned_token){NULL, src[merged++].type, 0};
 		if (vector_append(dest, &token))
 			return (vector_free(dest, free_owned_token), 1);
 	}
-	token = (t_owned_token){NULL, T_END};
+	token = (t_owned_token){NULL, T_END, 0};
 	if (vector_append(dest, &token))
 		return (vector_free(dest, free_owned_token), 1);
 	return (0);

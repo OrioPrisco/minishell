@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 11:10:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:36:37 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	msh_error(const char *message)
 
 void	msh_exit(t_cominfo *cominfo)
 {
-	save_history(cominfo->env_ret, cominfo->com_list);
-	vector_free(cominfo->com_list, free_str);
+	save_history(cominfo->env_ret, &cominfo->com_list);
+	vector_free(&cominfo->com_list, free_str);
 	vector_free(&cominfo->env_ret->env_vec, free_str);
 	ft_putstr_fd("exit\n", 1);
 	exit(EXIT_SUCCESS);

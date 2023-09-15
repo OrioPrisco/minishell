@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:06:48 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:52:32 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,5 @@ void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg, int ret)
 {
 	vector_free(com_seg->tokens, free_owned_token);
 	vector_free(&cominfo->env_ret->env_vec, free_str);
-	msh_exit_child(cominfo->com_list, ret);
+	msh_exit_child(&cominfo->com_list, ret);
 }

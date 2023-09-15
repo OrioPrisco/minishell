@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 14:27:23 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:51:39 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "utils.h"
 #include "env_var.h"
 #include <signal.h>
-#include <readline/readline.h>
+#include "ft_readline.h"
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 {
@@ -70,29 +70,30 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 
 int	prompt_loop(char **envp)
 {
-	t_vector		com_list;
 	t_vector		owned_tokens;
 	t_cominfo		cominfo;
 	t_env_ret		env_ret;
+	t_ft_rl			rlinfo;
+	char			*command;
 	int				ret;
 
+	ft_rl_init(&rlinfo);
 	ft_bzero(&cominfo, sizeof(cominfo));
 	if (init_prompt_loop(envp, &env_ret))
 		return (-1);
-	vector_init(&com_list, sizeof(char *));
+	vector_init(&cominfo.com_list, sizeof(char *));
+	cominfo.env_ret = &env_ret;
 	while (1)
 	{
-		cominfo.command = readline("minishell> ");
-		cominfo = (t_cominfo){cominfo.command, &env_ret, &com_list};
-		if (!cominfo.command)
+		if (!ft_readline(&rlinfo, "minishell> "))
 			msh_exit(&cominfo);
-		ret = parse_line(cominfo.command, &owned_tokens, &env_ret);
+		ret = parse_line(&command, &owned_tokens, &env_ret, &rlinfo);
 		if (ret < 0)
 			continue ;
 		else if (ret == 1)
 			return (-1);
 		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
-		if (history_loop_logic(&cominfo))
+		if (history_loop_logic(&cominfo.com_list, command))
 			return (-1);
 		vector_free(&owned_tokens, free_owned_token);
 	}

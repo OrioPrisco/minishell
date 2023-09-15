@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/15 13:41:30 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/09/15 16:29:23 by OrioPrisc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,8 @@ SRC				=	minishell.c \
 					parser/lexer.c \
 					parser/merge_tokens.c \
 					parser/parser.c \
+					parser/heredoc.c \
+					ft_readline.c \
 
 NAME			=	minishell
 

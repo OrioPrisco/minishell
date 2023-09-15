@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:08:01 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:36:28 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,33 @@ int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 	return (0);
 }
 
+static void	open_heredocs(t_owned_token *tok, size_t start, size_t stop)
+{
+	size_t	i;
+
+	i = start;
+	while (i < stop)
+	{
+		if (tok[i].type == T_HEREDOC)
+		{
+			close(STDIN_FILENO);
+			dup2(tok[i].hd, STDIN_FILENO);
+			close(tok[i].hd);
+			tok[i].hd = 0;
+		}
+		i++;
+	}
+}
+
+/*	
+**	tokens is pointer to token space
+**	return could be return status of command?
+**	print_relavent_tokens(tokens, start, stop);
+**	print_open_redirects((t_fds *)vec_fds.data, vec_fds.size);
+
+**	RETURN
+**		Function does not return, child process should terminate here in some way.
+**/
 void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 			t_pipe_info *pipeinfo)
 {
@@ -54,8 +81,9 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	ret = check_and_open_redirects(com_seg.tokens, &vec_fds, com_seg.start,
 			com_seg.stop);
 	if (ret)
-		msh_exit_child(cominfo->com_list, ret);
+		msh_exit_child(&cominfo->com_list, ret);
+	open_heredocs(com_seg.tokens->data, com_seg.start, com_seg.stop);
 	redir_stdout_and_clean(&vec_fds, pipeinfo);
 	exec_command(cominfo, com_seg);
-	msh_exit_child(cominfo->com_list, ret);
+	msh_exit_child(&cominfo->com_list, ret);
 }

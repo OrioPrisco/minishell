@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 17:15:56 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/07 12:57:30 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/13 13:09:27 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	parse_pipe(t_vector *dest, const t_token *tok)
 {
 	t_owned_token	token;
 
-	token = (t_owned_token){NULL, T_PIPE};
+	token = (t_owned_token){NULL, T_PIPE, 0};
 	if (tok[1].type == T_END
 		|| (tok[1].type == T_SPACE && tok[2].type == T_END))
 		return (ft_dprintf(2, "Parse error near \\n\n"), -1);

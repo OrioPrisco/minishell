@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 13:01:40 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:37:15 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	msh_wait(t_vector *pids)
 	current_pid = 0;
 	while (pids->size > 0)
 	{
-		current_pid = *((int *)pids->data); //+ pids->size - 1);
+		current_pid = *((int *)pids->data);
 		waitpid(current_pid, NULL, 0);
 		vector_pop_n(pids, 0, 1);
 	}
@@ -82,7 +82,7 @@ char	**construct_execve_args(t_com_segment com_seg)
 	vector_init(&args, sizeof(char *));
 	while (token->type != T_END && token->type != T_PIPE)
 	{
-		if (is_redirect_type(token->type))
+		if (is_redirect_type(token->type) && token->type != T_HEREDOC)
 			token++;
 		else if (token->type == T_STR)
 		{

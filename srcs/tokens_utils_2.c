@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:33:01 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/06 20:30:25 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/13 13:31:14 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "vector.h"
+#include <unistd.h>
 
 void	free_owned_token(void *owned_token)
 {
@@ -21,6 +22,8 @@ void	free_owned_token(void *owned_token)
 
 	current = (t_owned_token *)owned_token;
 	free(current->str);
+	if (current->hd)
+		close(current->hd);
 }
 
 void	print_tokens(t_vector *owned_tokens)

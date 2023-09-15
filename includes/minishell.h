@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 13:26:55 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:48:10 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,14 @@
 
 # include <stdbool.h>
 # include "tokens.h"
+# include "vector.h"
 
-typedef struct s_vector		t_vector;
 typedef struct s_env_ret	t_env_ret;
 
 typedef struct s_cominfo
 {
-	char		*command;
 	t_env_ret	*env_ret;
-	t_vector	*com_list;
+	t_vector	com_list;
 }				t_cominfo;
 
 typedef struct s_com_segment
@@ -54,7 +53,7 @@ void	msh_exit(t_cominfo *cominfo);
 //	history.c
 int		save_history(const t_env_ret *env_ret, t_vector *com_list);
 int		load_in_history(const t_env_ret *env_ret);
-int		history_loop_logic(t_cominfo *cominfo);
+int		history_loop_logic(t_vector *com_list, char *str);
 
 //	signal_utils.c
 void	sigint_handler_parent(int signum);
