@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 17:15:47 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/15 14:48:24 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,24 @@ int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 	//	pipeinfo->old_pipe);
 **/
 
+static void	open_heredocs(t_owned_token *tok, size_t start, size_t stop)
+{
+	size_t	i;
+
+	i = start;
+	while (i < stop)
+	{
+		if (tok[i].type == T_HEREDOC)
+		{
+			close(STDIN_FILENO);
+			dup2(tok[i].hd, STDIN_FILENO);
+			close(tok[i].hd);
+			tok[i].hd = 0;
+		}
+		i++;
+	}
+}
+
 void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 			t_pipe_info *pipeinfo)
 {
@@ -90,6 +108,7 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 			com_seg.stop);
 	if (ret)
 		msh_exit_child(&cominfo->com_list);
+	open_heredocs(com_seg.tokens->data, com_seg.start, com_seg.stop);
 	redir_stdout_and_clean(&vec_fds, pipeinfo);
 	exec_command(cominfo, com_seg, &vec_fds);
 	msh_exit_child(&cominfo->com_list);

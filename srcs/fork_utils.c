@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 13:29:51 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 14:59:10 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ char	**construct_execve_args(t_com_segment com_seg, char **execve_com_args)
 	token = (t_owned_token *)com_seg.tokens->data + com_seg.start;
 	while (token->type != T_END && token->type != T_PIPE)
 	{
-		if (is_redirect_type(token->type))
+		if (is_redirect_type(token->type) && token->type != T_HEREDOC)
 			token++;
 		else if (token->type == T_STR)
 		{
