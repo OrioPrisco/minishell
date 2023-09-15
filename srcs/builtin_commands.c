@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 14:30:21 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 14:44:34 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "vector.h"
 #include "ft_printf.h"
+#include "utils.h"
 
 int	cd_msh(char *execve_command, char **execve_com_args, char **envp)
 {
@@ -21,6 +22,7 @@ int	cd_msh(char *execve_command, char **execve_com_args, char **envp)
 	(void) execve_com_args;
 	(void) envp;
 	ft_printf("You made it to cd_msh\n");
+	table_print(execve_com_args);
 	return (123);
 }
 
@@ -30,6 +32,7 @@ int	pwd_msh(char *execve_command, char **execve_com_args, char **envp)
 	(void) execve_com_args;
 	(void) envp;
 	ft_printf("You made it to pwd_msh\n");
+	table_print(execve_com_args);
 	return (0);
 }
 
@@ -39,6 +42,7 @@ int	export_msh(char *execve_command, char **execve_com_args, char **envp)
 	(void) execve_com_args;
 	(void) envp;
 	ft_printf("You made it to export_msh\n");
+	table_print(execve_com_args);
 	return (0);
 }
 

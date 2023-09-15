@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 14:23:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/15 14:41:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,16 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 	char	*exec_name;
 	int		ret;
 
+	ret = 0;
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
 		return (-1);
 	if (!ft_strcmp(exec_name, "exit"))
 		exit_msh(cominfo, &com_segment);
-	ret = 0;
-	execve_com_args = 0;
-	// enter code to built execve_com_args
+	execve_com_args = construct_execve_args(com_segment);
+	if (!execve_com_args)
+		msh_error("malloc");
 	if (!ft_strcmp(exec_name, "cd"))
 		ret = cd_msh(exec_name, execve_com_args,
 				(char **)cominfo->env_ret->env_vec.data);
@@ -62,7 +63,7 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 	else if (!ft_strcmp(exec_name, "export"))
 		ret = export_msh(exec_name, execve_com_args,
 				(char **)cominfo->env_ret->env_vec.data);
-	return (ret);
+	return (table_free(execve_com_args), ret);
 }
 
 int	check_for_builtins(const char *exec_name)
