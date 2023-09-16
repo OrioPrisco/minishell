@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/19 14:00:12 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 14:00:35 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 	t_rlinfo_com	rlinfo_com;
 	char			*line_cpy;
 
-	line_cpy = ft_strdup(ft_readline(rlinfo, "minishell> "));
+	line_cpy = ft_strdup(rlinfo->line + rlinfo->offset);
 	if (!line_cpy)
 		return (1);
 	rlinfo_com = (t_rlinfo_com){rlinfo, &command};
