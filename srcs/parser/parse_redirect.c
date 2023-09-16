@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/18 13:15:08 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 16:02:38 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	parse_hd(t_vector *dest, const t_token *tok,
 		return (0);
 	ret = open_heredoc(hd_sep, env_ret, rlinfo_com);
 	free(hd_sep);
-	if (ret == 1 || ret == -1)
-		return (ret);
+	if (ret < 0)
+		return (ret + 1);
 	token = (t_owned_token){NULL, T_HEREDOC, ret};
 	if (vector_append(dest, &token))
 		return (0);
