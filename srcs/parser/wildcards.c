@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/13 13:10:26 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 13:16:19 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "utils.h"
 #include <stdlib.h>
 #include "env_var.h"
+#include "parser_int.h"
 
 // 0 means malloc error
 // returns tokens munched
