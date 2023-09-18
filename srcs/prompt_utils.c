@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 13:54:31 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 13:56:55 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "ft_readline.h"
 #include "msh_signal.h"
 #include "parser.h"
+#include "error.h"
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 {
@@ -75,6 +76,8 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 **	print_tokens(&owned_tokens);
 **/
 
+// TODO : cal ft_rl_clear on error
+// also clear owned_token on history failure
 int	prompt_loop(char **envp)
 {
 	t_vector		owned_tokens;
@@ -82,7 +85,6 @@ int	prompt_loop(char **envp)
 	t_env_ret		env_ret;
 	t_ft_rl			rlinfo;
 	char			*command;
-	int				ret;
 
 	if (init_prompt_loop(envp, &env_ret, &rlinfo, &cominfo))
 		return (-1);
@@ -90,11 +92,10 @@ int	prompt_loop(char **envp)
 	{
 		if (!ft_readline(&rlinfo, "minishell> "))
 			msh_exit(&cominfo);
-		ret = parse_line(&command, &owned_tokens, &env_ret, &rlinfo);
-		if (ret < 0)
-			continue ;
-		else if (ret == 1)
+		if (parse_line(&command, &owned_tokens, &env_ret, &rlinfo))
 			return (-1);
+		if (env_ret.prev_ret == PARSE_ERROR)
+			continue ;
 		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
 		if (history_loop_logic(&cominfo.com_list, command))
 			return (-1);
