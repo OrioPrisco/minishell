@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/18 16:06:51 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 17:34:34 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "tokens.h"
 #include "parser_int.h"
 #include "msh_signal.h"
+#include <signal.h>
 
 /*
 **	here_doc_input_loop
@@ -67,17 +68,27 @@ int	open_heredoc(const char *limiter, const t_env_ret *env_ret,
 {
 	int			ret;
 	int			pipefd[2];
+	int			stdin_dup;
 
 	ft_bzero((void *)pipefd, sizeof(pipefd));
+	stdin_dup = dup(STDIN_FILENO);
+	if (stdin_dup == -1)
+		return (perror("dup"), -1);
 	if (pipe(pipefd))
-		return (perror("pipe"), -2);
+		return (close(stdin_dup), perror("pipe"), -1);
+	if (signal_assign(SIGINT, sigint_handler_heredoc))
+		return (close(stdin_dup), close(pipefd[0]), close(pipefd[1]), -1);
 	ret = here_doc_input_loop(pipefd[1], limiter, env_ret, rlinfo_com);
-	if (ret == 1)
-		return (close(pipefd[1]), close(pipefd[0]), perror("malloc"), -1);
-	if (ret == -1)
-		return (close(pipefd[1]), close(pipefd[0]), -2);
-	if (vector_null_term(rlinfo_com.command))
-		return (close(pipefd[1]), close(pipefd[0]), perror("malloc"), -1);
 	close(pipefd[1]);
+	dup2(stdin_dup, STDIN_FILENO);
+	close(stdin_dup);
+	if (ret == 1)
+		return (close(pipefd[0]), perror("malloc"), -1);
+	if (ret == -1)
+		return (close(pipefd[0]), -2);
+	if (vector_null_term(rlinfo_com.command))
+		return (close(pipefd[0]), perror("malloc"), -1);
+	if (signal_assign(SIGINT, sigint_handler_parent))
+		return (close(pipefd[0]), -1);
 	return (pipefd[0]);
 }
