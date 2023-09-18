@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/18 16:03:57 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 16:06:51 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@
 #include "env_var.h"
 #include "tokens.h"
 #include "parser_int.h"
+#include "msh_signal.h"
 
 /*
 **	here_doc_input_loop
 **	
-		// ft_putstr_fd(str_input, pipefd[1]);
-		// ft_putstr_fd("\n", pipefd[1]);
 */
 // TODO : substitute env vars
 static int	here_doc_input_loop(int pipefd, const char *limiter,
