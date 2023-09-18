@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:48:10 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 12:51:26 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,6 @@ void	msh_exit(t_cominfo *cominfo);
 int		save_history(const t_env_ret *env_ret, t_vector *com_list);
 int		load_in_history(const t_env_ret *env_ret);
 int		history_loop_logic(t_vector *com_list, char *str);
-
-//	signal_utils.c
-void	sigint_handler_parent(int signum);
-void	sigint_handler_child(int signum);
-void	sigint_handler_heredoc(int signum);
-int		signal_assign(int signal, void (*f)(int));
 
 //	ast_utils.c
 int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);

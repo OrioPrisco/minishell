@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:37:15 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 12:57:13 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 #include "utils.h"
+#include "msh_signal.h"
 
 /*
 **	msh_wait
