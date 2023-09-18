@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/18 13:11:55 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 13:54:31 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 **	provides more information than the signal function.
 **/
 
-static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
+static int	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
+				t_cominfo *cominfo)
 {
 	if (init_envp_vec(envp, env_ret))
 		return (msh_error("malloc"), -1);
@@ -60,6 +61,10 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 		return (-1);
 	signal_assign(SIGINT, sigint_handler_parent);
 	signal_assign(SIGQUIT, SIG_IGN);
+	ft_rl_init(rlinfo);
+	ft_bzero(cominfo, sizeof(cominfo));
+	vector_init(&cominfo->com_list, sizeof(char *));
+	cominfo->env_ret = env_ret;
 	return (0);
 }
 
@@ -79,12 +84,8 @@ int	prompt_loop(char **envp)
 	char			*command;
 	int				ret;
 
-	ft_rl_init(&rlinfo);
-	ft_bzero(&cominfo, sizeof(cominfo));
-	if (init_prompt_loop(envp, &env_ret))
+	if (init_prompt_loop(envp, &env_ret, &rlinfo, &cominfo))
 		return (-1);
-	vector_init(&cominfo.com_list, sizeof(char *));
-	cominfo.env_ret = &env_ret;
 	while (1)
 	{
 		if (!ft_readline(&rlinfo, "minishell> "))
