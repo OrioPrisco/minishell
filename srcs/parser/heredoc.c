@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/19 12:29:09 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 15:13:50 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 {
 	const char	*str_input;
 	size_t		input_len;
+	size_t		limiter_len;
 
+	limiter_len = ft_strlen(limiter);
 	while (1)
 	{
 		str_input = ft_readline(rlinfo_com.rlinfo, "heredoc> ");
@@ -44,7 +46,7 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		if (vector_append(rlinfo_com.command, "\n")
 			|| vector_append_elems(rlinfo_com.command, str_input, input_len))
 			return (1);
-		if (!ft_strncmp(str_input, limiter, input_len))
+		if (!ft_strncmp(str_input, limiter, limiter_len))
 			return (0);
 		write(pipefd, str_input, ft_strcspn(str_input, "\n"));
 		write(pipefd, "\n", 1);
