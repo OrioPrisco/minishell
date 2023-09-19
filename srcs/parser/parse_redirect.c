@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/15 14:18:41 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 13:15:08 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "vector.h"
 #include "ft_printf.h"
 #include <stdlib.h>
+#include "parser_int.h"
 
 static const t_token	*next_tok(const t_token *tok)
 {

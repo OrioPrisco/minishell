@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/14 12:39:03 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 13:15:53 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "env_var.h"
 #include "error.h"
 #include "ft_readline.h"
+#include "parser.h"
+#include "parser_int.h"
 
 // munches some tokens and appends an owned_token to dest
 //  returns 0  in case of malloc error (munching 0 tokens is nonsensical)

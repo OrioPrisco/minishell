@@ -6,13 +6,14 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 17:47:53 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/13 13:09:45 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 13:15:14 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
 #include "vector.h"
 #include <stdlib.h>
+#include "parser_int.h"
 
 bool	is_wildcard_expr(const t_token	*tok, int to_merge)
 {

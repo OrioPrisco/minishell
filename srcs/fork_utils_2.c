@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:44:53 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 14:18:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:58:24 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "libft.h"
 #include <signal.h>
 #include "builtins.h"
+#include "msh_signal.h"
 
 int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 		t_pipe_info *pipeinfo)

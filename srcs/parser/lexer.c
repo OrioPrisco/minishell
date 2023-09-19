@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/14 12:45:23 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 13:14:53 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "tokens.h"
 #include "vector.h"
 #include "ft_readline.h"
+#include "parser_int.h"
 
 typedef enum e_state
 {
