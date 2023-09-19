@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/18 13:15:53 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 13:56:26 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	parse_line_int(t_vector *command, t_vector *dest,
 	return (vector_clear(&vec_token), 0);
 }
 
-int	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
+bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 		t_ft_rl *rlinfo)
 {
 	int			ret;
@@ -87,7 +87,7 @@ int	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 	if (ret == -1)
 		env_ret->prev_ret = PARSE_ERROR;
 	else
-		env_ret->prev_ret = 0;
+		env_ret->prev_ret = SUCCESS;
 	*parsed = vector_move_data(&command);
-	return (ret);
+	return (ret == 1);
 }
