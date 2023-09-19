@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:03:56 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/18 12:57:39 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 11:24:55 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 **	usually after outputting a newline.
 **/
 
+volatile int	g_sig_triggered;
+
 void	sigint_handler_parent(int signum)
 {
 	(void) signum;
@@ -55,6 +57,8 @@ void	sigint_handler_heredoc(int signum)
 {
 	(void) signum;
 	close(STDIN_FILENO);
+	g_sig_triggered = 1;
+	ft_putstr_fd("\n", 1);
 }
 
 int	signal_assign(int signal, void (*f)(int))

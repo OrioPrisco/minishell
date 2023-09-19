@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/19 13:56:26 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 14:51:46 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "ft_readline.h"
 #include "parser.h"
 #include "parser_int.h"
+#include "libft.h"
+#include "msh_signal.h"
 
 // munches some tokens and appends an owned_token to dest
 //  returns 0  in case of malloc error (munching 0 tokens is nonsensical)
@@ -45,18 +47,16 @@ static int	process_one_token(t_vector *dest, const t_token *tok,
 //returns  1 on malloc error and free the vector
 //returns -1 on parsing error, frees the vector, and prints an error to stderr
 //returns  0 on success, and the vector will be populated
-static int	parse_line_int(t_vector *command, t_vector *dest,
-				const t_env_ret *env_ret, t_ft_rl *rlinfo)
+static int	parse_line_int(const char *line, t_vector *dest,
+				const t_env_ret *env_ret, t_rlinfo_com rlinfo_com)
 {
 	t_vector		vec_token;
 	t_token			*token;
 	int				consumed;
 	t_owned_token	tok;
-	t_rlinfo_com	rlinfo_com;
 
-	rlinfo_com = (t_rlinfo_com){rlinfo, command};
 	vector_init(&vec_token, sizeof(t_token));
-	if (split_to_tokens(rlinfo->line + rlinfo->offset, &vec_token, rlinfo_com))
+	if (split_to_tokens(line, &vec_token, rlinfo_com))
 		return (vector_clear(&vec_token), 1);
 	token = vec_token.data;
 	consumed = 0;
@@ -78,16 +78,26 @@ static int	parse_line_int(t_vector *command, t_vector *dest,
 bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 		t_ft_rl *rlinfo)
 {
-	int			ret;
-	t_vector	command;
+	int				ret;
+	t_vector		command;
+	t_rlinfo_com	rlinfo_com;
+	char			*line_cpy;
 
+	line_cpy = ft_strdup(rlinfo->line + rlinfo->offset);
+	if (!line_cpy)
+		return (1);
+	g_sig_triggered = 0;
+	rlinfo_com = (t_rlinfo_com){rlinfo, &command};
 	vector_init(&command, sizeof(char));
 	vector_init(dest, sizeof(t_owned_token));
-	ret = parse_line_int(&command, dest, env_ret, rlinfo);
-	if (ret == -1)
+	ret = parse_line_int(line_cpy, dest, env_ret, rlinfo_com);
+	if (ret == -1 && !g_sig_triggered)
 		env_ret->prev_ret = PARSE_ERROR;
-	else
+	else if (!g_sig_triggered)
 		env_ret->prev_ret = SUCCESS;
+	else if (g_sig_triggered)
+		env_ret->prev_ret = HEREDOC_EXITED;
 	*parsed = vector_move_data(&command);
+	free(line_cpy);
 	return (ret == 1);
 }

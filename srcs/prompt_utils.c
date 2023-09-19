@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 14:39:18 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:22:14 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	prompt_loop(char **envp)
 			msh_exit(&cominfo);
 		if (parse_line(&command, &owned_tokens, &env_ret, &rlinfo))
 			msh_exit(&cominfo);
-		if (env_ret.prev_ret == PARSE_ERROR)
+		if (env_ret.prev_ret != SUCCESS)
 			continue ;
 		if (history_loop_logic(&cominfo.com_list, command))
 			msh_exit(&cominfo);
