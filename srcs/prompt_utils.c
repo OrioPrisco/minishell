@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 13:56:55 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 14:52:11 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	prompt_loop(char **envp)
 			msh_exit(&cominfo);
 		if (parse_line(&command, &owned_tokens, &env_ret, &rlinfo))
 			return (-1);
-		if (env_ret.prev_ret == PARSE_ERROR)
+		if (env_ret.prev_ret != SUCCESS)
 			continue ;
 		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
 		if (history_loop_logic(&cominfo.com_list, command))
