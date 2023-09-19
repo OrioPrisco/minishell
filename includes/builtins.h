@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:24:26 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 15:14:52 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:51:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ int		echo_msh(char *execve_command, char **execve_com_args, char **envp);
 int		cd_msh(char *execve_command, char **execve_com_args, char **envp);
 int		pwd_msh(char *execve_command, char **execve_com_args, char **envp);
 int		export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec);
-int		unset_msh(char *execve_command, char **execve_com_args, t_vector *envp);
-int		env_msh(char *execve_command, char **execve_com_args, char **envp);
+int		unset_msh(char *execve_command, char **execve_com_args, t_vector *env_vec);
+int		env_msh(char *execve_command, char **execve_com_args, t_vector *env_vec);
+
+int		add_to_env_vec(t_vector *env_vec, char *str);
+int		del_from_env_vec(t_vector *env_vec, char *str);
+int		print_env_vec(t_vector *env_vec, char *str);
 
 #endif

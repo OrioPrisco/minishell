@@ -6,16 +6,19 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 15:12:58 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:46:00 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include "tokens.h"
 #include "vector.h"
 #include "ft_printf.h"
 #include "utils.h"
 #include "unistd.h"
+#include "builtins.h"
+#include <bits/types/struct_itimerspec.h>
 
 // needs to save old pwd to $OLDPWD and reassign $PWD to the new working dir.
 // and go to home if no args given.
@@ -50,11 +53,25 @@ int	pwd_msh(char *execve_command, char **execve_com_args, char **envp)
 
 int	export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 {
+	char	*buf;
+
 	(void) execve_command;
-	(void) execve_com_args;
-	(void) env_vec;
-	ft_printf("You made it to export_msh\n");
-	table_print(execve_com_args);
+	if (!execve_com_args[1])
+		print_env_vec(env_vec, "declare -x ");
+	else
+	{
+		buf = next_non_identifier(execve_com_args[1]);
+		if (*buf == '=' && *ft_strpbrknul(buf + 1, "= \t") == '\0')
+		{
+			if (add_to_env_vec(env_vec, execve_com_args[1]))
+				return (-1);
+		}
+		else if (*buf != '=' && *buf)
+		{
+			ft_dprintf(2, "minishell: export: `%s': not a valid identifier\n",
+				execve_com_args[1]);
+		}
+	}
 	return (0);
 }
 

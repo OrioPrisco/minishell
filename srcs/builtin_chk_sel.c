@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 15:17:25 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:18:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ bool	check_for_builtins_pre_fork(t_com_segment com_segment)
 		|| !ft_strcmp(exec_name, "cd")
 		|| !ft_strcmp(exec_name, "pwd")
 		|| !ft_strcmp(exec_name, "export")
-		|| !ft_strcmp(exec_name, "exit"))
+		|| !ft_strcmp(exec_name, "exit")
+		|| !ft_strcmp(exec_name, "env"))
 	{
 		return (1);
 	}
@@ -54,7 +55,7 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 		exit_msh(cominfo, &com_segment);
 	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
-		msh_error("malloc");
+		return (msh_error("malloc"), -1);
 	if (!ft_strcmp(exec_name, "cd"))
 		ret = cd_msh(exec_name, execve_com_args,
 				cominfo->env_ret->env_vec.data);
@@ -63,6 +64,9 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 				cominfo->env_ret->env_vec.data);
 	else if (!ft_strcmp(exec_name, "export"))
 		ret = export_msh(exec_name, execve_com_args,
+				&cominfo->env_ret->env_vec);
+	else if (!ft_strcmp(exec_name, "env"))
+		ret = env_msh(exec_name, execve_com_args,
 				&cominfo->env_ret->env_vec);
 	return (table_free(execve_com_args), ret);
 }
@@ -98,7 +102,7 @@ int	builtin_commands(char *execve_command, char **execve_com_args,
 	if (!ft_strcmp(execve_command, "unset"))
 		ret = unset_msh(execve_command, execve_com_args, env_vec);
 	if (!ft_strcmp(execve_command, "env"))
-		ret = env_msh(execve_command, execve_com_args, env_vec->data);
+		ret = env_msh(execve_command, execve_com_args, env_vec);
 	if (!ft_strcmp(execve_command, "exit"))
 		return (table_free(execve_com_args), 0);
 	return (table_free(execve_com_args), ret);
