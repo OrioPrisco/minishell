@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 17:33:55 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/19 14:00:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 #include "env_var.h"
 #include <signal.h>
 #include "ft_readline.h"
+#include "msh_signal.h"
+#include "parser.h"
+#include "error.h"
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 {
@@ -50,7 +53,8 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 **	provides more information than the signal function.
 **/
 
-static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
+static int	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
+				t_cominfo *cominfo)
 {
 	if (init_envp_vec(envp, env_ret))
 		return (msh_error("malloc"), -1);
@@ -58,6 +62,10 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 		return (-1);
 	signal_assign(SIGINT, sigint_handler_parent);
 	signal_assign(SIGQUIT, SIG_IGN);
+	ft_rl_init(rlinfo);
+	ft_bzero(cominfo, sizeof(cominfo));
+	vector_init(&cominfo->com_list, sizeof(char *));
+	cominfo->env_ret = env_ret;
 	return (0);
 }
 
@@ -68,6 +76,8 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret)
 **	print_tokens(&owned_tokens);
 **/
 
+// TODO : cal ft_rl_clear on error
+// also clear owned_token on history failure
 int	prompt_loop(char **envp)
 {
 	t_vector		owned_tokens;
@@ -75,23 +85,18 @@ int	prompt_loop(char **envp)
 	t_env_ret		env_ret;
 	t_ft_rl			rlinfo;
 	char			*command;
-	int				ret;
 
-	ft_rl_init(&rlinfo);
-	ft_bzero(&cominfo, sizeof(cominfo));
-	if (init_prompt_loop(envp, &env_ret))
+	if (init_prompt_loop(envp, &env_ret, &rlinfo, &cominfo))
 		return (-1);
-	vector_init(&cominfo.com_list, sizeof(char *));
-	cominfo.env_ret = &env_ret;
 	while (1)
 	{
 		if (!ft_readline(&rlinfo, "minishell> "))
 			msh_exit(&cominfo);
-		ret = parse_line(&command, &owned_tokens, &env_ret, &rlinfo);
-		if (ret < 0)
-			continue ;
-		else if (ret == 1)
+		if (parse_line(&command, &owned_tokens, &env_ret, &rlinfo))
 			return (-1);
+		if (env_ret.prev_ret == PARSE_ERROR)
+			continue ;
+		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
 		if (history_loop_logic(&cominfo.com_list, command))
 			return (-1);
 		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);

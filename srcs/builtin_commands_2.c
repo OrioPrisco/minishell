@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:39:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 14:44:44 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:50:55 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "ft_printf.h"
 #include "utils.h"
 
-int		unset_msh(char *execve_command, char **execve_com_args, char **envp)
+int	unset_msh(char *execve_command, char **execve_com_args, char **envp)
 {
 	(void) execve_command;
 	(void) execve_com_args;
@@ -26,7 +26,7 @@ int		unset_msh(char *execve_command, char **execve_com_args, char **envp)
 	return (0);
 }
 
-int		env_msh(char *execve_command, char **execve_com_args, char **envp)
+int	env_msh(char *execve_command, char **execve_com_args, char **envp)
 {
 	(void) execve_command;
 	(void) execve_com_args;

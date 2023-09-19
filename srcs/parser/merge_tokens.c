@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 13:54:22 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/18 13:14:58 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "env_var.h"
 #include "libft.h"
 #include "ft_printf.h"
+#include "parser_int.h"
 
 typedef enum e_state {
 	NORMAL,

@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:39:05 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 20:18:17 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/15 17:27:57 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,22 @@
 #include "env_var.h"
 #include "vector.h"
 
-static void	putnbr_buff(char *buff, long int number)
+static void	putnbr_buff(char **buff, long int number)
 {
-	buff[1] = '\0';
 	if (number < 0)
-		putnbr_buff(buff + 1, -number);
-	else if (number >= 10)
-		putnbr_buff(buff + 1, number / 10);
-	buff[0] = "0123456789"[number % 10];
+	{
+		buff[0][0] = '-';
+		(*buff)++;
+		putnbr_buff(buff, -number);
+	}
+	else
+	{
+		if (number >= 10)
+			putnbr_buff(buff, number / 10);
+		buff[0][0] = "0123456789"[number % 10];
+		buff[0][1] = 0;
+		(*buff)++;
+	}
 }
 
 // will work as long as the string is duplicated
@@ -30,10 +38,12 @@ const char	*get_number(int number)
 {
 	static int	last;
 	static char	buffer[12] = "0";
+	char		*buff_cpy;
 
+	buff_cpy = buffer;
 	if (number == last)
 		return (buffer);
-	putnbr_buff(buffer, number);
+	putnbr_buff(&buff_cpy, number);
 	last = number;
 	return (buffer);
 }

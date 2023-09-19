@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/14 12:39:03 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 13:56:26 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "env_var.h"
 #include "error.h"
 #include "ft_readline.h"
+#include "parser.h"
+#include "parser_int.h"
 
 // munches some tokens and appends an owned_token to dest
 //  returns 0  in case of malloc error (munching 0 tokens is nonsensical)
@@ -73,7 +75,7 @@ static int	parse_line_int(t_vector *command, t_vector *dest,
 	return (vector_clear(&vec_token), 0);
 }
 
-int	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
+bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 		t_ft_rl *rlinfo)
 {
 	int			ret;
@@ -85,7 +87,7 @@ int	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 	if (ret == -1)
 		env_ret->prev_ret = PARSE_ERROR;
 	else
-		env_ret->prev_ret = 0;
+		env_ret->prev_ret = SUCCESS;
 	*parsed = vector_move_data(&command);
-	return (ret);
+	return (ret == 1);
 }

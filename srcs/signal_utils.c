@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:03:56 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 13:25:26 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:57:39 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "msh_signal.h"
 
 /*	
 **	The signal raised by Ctrl-c is SIGINT

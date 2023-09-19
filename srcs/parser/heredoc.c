@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/15 16:11:16 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/18 13:14:46 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include "env_var.h"
 #include "tokens.h"
+#include "parser_int.h"
 
 /*
 **	here_doc_input_loop
