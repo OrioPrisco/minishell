@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/18 17:34:34 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 12:29:09 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int	open_heredoc(const char *limiter, const t_env_ret *env_ret,
 		return (close(stdin_dup), close(pipefd[0]), close(pipefd[1]), -1);
 	ret = here_doc_input_loop(pipefd[1], limiter, env_ret, rlinfo_com);
 	close(pipefd[1]);
+	if (signal_assign(SIGINT, sigint_handler_parent))
+		return (close(pipefd[0]), close(stdin_dup), -1);
 	dup2(stdin_dup, STDIN_FILENO);
 	close(stdin_dup);
 	if (ret == 1)
@@ -88,7 +90,5 @@ int	open_heredoc(const char *limiter, const t_env_ret *env_ret,
 		return (close(pipefd[0]), -2);
 	if (vector_null_term(rlinfo_com.command))
 		return (close(pipefd[0]), perror("malloc"), -1);
-	if (signal_assign(SIGINT, sigint_handler_parent))
-		return (close(pipefd[0]), -1);
 	return (pipefd[0]);
 }
