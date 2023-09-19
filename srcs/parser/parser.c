@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/19 14:00:35 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 14:51:46 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "parser.h"
 #include "parser_int.h"
 #include "libft.h"
+#include "msh_signal.h"
 
 // munches some tokens and appends an owned_token to dest
 //  returns 0  in case of malloc error (munching 0 tokens is nonsensical)
@@ -85,14 +86,17 @@ bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 	line_cpy = ft_strdup(rlinfo->line + rlinfo->offset);
 	if (!line_cpy)
 		return (1);
+	g_sig_triggered = 0;
 	rlinfo_com = (t_rlinfo_com){rlinfo, &command};
 	vector_init(&command, sizeof(char));
 	vector_init(dest, sizeof(t_owned_token));
 	ret = parse_line_int(line_cpy, dest, env_ret, rlinfo_com);
-	if (ret == -1)
+	if (ret == -1 && !g_sig_triggered)
 		env_ret->prev_ret = PARSE_ERROR;
-	else
+	else if (!g_sig_triggered)
 		env_ret->prev_ret = SUCCESS;
+	else if (g_sig_triggered)
+		env_ret->prev_ret = HEREDOC_EXITED;
 	*parsed = vector_move_data(&command);
 	free(line_cpy);
 	return (ret == 1);
