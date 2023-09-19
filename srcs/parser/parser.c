@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/19 14:51:46 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 15:30:03 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 		env_ret->prev_ret = SUCCESS;
 	else if (g_sig_triggered)
 		env_ret->prev_ret = HEREDOC_EXITED;
+	if ((ret == 1) || env_ret->prev_ret != SUCCESS)
+		vector_clear(&command);
 	*parsed = vector_move_data(&command);
 	free(line_cpy);
 	return (ret == 1);
