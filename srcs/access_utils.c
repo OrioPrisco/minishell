@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 17:39:50 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:15:03 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	if (check_for_builtins(exec_name))
 	{
 		ret = builtin_commands(exec_name, execve_com_args,
-				(char **)cominfo->env_ret->env_vec.data);
+				&cominfo->env_ret->env_vec);
 		builtins_cleanup(cominfo, &com_segment, ret);
 	}
 	execve_command = search_env(exec_name, cominfo, &com_segment);

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 15:09:29 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:12:58 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ int	pwd_msh(char *execve_command, char **execve_com_args, char **envp)
 	return (0);
 }
 
-int	export_msh(char *execve_command, char **execve_com_args, char **envp)
+int	export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 {
 	(void) execve_command;
 	(void) execve_com_args;
-	(void) envp;
+	(void) env_vec;
 	ft_printf("You made it to export_msh\n");
 	table_print(execve_com_args);
 	return (0);

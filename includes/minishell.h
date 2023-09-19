@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/18 12:51:26 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 14:33:02 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@
 # include "vector.h"
 
 typedef struct s_env_ret	t_env_ret;
+typedef struct s_ft_rl		t_ft_rl;
 
 typedef struct s_cominfo
 {
 	t_env_ret	*env_ret;
 	t_vector	com_list;
+	t_ft_rl		*rlinfo;
 }				t_cominfo;
 
 typedef struct s_com_segment
