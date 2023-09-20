@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/20 19:28:45 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/21 14:14:17 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		if (!str_input)
 			return (-1);
 		input_len = ft_strcspn(str_input, "\n");
-		rlinfo_com.rlinfo->offset += input_len;
+		ft_rl_add_offset(rlinfo_com.rlinfo, input_len
+			+ (str_input[input_len] == '\n'));
 		if (!ft_strncmp(str_input, limiter, limiter_len))
 			return (vector_append(rlinfo_com.command, "\n")
 				|| vector_append_elems
