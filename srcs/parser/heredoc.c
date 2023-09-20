@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/19 15:13:50 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/20 19:28:45 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,28 @@
 #include "msh_signal.h"
 #include <signal.h>
 
+static char	*expand_env_var(const char *str, const t_env_ret *env_ret)
+{
+	t_vector	tokens;
+	t_token		token;
+	char		*merged;
+
+	vector_init(&tokens, sizeof(t_token));
+	while (*str && *str != '\n')
+	{
+		if (*str == '$')
+			token = (t_token){{str, next_non_identifier(str) - str}, T_VAR};
+		else
+			token = (t_token){{str, ft_strcspn(str, "$\n")}, T_STR};
+		str = token.strview.start + token.strview.size;
+		if (vector_append(&tokens, &token))
+			return (vector_clear(&tokens), NULL);
+	}
+	if (merge_tokens(&merged, tokens.data, tokens.size, env_ret))
+		return (vector_clear(&tokens), NULL);
+	return (vector_clear(&tokens), merged);
+}
+
 /*
 **	here_doc_input_loop
 **	
@@ -29,6 +51,7 @@
 static int	here_doc_input_loop(int pipefd, const char *limiter,
 		const t_env_ret *env_ret, t_rlinfo_com rlinfo_com)
 {
+	char		*expanded;
 	const char	*str_input;
 	size_t		input_len;
 	size_t		limiter_len;
@@ -40,16 +63,18 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		if (!str_input)
 			return (-1);
 		input_len = ft_strcspn(str_input, "\n");
-		ft_rl_set_offset(rlinfo_com.rlinfo, str_input + input_len
-			+ (str_input[input_len] == '\n'));
-		(void)env_ret;
-		if (vector_append(rlinfo_com.command, "\n")
-			|| vector_append_elems(rlinfo_com.command, str_input, input_len))
-			return (1);
+		rlinfo_com.rlinfo->offset += input_len;
 		if (!ft_strncmp(str_input, limiter, limiter_len))
-			return (0);
-		write(pipefd, str_input, ft_strcspn(str_input, "\n"));
+			return (vector_append(rlinfo_com.command, "\n")
+				|| vector_append_elems
+				(rlinfo_com.command, str_input, input_len));
+		expanded = expand_env_var(str_input, env_ret);
+		if (vector_append(rlinfo_com.command, "\n") || vector_append_elems
+			(rlinfo_com.command, expanded, ft_strlen(expanded)))
+			return (1);
+		write(pipefd, expanded, ft_strlen(expanded));
 		write(pipefd, "\n", 1);
+		free(expanded);
 	}
 }
 
