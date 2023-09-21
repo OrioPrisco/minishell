@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 13:59:05 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:24:05 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 **	provides more information than the signal function.
 **/
 
-static int	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
+static void	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 				t_cominfo *cominfo)
 {
 	if (init_envp_vec(envp, env_ret))
-		return (msh_error("malloc"), -1);
+		msh_exit(cominfo);
 	if (load_in_history(env_ret))
-		return (-1);
+		msh_exit(cominfo);
 	signal_assign(SIGINT, sigint_handler_parent);
 	signal_assign(SIGQUIT, SIG_IGN);
 	ft_rl_init(rlinfo);
@@ -67,7 +67,6 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 	vector_init(&cominfo->com_list, sizeof(char *));
 	cominfo->env_ret = env_ret;
 	cominfo->rlinfo = rlinfo;
-	return (0);
 }
 
 /*	
@@ -79,7 +78,7 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 
 // TODO : cal ft_rl_clear on error
 // also clear owned_token on history failure
-int	prompt_loop(char **envp)
+void	prompt_loop(char **envp)
 {
 	t_vector		owned_tokens;
 	t_cominfo		cominfo;
@@ -87,8 +86,7 @@ int	prompt_loop(char **envp)
 	t_ft_rl			rlinfo;
 	char			*command;
 
-	if (init_prompt_loop(envp, &env_ret, &rlinfo, &cominfo))
-		return (-1);
+	init_prompt_loop(envp, &env_ret, &rlinfo, &cominfo);
 	while (1)
 	{
 		g_sig_triggered = NONE;
@@ -98,12 +96,12 @@ int	prompt_loop(char **envp)
 			env_ret.prev_ret = SIGINT_RECEIVED;
 		if (parse_line(&command, &owned_tokens, &env_ret, &rlinfo))
 			msh_exit(&cominfo);
-		if (env_ret.prev_ret != SUCCESS)
-			continue ;
 		if (history_loop_logic(&cominfo.com_list, command))
-			msh_exit(&cominfo);
+			return (vector_free(&owned_tokens, free_owned_token),
+				free(command), msh_exit(&cominfo));
+		if (owned_tokens.size == 0)
+			continue ;
 		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
 		vector_free(&owned_tokens, free_owned_token);
 	}
-	return (0);
 }
