@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 15:25:30 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/13 16:40:19 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/20 19:47:56 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ const char	*ft_readline(t_ft_rl *rlinfo, const char *prompt)
 	return (rlinfo->line + rlinfo->offset);
 }
 
-void	ft_rl_set_offset(t_ft_rl *rlinfo, const char *end)
+void	ft_rl_add_offset(t_ft_rl *rlinfo, size_t offset)
 {
-	rlinfo->offset = end - rlinfo->line;
+	rlinfo->offset += offset;
 }
 
 void	ft_rl_clear(t_ft_rl *rlinfo)
