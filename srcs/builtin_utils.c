@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 14:44:27 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:22:54 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:44:34 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	del_from_env_vec(t_vector *env_vec, size_t index)
 	return (0);
 }
 
-int	add_to_env_vec(t_vector *env_vec, char *str)
+int	add_str_to_env_vec(t_vector *env_vec, char *str)
 {
 	char	*buf;
 
@@ -73,19 +73,14 @@ int	print_env_vec(t_vector *env_vec, char *str)
 	return (0);
 }
 
-int	save_cwd_to_env_vec(char *env_to_change, t_vector *env_vec)
+int	add_key_value_to_env_vec(char *env_to_change, char *cwd, t_vector *env_vec)
 {
-	char	*cwd;
 	char	*env_comp;
 
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (msh_error("malloc"), -1);
 	env_comp = ft_strjoin(env_to_change, cwd);
 	if (!env_comp)
 		return (msh_error("malloc"), free(cwd), -1);
-	free(cwd);
-	if (add_to_env_vec(env_vec, env_comp))
+	if (add_str_to_env_vec(env_vec, env_comp))
 		return (free(env_comp), -1);
 	return (free(env_comp), 0);
 }
