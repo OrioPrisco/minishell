@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 14:20:02 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:07:32 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "env_var.h"
 
 static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
@@ -75,5 +76,6 @@ int	tree_crawler(t_vector *tokens, t_cominfo *cominfo)
 	ret = 0;
 	vector_init(&pids, sizeof(int));
 	ret = fork_loop(tokens, cominfo, &pids);
-	return (msh_wait(&pids), vector_clear(&pids), ret);
+	return (msh_wait(&pids, &ret),
+		vector_clear(&pids), ret);
 }

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/18 12:57:13 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/21 18:42:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,22 @@
 **	
 */
 
-int	msh_wait(t_vector *pids)
+int	msh_wait(t_vector *pids, int *ret_status)
 {
 	int	current_pid;
+	int	wstatus;
 
 	current_pid = 0;
 	while (pids->size > 0)
 	{
 		current_pid = *((int *)pids->data);
-		waitpid(current_pid, NULL, 0);
+		waitpid(current_pid, &wstatus, 0);
 		vector_pop_n(pids, 0, 1);
 	}
 	signal_assign(SIGINT, sigint_handler_parent);
+	*ret_status = WEXITSTATUS(wstatus);
+	if (WIFSIGNALED(wstatus))
+		*ret_status = wstatus;
 	return (0);
 }
 

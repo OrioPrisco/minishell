@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:24:26 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:44:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:42:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ size_t	check_env_vec_dup(t_vector *env_vec, const char *s1, size_t n);
 int		add_str_to_env_vec(t_vector *env_vec, char *str);
 int		del_from_env_vec(t_vector *env_vec, size_t index);
 int		print_env_vec(t_vector *env_vec, char *str);
-int		add_key_value_to_env_vec(char *env_to_change, char *cwd, 
+int		add_key_value_to_env_vec(char *env_to_change, char *cwd,
 			t_vector *env_vec);
 
 #endif

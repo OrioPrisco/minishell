@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:12:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:44:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 #include "minishell.h"
+#include "msh_signal.h"
 #include "unistd.h"
 #include "vector.h"
 #include "tokens.h"
@@ -23,6 +24,7 @@
 #include "path.h"
 #include "child.h"
 #include "builtins.h"
+#include <signal.h>
 
 /*
 **	NAME
@@ -158,10 +160,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	char		*execve_command;
 	char		**execve_com_args;
 	char		*exec_name;
-	int			ret;
 
-	ret = 0;
-	execve_com_args = 0;
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
@@ -170,14 +169,13 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	if (!execve_com_args)
 		msh_error("malloc");
 	if (check_for_builtins(exec_name))
-	{
-		ret = builtin_commands(exec_name, execve_com_args,
-				&cominfo->env_ret->env_vec);
-		builtins_cleanup(cominfo, &com_segment, ret);
-	}
+		builtins_cleanup(cominfo, &com_segment,
+			builtin_commands(exec_name, execve_com_args,
+				&cominfo->env_ret->env_vec));
 	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)
 		exec_command_error_frees(cominfo, &com_segment, 127);
+	signal_assign(SIGQUIT, SIG_DFL);
 	execve(execve_command, execve_com_args,
 		(char **)cominfo->env_ret->env_vec.data);
 }
