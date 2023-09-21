@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 18:10:24 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/13 13:10:01 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/21 13:03:27 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 static void	sort_wildcards(t_vector *vector)
 {
-	vector_sort(vector, compare_str);
+	vector_sort(vector, compare_str, 0);
 }
 
 static bool	expand_wildcard_wrapper(const t_owned_token *expr, t_vector *dest)
