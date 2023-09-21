@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 15:50:37 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:57:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ int	cd_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 {
 	int			ret;
 	const char	*path;
-	t_env_ret	env_ret;
 
 	(void) execve_command;
 	if (!execve_com_args[1])
-		path = get_env_var(&env_ret, "HOME", 4);
+		path = get_env_var_no_special(env_vec->data, "HOME", 4);
 	else
 		path = execve_com_args[1];
 	ret = save_cwd_to_env_vec("OLDPWD=", env_vec);
