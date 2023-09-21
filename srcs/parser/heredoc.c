@@ -72,7 +72,7 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		expanded = expand_env_var(str_input, env_ret);
 		if (vector_append(rlinfo_com.command, "\n") || vector_append_elems
 			(rlinfo_com.command, str_input, input_len))
-			return (1);
+			return (free(expanded), 1);
 		write(pipefd, expanded, ft_strlen(expanded));
 		write(pipefd, "\n", 1);
 		free(expanded);
