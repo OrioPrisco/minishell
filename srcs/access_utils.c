@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:12:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:18:52 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 #include "minishell.h"
+#include "msh_signal.h"
 #include "unistd.h"
 #include "vector.h"
 #include "tokens.h"
@@ -23,6 +24,7 @@
 #include "path.h"
 #include "child.h"
 #include "builtins.h"
+#include <signal.h>
 
 /*
 **	NAME
@@ -178,6 +180,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)
 		exec_command_error_frees(cominfo, &com_segment, 127);
+	signal_assign(SIGQUIT, SIG_DFL);
 	execve(execve_command, execve_com_args,
 		(char **)cominfo->env_ret->env_vec.data);
 }

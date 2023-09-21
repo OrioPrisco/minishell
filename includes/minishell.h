@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:12:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:58:30 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes);
 int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 
 //	fork_utils.c
-int		msh_wait(t_vector *pids);
+int		msh_wait(t_vector *pids, int *ret_status);
 int		print_execve_args(char **execve_com_args);
 char	**construct_execve_args(t_com_segment com_seg);
 int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
