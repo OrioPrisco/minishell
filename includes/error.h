@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 12:59:31 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/19 14:51:08 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/19 15:44:51 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef enum e_error {
 	IS_A_DIRECTORY = 126,
 	PERMISSION_NOT_GRANTED = 126,
 	COMMAND_NOT_FOUND = 127,
-	HEREDOC_EXITED = 130,
+	SIGINT_RECEIVED = 130,
 }	t_error;
 
 #endif
