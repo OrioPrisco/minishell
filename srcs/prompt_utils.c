@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 16:02:04 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/21 13:59:05 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ static int	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 	signal_assign(SIGINT, sigint_handler_parent);
 	signal_assign(SIGQUIT, SIG_IGN);
 	ft_rl_init(rlinfo);
-	ft_bzero(cominfo, sizeof(cominfo));
+	ft_bzero(cominfo, sizeof(*cominfo));
 	vector_init(&cominfo->com_list, sizeof(char *));
 	cominfo->env_ret = env_ret;
+	cominfo->rlinfo = rlinfo;
 	return (0);
 }
 
@@ -96,12 +97,12 @@ int	prompt_loop(char **envp)
 		if (g_sig_triggered == PARENT_SIGINT)
 			env_ret.prev_ret = SIGINT_RECEIVED;
 		if (parse_line(&command, &owned_tokens, &env_ret, &rlinfo))
-			return (-1);
+			msh_exit(&cominfo);
 		if (env_ret.prev_ret != SUCCESS)
 			continue ;
-		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
 		if (history_loop_logic(&cominfo.com_list, command))
-			return (-1);
+			msh_exit(&cominfo);
+		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
 		vector_free(&owned_tokens, free_owned_token);
 	}
 	return (0);

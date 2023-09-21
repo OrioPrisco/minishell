@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/18 12:51:26 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/21 16:12:15 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@
 # include "vector.h"
 
 typedef struct s_env_ret	t_env_ret;
+typedef struct s_ft_rl		t_ft_rl;
 
 typedef struct s_cominfo
 {
 	t_env_ret	*env_ret;
 	t_vector	com_list;
+	t_ft_rl		*rlinfo;
 }				t_cominfo;
 
 typedef struct s_com_segment
@@ -88,5 +90,7 @@ char	*search_env(char *exec_name, t_cominfo *cominfo,
 void	access_error_print(const char *exec_name);
 void	exec_command(t_cominfo *cominfo, t_com_segment com_segment);
 char	*get_exec_name(t_owned_token *token);
+void	exec_command_error_frees(t_cominfo *cominfo, t_com_segment *com_segment,
+			int ret_stat);
 
 #endif
