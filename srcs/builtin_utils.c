@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 14:44:27 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 18:12:02 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:04:15 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,9 @@ int	del_from_env_vec(t_vector *env_vec, size_t index)
 int	add_to_env_vec(t_vector *env_vec, char *str)
 {
 	char	*buf;
-	size_t	ret;
 
-	// add check for duplicates, delete if an entry is already present.
 	buf = next_non_identifier(str);
-	ret = check_env_vec_dup(env_vec, str, buf - str);
-	del_from_env_vec(env_vec, ret);
+	del_from_env_vec(env_vec, check_env_vec_dup(env_vec, str, buf - str));
 	if (!str)
 		return (0);
 	buf = ft_strdup(str);

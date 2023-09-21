@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 16:46:00 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:27:52 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	exit_msh(t_cominfo *cominfo, t_com_segment *com_segment)
 	vector_free(com_segment->tokens, free_owned_token);
 	msh_exit(cominfo);
 }
+
+// echo should handle echo -nnn -nnnnnnn hi and return hi
 
 int	echo_msh(char *execve_command, char **execve_com_args, char **envp)
 {

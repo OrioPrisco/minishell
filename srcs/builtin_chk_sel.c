@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 18:18:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:46:47 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ bool	check_for_builtins_pre_fork(t_com_segment com_segment)
 		|| !ft_strcmp(exec_name, "pwd")
 		|| !ft_strcmp(exec_name, "export")
 		|| !ft_strcmp(exec_name, "exit")
-		|| !ft_strcmp(exec_name, "env"))
+		|| !ft_strcmp(exec_name, "env")
+		|| !ft_strcmp(exec_name, "unset"))
 	{
 		return (1);
 	}
@@ -44,9 +45,7 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 {
 	char	**execve_com_args;
 	char	*exec_name;
-	int		ret;
 
-	ret = 0;
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
@@ -56,19 +55,8 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
 		return (msh_error("malloc"), -1);
-	if (!ft_strcmp(exec_name, "cd"))
-		ret = cd_msh(exec_name, execve_com_args,
-				cominfo->env_ret->env_vec.data);
-	else if (!ft_strcmp(exec_name, "pwd"))
-		ret = pwd_msh(exec_name, execve_com_args,
-				cominfo->env_ret->env_vec.data);
-	else if (!ft_strcmp(exec_name, "export"))
-		ret = export_msh(exec_name, execve_com_args,
-				&cominfo->env_ret->env_vec);
-	else if (!ft_strcmp(exec_name, "env"))
-		ret = env_msh(exec_name, execve_com_args,
-				&cominfo->env_ret->env_vec);
-	return (table_free(execve_com_args), ret);
+	return (builtin_commands(exec_name, execve_com_args,
+			&cominfo->env_ret->env_vec));
 }
 
 int	check_for_builtins(const char *exec_name)
