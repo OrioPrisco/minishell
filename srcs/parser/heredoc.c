@@ -73,9 +73,8 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		if (vector_append(rlinfo_com.command, "\n") || vector_append_elems
 			(rlinfo_com.command, str_input, input_len))
 			return (free(expanded), 1);
-		write(pipefd, expanded, ft_strlen(expanded));
+		free((write(pipefd, expanded, ft_strlen(expanded)), expanded));
 		write(pipefd, "\n", 1);
-		free(expanded);
 	}
 }
 
