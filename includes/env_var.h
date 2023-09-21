@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:10:31 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/08 14:27:24 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/21 15:54:02 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ typedef struct s_env_ret
 const char	*get_env_var(const t_env_ret *env_ret, const char *name,
 				size_t name_size);
 const char	*get_env_varnul(const t_env_ret *env_ret, const char *name,
+				size_t name_size);
+const char	*get_env_var_no_special(char **envp, const char *name,
 				size_t name_size);
 
 #endif
