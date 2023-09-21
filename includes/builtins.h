@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:24:26 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 15:37:52 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:06:02 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@ void	exit_msh(t_cominfo *cominfo, t_com_segment *com_segment);
 int		echo_msh(char *execve_command, char **execve_com_args, char **envp);
 int		cd_msh(char *execve_command, char **execve_com_args, t_vector *env_vec);
 int		pwd_msh(char *execve_command, char **execve_com_args, char **envp);
-int		export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec);
-int		unset_msh(char *execve_command, char **execve_com_args, t_vector *env_vec);
-int		env_msh(char *execve_command, char **execve_com_args, t_vector *env_vec);
+int		export_msh(char *execve_command, char **execve_com_args,
+			t_vector *env_vec);
+int		unset_msh(char *execve_command, char **execve_com_args,
+			t_vector *env_vec);
+int		env_msh(char *execve_command, char **execve_com_args,
+			t_vector *env_vec);
 
 size_t	check_env_vec_dup(t_vector *env_vec, const char *s1, size_t n);
 int		add_to_env_vec(t_vector *env_vec, char *str);

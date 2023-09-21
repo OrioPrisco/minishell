@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 15:57:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:05:30 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include "unistd.h"
 #include "builtins.h"
 #include "env_var.h"
-
 
 // needs to save old pwd to $OLDPWD and reassign $PWD to the new working dir.
 // and go to home if no args given.
