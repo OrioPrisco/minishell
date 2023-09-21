@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/18 16:03:47 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/20 19:49:57 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ bool	finish_lex(t_rlinfo_com rlinfo_com, const char *str, const char *og_str)
 		return (1);
 	if (*str == '\n')
 		str++;
-	rlinfo_com.rlinfo->offset += str - og_str;
+	ft_rl_add_offset(rlinfo_com.rlinfo, str - og_str);
 	if (vector_null_term(rlinfo_com.command))
 		return (1);
 	return (0);
