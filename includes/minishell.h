@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 17:58:30 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:56:14 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_pipe_info
 # define HISTORY_FILE_NAME ".msh_history"
 
 //	prompt_utils.c
-int		prompt_loop(char **envp);
+void	prompt_loop(char **envp);
 
 //	error_utils.c
 void	msh_error(const char *message);
