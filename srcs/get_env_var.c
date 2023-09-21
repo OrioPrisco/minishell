@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:39:05 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/15 17:27:57 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/21 15:53:37 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,34 +48,37 @@ const char	*get_number(int number)
 	return (buffer);
 }
 
-//does not check that name is a valid identifier
-//has special cases for $ and $?
-// TODO : handle $? properly
-//name size hs te be correct
-const char	*get_env_var(const t_env_ret *env_ret, const char *name,
+const char	*get_env_var_no_special(char **envp, const char *name,
 				size_t name_size)
 {
 	size_t	i;
-	char	**envp;
 
-	if (name_size == 1 && *name == '$')
-		return ("$");
-	if (name_size == 2 && !ft_memcmp(name, "$?", 2))
-		return (get_number(env_ret->prev_ret));
 	if (*name == '$')
 	{
 		name++;
 		name_size--;
 	}
 	i = 0;
-	envp = env_ret->env_vec.data;
-	while (i < env_ret->env_vec.size)
+	while (*envp)
 	{
 		if (!ft_memcmp(name, envp[i], name_size) && envp[i][name_size] == '=')
 			return (envp[i] + name_size + 1);
 		i++;
 	}
 	return (NULL);
+}
+
+//does not check that name is a valid identifier
+//has special cases for $ and $?
+//name size hs te be correct
+const char	*get_env_var(const t_env_ret *env_ret, const char *name,
+				size_t name_size)
+{
+	if (name_size == 1 && *name == '$')
+		return ("$");
+	if (name_size == 2 && !ft_memcmp(name, "$?", 2))
+		return (get_number(env_ret->prev_ret));
+	return (get_env_var_no_special(env_ret->env_vec.data, name, name_size));
 }
 
 // same as get_env_var but returns an empty string instead of null
