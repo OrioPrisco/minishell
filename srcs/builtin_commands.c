@@ -6,13 +6,12 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:05:30 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:27:26 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-#include "tokens.h"
 #include "vector.h"
 #include "ft_printf.h"
 #include "utils.h"
@@ -30,7 +29,11 @@ int	cd_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 
 	(void) execve_command;
 	if (!execve_com_args[1])
+	{
 		path = get_env_var_no_special(env_vec->data, "HOME", 4);
+		if (!path)
+			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
+	}
 	else
 		path = execve_com_args[1];
 	ret = save_cwd_to_env_vec("OLDPWD=", env_vec);

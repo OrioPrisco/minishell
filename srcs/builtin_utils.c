@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 14:44:27 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 15:53:41 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:22:54 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	del_from_env_vec(t_vector *env_vec, size_t index)
 	if (index >= env_vec->size)
 		return (0);
 	vector_pop(env_vec, index, &temp);
+	vector_null_term(env_vec);
 	free(temp);
 	return (0);
 }
