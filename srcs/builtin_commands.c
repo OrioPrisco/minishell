@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 14:27:52 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:50:37 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,31 @@
 #include "utils.h"
 #include "unistd.h"
 #include "builtins.h"
-#include <bits/types/struct_itimerspec.h>
+#include "env_var.h"
+
 
 // needs to save old pwd to $OLDPWD and reassign $PWD to the new working dir.
 // and go to home if no args given.
 
-int	cd_msh(char *execve_command, char **execve_com_args, char **envp)
+int	cd_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 {
+	int			ret;
+	const char	*path;
+	t_env_ret	env_ret;
+
 	(void) execve_command;
-	(void) execve_com_args;
-	(void) envp;
-	ft_printf("You made it to cd_msh\n");
-	table_print(execve_com_args);
-	if (chdir(execve_com_args[1]))
-		return (msh_error(""), -1);
+	if (!execve_com_args[1])
+		path = get_env_var(&env_ret, "HOME", 4);
+	else
+		path = execve_com_args[1];
+	ret = save_cwd_to_env_vec("OLDPWD=", env_vec);
+	if (ret)
+		return (ret);
+	if (chdir(path))
+		return (msh_error(""), 1);
+	ret = save_cwd_to_env_vec("PWD=", env_vec);
+	if (ret)
+		return (ret);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 14:46:47 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:41:37 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	builtin_commands(char *execve_command, char **execve_com_args,
 	if (!ft_strcmp(execve_command, "echo"))
 		ret = echo_msh(execve_command, execve_com_args, env_vec->data);
 	if (!ft_strcmp(execve_command, "cd"))
-		ret = cd_msh(execve_command, execve_com_args, env_vec->data);
+		ret = cd_msh(execve_command, execve_com_args, env_vec);
 	if (!ft_strcmp(execve_command, "pwd"))
 		ret = pwd_msh(execve_command, execve_com_args, env_vec->data);
 	if (!ft_strcmp(execve_command, "export"))

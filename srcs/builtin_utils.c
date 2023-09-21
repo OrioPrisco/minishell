@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 14:44:27 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 14:04:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:53:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minishell.h"
 #include "ft_printf.h"
 #include "libft.h"
+#include "unistd.h"
 
 size_t	check_env_vec_dup(t_vector *env_vec, const char *s1, size_t n)
 {
@@ -69,4 +70,21 @@ int	print_env_vec(t_vector *env_vec, char *str)
 		i++;
 	}
 	return (0);
+}
+
+int	save_cwd_to_env_vec(char *env_to_change, t_vector *env_vec)
+{
+	char	*cwd;
+	char	*env_comp;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (msh_error("malloc"), -1);
+	env_comp = ft_strjoin(env_to_change, cwd);
+	if (!env_comp)
+		return (msh_error("malloc"), free(cwd), -1);
+	free(cwd);
+	if (add_to_env_vec(env_vec, env_comp))
+		return (free(env_comp), -1);
+	return (free(env_comp), 0);
 }
