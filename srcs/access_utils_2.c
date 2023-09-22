@@ -6,19 +6,16 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:45:26 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 14:46:27 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 #include "libft.h"
 #include "ft_printf.h"
 #include "path.h"
 #include <unistd.h>
 #include "vector.h"
-#include <errno.h>
-#include "builtins.h"
 #include "utils.h"
 #include "env_var.h"
 #include "child.h"
