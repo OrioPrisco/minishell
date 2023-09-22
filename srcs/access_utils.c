@@ -6,19 +6,15 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:37:44 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:46:47 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
-#include <readline/history.h>
-#include <stdbool.h>
-#include "ft_printf.h"
 #include "libft.h"
 #include "minishell.h"
 #include "msh_signal.h"
-#include "unistd.h"
-#include "vector.h"
+#include <unistd.h>
 #include "tokens.h"
 #include "utils.h"
 #include "path.h"
