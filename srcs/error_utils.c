@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 15:43:50 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 17:45:46 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "env_var.h"
 #include "tokens.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void	msh_error(const char *message)
 {
@@ -29,7 +30,8 @@ void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his)
 {
 	if (save_his)
 	{
-		ft_putstr_fd("exit\n", 1);
+		if (isatty(STDIN_FILENO))
+			ft_putstr_fd("exit\n", 1);
 		save_history(cominfo->env_ret, &cominfo->com_list);
 	}
 	if (cominfo->tokens)

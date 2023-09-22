@@ -6,13 +6,14 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 15:25:30 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/20 19:47:56 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/22 17:40:31 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 #include <readline/readline.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 t_ft_rl	*ft_rl_init(t_ft_rl *rlinfo)
 {
@@ -26,7 +27,10 @@ const char	*ft_readline(t_ft_rl *rlinfo, const char *prompt)
 	{
 		rlinfo->offset = 0;
 		free(rlinfo->line);
-		rlinfo->line = readline(prompt);
+		if (isatty(STDIN_FILENO))
+			rlinfo->line = readline(prompt);
+		else
+			rlinfo->line = readline("");
 	}
 	if (!rlinfo->line)
 		return (NULL);
