@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:05:57 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 16:20:27 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "tokens.h"
 #include "error.h"
 
-int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
+static int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 {
 	if (com_seg->stop == com_seg->size)
 		dup2(pipeinfo->old_pipe, STDIN_FILENO);

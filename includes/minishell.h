@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:03:07 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 16:22:35 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,9 @@ int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 			t_pipe_info *pipeinfo);
 int		pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 			t_pipe_info *pipeinfo);
-int		multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids,
-			t_pipe_info *pipeinfo);
 
 //	access_utils.c
 void	print_access_debug(char *execve_command);
-char	*access_loop(const char *command, const t_env_ret *env_ret);
-char	*search_env(char *exec_name, t_cominfo *cominfo,
-			t_com_segment *com_segment);
 void	access_error_print(const char *exec_name);
 void	exec_command(t_cominfo *cominfo, t_com_segment com_segment);
 char	*get_exec_name(t_owned_token *token);
