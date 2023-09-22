@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:45:03 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:55:49 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,6 @@ int		pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 			t_pipe_info *pipeinfo);
 int		multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids,
 			t_pipe_info *pipeinfo);
-
-//	heredoc_utils.c
-int		print_here_doc_contents(int heredoc_fd);
-int		check_and_open_heredoc(t_vector *tokens, int start, int stop,
-			t_cominfo *cominfo);
 
 //	access_utils.c
 void	print_access_debug(char *execve_command);
