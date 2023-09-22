@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 19:24:05 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 14:32:54 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static void	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 				t_cominfo *cominfo)
 {
 	if (init_envp_vec(envp, env_ret))
-		msh_exit(cominfo);
+		msh_exit(cominfo, 1, 0);
 	if (load_in_history(env_ret))
-		msh_exit(cominfo);
+		msh_exit(cominfo, 1, 0);
 	signal_assign(SIGINT, sigint_handler_parent);
 	signal_assign(SIGQUIT, SIG_IGN);
 	ft_rl_init(rlinfo);
@@ -91,14 +91,14 @@ void	prompt_loop(char **envp)
 	{
 		g_sig_triggered = NONE;
 		if (!ft_readline(&rlinfo, "minishell> "))
-			msh_exit(&cominfo);
+			msh_exit(&cominfo, 1, 1);
 		if (g_sig_triggered == PARENT_SIGINT)
 			env_ret.prev_ret = SIGINT_RECEIVED;
 		if (parse_line(&command, &owned_tokens, &env_ret, &rlinfo))
-			msh_exit(&cominfo);
+			msh_exit(&cominfo, 1, 1);
 		if (history_loop_logic(&cominfo.com_list, command))
 			return (vector_free(&owned_tokens, free_owned_token),
-				free(command), msh_exit(&cominfo));
+				free(command), msh_exit(&cominfo, 1, 1));
 		if (owned_tokens.size == 0)
 			continue ;
 		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);

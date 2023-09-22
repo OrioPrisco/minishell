@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:12:07 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:36:05 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,4 @@ void	access_error_print(const char *exec_name)
 	}
 	else
 		ft_dprintf(2, "%s: command not found\n", exec_name);
-}
-
-void	exec_command_error_frees(t_cominfo *cominfo, t_com_segment *com_segment,
-			int ret_stat)
-{
-	vector_free(&cominfo->env_ret->env_vec, free_str);
-	vector_free(com_segment->tokens, free_owned_token);
-	msh_exit_child(&cominfo->com_list, ret_stat);
 }
