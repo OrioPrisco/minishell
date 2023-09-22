@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 15:25:30 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/22 17:40:31 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 17:50:32 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "get_next_line.h"
 
 t_ft_rl	*ft_rl_init(t_ft_rl *rlinfo)
 {
@@ -30,7 +31,7 @@ const char	*ft_readline(t_ft_rl *rlinfo, const char *prompt)
 		if (isatty(STDIN_FILENO))
 			rlinfo->line = readline(prompt);
 		else
-			rlinfo->line = readline("");
+			rlinfo->line = get_next_line(STDIN_FILENO);
 	}
 	if (!rlinfo->line)
 		return (NULL);
