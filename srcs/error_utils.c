@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:36:37 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 14:38:59 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,16 @@ void	msh_error(const char *message)
 	perror(message);
 }
 
-void	msh_exit(t_cominfo *cominfo)
+void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his)
 {
-	save_history(cominfo->env_ret, &cominfo->com_list);
+	if (save_his)
+	{
+		ft_putstr_fd("exit\n", 1);
+		save_history(cominfo->env_ret, &cominfo->com_list);
+	}
+	if (cominfo->tokens)
+		vector_free(cominfo->tokens, free_owned_token);
 	vector_free(&cominfo->com_list, free_str);
 	vector_free(&cominfo->env_ret->env_vec, free_str);
-	ft_putstr_fd("exit\n", 1);
-	exit(EXIT_SUCCESS);
+	exit(ret_code);
 }

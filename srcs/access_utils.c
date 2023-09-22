@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:01:29 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:37:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
-		exec_command_error_frees(cominfo, &com_segment, 1);
+		msh_exit(cominfo, 1, 0);
 	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
 		msh_error("malloc");
@@ -176,7 +176,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	if (!execve_command)
 	{
 		table_free(execve_com_args);
-		exec_command_error_frees(cominfo, &com_segment, 127);
+		msh_exit(cominfo, 1, 0);
 	}
 	signal_assign(SIGQUIT, SIG_DFL);
 	execve(execve_command, execve_com_args,

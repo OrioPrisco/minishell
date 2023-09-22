@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:36:28 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 14:38:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@
 #include "ft_printf.h"
 #include "tokens.h"
 #include "env_var.h"
-
-void	msh_exit_child(t_vector *com_list, int ret)
-{
-	vector_free(com_list, free_str);
-	if (ret)
-		exit(ret);
-	else
-		exit(EXIT_SUCCESS);
-}
 
 int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 {
@@ -81,9 +72,9 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	ret = check_and_open_redirects(com_seg.tokens, &vec_fds, com_seg.start,
 			com_seg.stop);
 	if (ret)
-		msh_exit_child(&cominfo->com_list, ret);
+		msh_exit(cominfo, 1, 0);
 	open_heredocs(com_seg.tokens->data, com_seg.start, com_seg.stop);
 	redir_stdout_and_clean(&vec_fds, pipeinfo);
 	exec_command(cominfo, com_seg);
-	msh_exit_child(&cominfo->com_list, ret);
+	msh_exit(cominfo, 0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:45:39 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:34:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 
 	(void) execve_command;
 	if (!execve_com_args[1])
-		print_env_vec(env_vec, "declare -x ");
+		print_env_vec(env_vec, "export ");
 	else
 	{
 		buf = next_non_identifier(execve_com_args[1]);
@@ -89,12 +89,6 @@ int	export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 		}
 	}
 	return (0);
-}
-
-void	exit_msh(t_cominfo *cominfo, t_com_segment *com_segment)
-{
-	vector_free(com_segment->tokens, free_owned_token);
-	msh_exit(cominfo);
 }
 
 // echo should handle echo -nnn -nnnnnnn hi and return hi

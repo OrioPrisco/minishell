@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 16:37:55 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:36:59 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 	if (!exec_name)
 		return (-1);
 	if (!ft_strcmp(exec_name, "exit"))
-		exit_msh(cominfo, &com_segment);
+		msh_exit(cominfo, 0, 1);
 	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
 		return (msh_error("malloc"), -1);
@@ -101,5 +101,5 @@ void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg, int ret)
 	vector_free(com_seg->tokens, free_owned_token);
 	vector_free(&cominfo->env_ret->env_vec, free_str);
 	ft_rl_clear(cominfo->rlinfo);
-	msh_exit_child(&cominfo->com_list, ret);
+	msh_exit(cominfo, ret, 0);
 }

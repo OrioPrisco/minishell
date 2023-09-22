@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 18:56:14 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 14:36:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_cominfo
 	t_env_ret	*env_ret;
 	t_vector	com_list;
 	t_ft_rl		*rlinfo;
+	t_vector	*tokens;
 }				t_cominfo;
 
 typedef struct s_com_segment
@@ -50,7 +51,7 @@ void	prompt_loop(char **envp);
 
 //	error_utils.c
 void	msh_error(const char *message);
-void	msh_exit(t_cominfo *cominfo);
+void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his);
 
 //	history.c
 int		save_history(const t_env_ret *env_ret, t_vector *com_list);
@@ -90,7 +91,5 @@ char	*search_env(char *exec_name, t_cominfo *cominfo,
 void	access_error_print(const char *exec_name);
 void	exec_command(t_cominfo *cominfo, t_com_segment com_segment);
 char	*get_exec_name(t_owned_token *token);
-void	exec_command_error_frees(t_cominfo *cominfo, t_com_segment *com_segment,
-			int ret_stat);
 
 #endif
