@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:36:05 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:45:26 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include "utils.h"
 #include "env_var.h"
 #include "child.h"
+#include "tokens.h"
 
 void	print_access_debug(char *execve_command)
 {

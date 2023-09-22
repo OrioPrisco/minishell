@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:36:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:45:03 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define MINISHELL_H
 
 # include <stdbool.h>
-# include "tokens.h"
 # include "vector.h"
 
-typedef struct s_env_ret	t_env_ret;
-typedef struct s_ft_rl		t_ft_rl;
+typedef struct s_env_ret		t_env_ret;
+typedef struct s_ft_rl			t_ft_rl;
+typedef struct s_owned_token	t_owned_token;
 
 typedef struct s_cominfo
 {
