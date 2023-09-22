@@ -6,12 +6,14 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 12:59:31 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/19 15:44:51 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 16:03:01 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERROR_H
 # define ERROR_H
+
+typedef struct s_cominfo	t_cominfo;
 
 typedef enum e_error {
 	SUCCESS = 0,
@@ -23,4 +25,6 @@ typedef enum e_error {
 	SIGINT_RECEIVED = 130,
 }	t_error;
 
+void	msh_error(const char *message);
+void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his);
 #endif

@@ -6,15 +6,15 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 14:44:27 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 15:45:29 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 16:06:29 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
-#include "minishell.h"
 #include "ft_printf.h"
 #include "libft.h"
 #include <stdlib.h>
+#include "error.h"
 
 size_t	check_env_vec_dup(t_vector *env_vec, const char *s1, size_t n)
 {

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 15:55:49 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 16:03:07 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,6 @@ typedef struct s_pipe_info
 
 //	prompt_utils.c
 void	prompt_loop(char **envp);
-
-//	error_utils.c
-void	msh_error(const char *message);
-void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his);
 
 //	history.c
 int		save_history(const t_env_ret *env_ret, t_vector *com_list);

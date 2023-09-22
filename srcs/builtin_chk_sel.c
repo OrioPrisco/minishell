@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:48:49 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 16:04:51 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "ft_readline.h"
 #include "vector.h"
 #include "tokens.h"
+#include "error.h"
 
 bool	check_for_builtins_pre_fork(t_com_segment com_segment)
 {

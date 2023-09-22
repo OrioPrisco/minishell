@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 15:45:14 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 16:05:16 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 #include "builtins.h"
 #include "env_var.h"
 #include <stdlib.h>
-
-// needs to save old pwd to $OLDPWD and reassign $PWD to the new working dir.
-// and go to home if no args given.
+#include "error.h"
 
 int	cd_msh(char **execve_com_args, t_vector *env_vec)
 {
