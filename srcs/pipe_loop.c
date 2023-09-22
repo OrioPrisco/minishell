@@ -6,35 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 07:51:09 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 14:19:27 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:16:07 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "tokens.h"
-#include "vector.h"
 #include "libft.h"
-#include "child.h"
-#include "ft_printf.h"
-
-/*
-**	get_command_segment
-**	
-*/
-
-int	get_command_segment(t_vector *tokens, int i, int size)
-{
-	t_owned_token	*current;
-
-	while (i < size)
-	{
-		current = (t_owned_token *)tokens->data + i;
-		if (current->type == T_PIPE)
-			return (i);
-		i++;
-	}
-	return (i);
-}
 
 static int	count_pipes(t_vector *tokens)
 {

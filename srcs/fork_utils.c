@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 18:42:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:44:40 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 #include "vector.h"
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "ft_printf.h"
 #include "libft.h"
 #include "utils.h"
 #include "msh_signal.h"
+#include <stdlib.h>
 
 /*
 **	msh_wait

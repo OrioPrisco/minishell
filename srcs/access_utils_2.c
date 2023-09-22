@@ -6,22 +6,21 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 13:02:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:36:05 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:04:34 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 #include "libft.h"
 #include "ft_printf.h"
 #include "path.h"
 #include <unistd.h>
 #include "vector.h"
-#include <errno.h>
-#include "builtins.h"
 #include "utils.h"
 #include "env_var.h"
 #include "child.h"
+#include "tokens.h"
+#include "error.h"
 
 void	print_access_debug(char *execve_command)
 {

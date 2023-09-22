@@ -6,25 +6,23 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:37:44 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:20:03 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
-#include <readline/history.h>
-#include <stdbool.h>
-#include "ft_printf.h"
 #include "libft.h"
 #include "minishell.h"
 #include "msh_signal.h"
-#include "unistd.h"
-#include "vector.h"
+#include <unistd.h>
 #include "tokens.h"
 #include "utils.h"
 #include "path.h"
 #include "child.h"
 #include "builtins.h"
 #include <signal.h>
+#include <stdlib.h>
+#include "error.h"
 
 /*
 **	NAME
@@ -104,7 +102,7 @@ static char	*check_access(const char *const *path, const char *command)
 **	
 **/
 
-char	*access_loop(const char *command, const t_env_ret *env_ret)
+static char	*access_loop(const char *command, const t_env_ret *env_ret)
 {
 	char		**path_tab;
 	const char	*path;
@@ -127,7 +125,7 @@ char	*access_loop(const char *command, const t_env_ret *env_ret)
 	RETURN
 */
 
-char	*search_env(char *exec_name, t_cominfo *cominfo,
+static char	*search_env(char *exec_name, t_cominfo *cominfo,
 				t_com_segment *com_segment)
 {
 	char			*execve_command;

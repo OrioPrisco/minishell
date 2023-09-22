@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:32:54 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:43:33 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "msh_signal.h"
 #include "parser.h"
 #include "error.h"
+#include <stdlib.h>
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 {

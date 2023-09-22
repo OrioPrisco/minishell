@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/19 14:52:00 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/09/22 15:59:17 by OrioPrisc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ CC				=	cc
 
 SRC				=	minishell.c \
 					get_env_var.c \
+					env_var_utils.c \
 					tokens_utils.c \
-					tokens_utils_2.c \
 					prompt_utils.c \
 					error_utils.c \
 					history.c \
@@ -28,7 +28,6 @@ SRC				=	minishell.c \
 					pipe_loop.c \
 					fork_utils.c \
 					fork_utils_2.c \
-					heredoc_utils.c \
 					access_utils.c \
 					access_utils_2.c \
 					builtin_chk_sel.c \

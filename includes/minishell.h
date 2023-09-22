@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:36:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:22:35 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define MINISHELL_H
 
 # include <stdbool.h>
-# include "tokens.h"
 # include "vector.h"
 
-typedef struct s_env_ret	t_env_ret;
-typedef struct s_ft_rl		t_ft_rl;
+typedef struct s_env_ret		t_env_ret;
+typedef struct s_ft_rl			t_ft_rl;
+typedef struct s_owned_token	t_owned_token;
 
 typedef struct s_cominfo
 {
@@ -49,10 +49,6 @@ typedef struct s_pipe_info
 //	prompt_utils.c
 void	prompt_loop(char **envp);
 
-//	error_utils.c
-void	msh_error(const char *message);
-void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his);
-
 //	history.c
 int		save_history(const t_env_ret *env_ret, t_vector *com_list);
 int		load_in_history(const t_env_ret *env_ret);
@@ -75,19 +71,9 @@ int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 			t_pipe_info *pipeinfo);
 int		pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 			t_pipe_info *pipeinfo);
-int		multi_fork(t_com_segment com_seg, t_cominfo *cominfo, t_vector *pids,
-			t_pipe_info *pipeinfo);
-
-//	heredoc_utils.c
-int		print_here_doc_contents(int heredoc_fd);
-int		check_and_open_heredoc(t_vector *tokens, int start, int stop,
-			t_cominfo *cominfo);
 
 //	access_utils.c
 void	print_access_debug(char *execve_command);
-char	*access_loop(const char *command, const t_env_ret *env_ret);
-char	*search_env(char *exec_name, t_cominfo *cominfo,
-			t_com_segment *com_segment);
 void	access_error_print(const char *exec_name);
 void	exec_command(t_cominfo *cominfo, t_com_segment com_segment);
 char	*get_exec_name(t_owned_token *token);

@@ -6,12 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:54:41 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 13:18:31 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:24:27 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filedescriptors.h"
 #include <unistd.h>
+#include "minishell.h"
 
 int	cleanup_pipes(t_pipe_info *pipeinfo)
 {

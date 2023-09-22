@@ -6,21 +6,17 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:34:44 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:05:16 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "vector.h"
 #include "ft_printf.h"
-#include "utils.h"
 #include "unistd.h"
 #include "builtins.h"
 #include "env_var.h"
-
-// needs to save old pwd to $OLDPWD and reassign $PWD to the new working dir.
-// and go to home if no args given.
+#include <stdlib.h>
+#include "error.h"
 
 int	cd_msh(char **execve_com_args, t_vector *env_vec)
 {
