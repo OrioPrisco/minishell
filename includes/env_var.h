@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 22:10:31 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/21 15:54:02 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 12:16:22 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ const char	*get_env_varnul(const t_env_ret *env_ret, const char *name,
 				size_t name_size);
 const char	*get_env_var_no_special(char **envp, const char *name,
 				size_t name_size);
-
+char		*next_non_identifier(const char *str);
+int			is_identifier_char(int i);
 #endif
