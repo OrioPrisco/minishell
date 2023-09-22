@@ -6,12 +6,14 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/22 15:33:55 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:58:41 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
 #include "libft.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 static const t_tok_map_entry	g_token_map[] = {
 {T_SPACE, "SPACE"},
@@ -64,5 +66,25 @@ bool	is_redirect_type(t_token_type type)
 		|| type == T_REDIRECT_STDIN
 		|| type == T_REDIRECT_STDOUT_APPEND
 		|| type == T_HEREDOC
+	);
+}
+
+void	free_owned_token(void *owned_token)
+{
+	t_owned_token	*current;
+
+	current = (t_owned_token *)owned_token;
+	free(current->str);
+	if (current->hd)
+		close(current->hd);
+}
+
+bool	is_text_type(t_token_type type)
+{
+	return (0
+		|| type == T_STR
+		|| type == T_VAR
+		|| type == T_DIR_SEP
+		|| type == T_WILDCARD
 	);
 }

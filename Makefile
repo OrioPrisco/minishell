@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/22 15:55:17 by OrioPrisc        ###   ########.fr        #
+#    Updated: 2023/09/22 15:59:17 by OrioPrisc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ SRC				=	minishell.c \
 					get_env_var.c \
 					env_var_utils.c \
 					tokens_utils.c \
-					tokens_utils_2.c \
 					prompt_utils.c \
 					error_utils.c \
 					history.c \

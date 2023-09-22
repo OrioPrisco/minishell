@@ -6,12 +6,16 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 12:14:45 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/22 12:15:19 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 16:00:50 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
+#include "tokens.h"
 #include "libft.h"
+
+// functions definitions are in both tokens and env_var headers
+//as they are useful in both contexts
 
 //returns whether a character is alphanumeric or _
 //careful, identifier cannot start with a digit.
