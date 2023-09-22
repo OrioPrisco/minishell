@@ -6,16 +6,12 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:45:41 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 14:48:49 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "child.h"
 #include "libft.h"
-#include "minishell.h"
-#include "ft_printf.h"
 #include "utils.h"
-#include <stdlib.h>
 #include "builtins.h"
 #include "env_var.h"
 #include "ft_readline.h"

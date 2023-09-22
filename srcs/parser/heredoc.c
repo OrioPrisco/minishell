@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/21 14:14:17 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:50:27 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "parser_int.h"
 #include "msh_signal.h"
 #include <signal.h>
+#include <stdlib.h>
 
 static char	*expand_env_var(const char *str, const t_env_ret *env_ret)
 {

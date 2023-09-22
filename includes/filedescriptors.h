@@ -6,17 +6,17 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/14 14:13:14 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:21:51 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILEDESCRIPTORS_H
 # define FILEDESCRIPTORS_H
 
-# include "tokens.h"
-# include "minishell.h"
+# include <stdbool.h>
 
-typedef struct s_vector	t_vector;
+typedef struct s_vector		t_vector;
+typedef struct s_pipe_info	t_pipe_info;
 
 //	fd_cloexec is a flag that indicates the fd should be closed when execve
 //	returns succussfully

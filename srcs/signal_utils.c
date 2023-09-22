@@ -6,15 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:03:56 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/19 16:10:05 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:31:27 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <readline/readline.h>
 #include "libft.h"
 #include <signal.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include "msh_signal.h"
 

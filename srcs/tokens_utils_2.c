@@ -6,15 +6,15 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:33:01 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/13 13:31:14 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:32:41 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include "vector.h"
 #include <unistd.h>
+#include "ft_printf.h"
 
 void	free_owned_token(void *owned_token)
 {
@@ -35,7 +35,7 @@ void	print_tokens(t_vector *owned_tokens)
 	while (i < owned_tokens->size)
 	{
 		token = ((t_owned_token *)owned_tokens->data) + i;
-		printf("%s : %s\n", token_type_to_str(token->type), token->str);
+		ft_printf("%s : %s\n", token_type_to_str(token->type), token->str);
 		i++;
 	}
 }
@@ -49,7 +49,7 @@ void	print_relavent_tokens(t_vector *owned_tokens, int start, int stop)
 	while (i < stop)
 	{
 		token = ((t_owned_token *)owned_tokens->data) + i;
-		printf("%s : %s\n", token_type_to_str(token->type), token->str);
+		ft_printf("%s : %s\n", token_type_to_str(token->type), token->str);
 		i++;
 	}
 }

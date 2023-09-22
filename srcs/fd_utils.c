@@ -6,17 +6,17 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/14 14:07:07 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:44:23 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "filedescriptors.h"
 #include "libft.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include "tokens.h"
 #include "vector.h"
+#include <stdlib.h>
 
 int	open_trunc(t_fds *fds, const char *fn, int flags)
 {

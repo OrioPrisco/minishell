@@ -6,20 +6,14 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:38:08 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:22:04 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "child.h"
-#include "minishell.h"
-#include "vector.h"
 #include "filedescriptors.h"
-#include <stdlib.h>
 #include <unistd.h>
-#include "utils.h"
-#include "ft_printf.h"
 #include "tokens.h"
-#include "env_var.h"
 
 int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 {

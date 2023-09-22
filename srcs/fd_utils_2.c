@@ -6,15 +6,13 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/14 14:13:33 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:23:52 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "filedescriptors.h"
 #include "ft_printf.h"
-#include "libft.h"
-#include "tokens.h"
 #include "vector.h"
 #include <fcntl.h>
 #include <unistd.h>

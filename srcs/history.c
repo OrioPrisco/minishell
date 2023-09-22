@@ -6,7 +6,7 @@
 /*   By: dpentlan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:05:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/15 16:47:45 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:44:08 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "vector.h"
 #include "env_var.h"
 #include "path.h"
+#include <stdlib.h>
 
 /*	
 **	TAKES

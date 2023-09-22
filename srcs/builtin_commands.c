@@ -6,19 +6,16 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:46:00 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:45:14 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "vector.h"
 #include "ft_printf.h"
-#include "utils.h"
 #include "unistd.h"
 #include "builtins.h"
 #include "env_var.h"
-#include "tokens.h"
+#include <stdlib.h>
 
 // needs to save old pwd to $OLDPWD and reassign $PWD to the new working dir.
 // and go to home if no args given.

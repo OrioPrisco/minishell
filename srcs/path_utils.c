@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 19:31:12 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/08/17 14:48:37 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/22 15:45:45 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "utils.h"
 #include "vector.h"
 #include <sys/stat.h>
+#include <stdlib.h>
 
 //concatenates a folder name with another string
 // the output will have a / between folder and item

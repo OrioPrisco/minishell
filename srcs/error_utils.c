@@ -6,17 +6,18 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:38:59 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:43:50 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "vector.h"
-#include <stdlib.h>
 #include "libft.h"
 #include <stdio.h>
 #include "utils.h"
 #include "env_var.h"
+#include "tokens.h"
+#include <stdlib.h>
 
 void	msh_error(const char *message)
 {

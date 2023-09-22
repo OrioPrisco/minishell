@@ -6,15 +6,11 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:39:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/21 14:42:02 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:00:36 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "vector.h"
-#include "ft_printf.h"
-#include "utils.h"
 #include "builtins.h"
 
 int	unset_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)

@@ -6,13 +6,12 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 16:14:32 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/22 12:15:07 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:33:55 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokens.h"
 #include "libft.h"
-#include "minishell.h"
 
 static const t_tok_map_entry	g_token_map[] = {
 {T_SPACE, "SPACE"},

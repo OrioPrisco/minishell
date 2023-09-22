@@ -6,16 +6,14 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:44:53 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 12:08:19 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 15:26:03 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "vector.h"
 #include "child.h"
-#include "ft_printf.h"
 #include <unistd.h>
-#include "libft.h"
 #include <signal.h>
 #include "builtins.h"
 #include "msh_signal.h"
