@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 17:45:46 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/25 17:40:53 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "tokens.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <readline/readline.h>
 
 void	msh_error(const char *message)
 {
@@ -28,6 +29,7 @@ void	msh_error(const char *message)
 
 void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his)
 {
+	rl_clear_history();
 	if (save_his)
 	{
 		if (isatty(STDIN_FILENO))
