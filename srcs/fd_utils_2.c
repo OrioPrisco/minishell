@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 13:21:40 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 13:52:37 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,8 @@ int	redir_stdin_token_found(const char *filename)
 
 bool	redir_stdout_and_clean(t_vector *vec_fds, t_pipe_info *pipeinfo)
 {
-	int	last;
-
-	last = 1;
 	if (vec_fds->size > 0)
-	{
-		last = ((int *)vec_fds->data)[vec_fds->size - 1];
-		dup2(last, 1);
-	}
+		dup2(((int *)vec_fds->data)[vec_fds->size - 1], 1);
 	vector_free(vec_fds, free_fds);
 	cleanup_pipes(pipeinfo);
 	return (0);
