@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/22 15:59:17 by OrioPrisc        ###   ########.fr        #
+#    Updated: 2023/09/26 14:37:32 by OrioPrisc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,6 @@ SRC				=	minishell.c \
 					fork_utils.c \
 					fork_utils_2.c \
 					access_utils.c \
-					access_utils_2.c \
 					builtin_chk_sel.c \
 					builtin_commands.c \
 					builtin_commands_2.c \
