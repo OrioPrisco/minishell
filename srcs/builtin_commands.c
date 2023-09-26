@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 15:16:07 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:30:45 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,15 +100,14 @@ static int	echo_arg_parsing(char **execve_com_args, int *nl_flag)
 	while (execve_com_args[i])
 	{
 		j = 0;
-		if (execve_com_args[i][j] == '-')
-		{
-			j++;
-			while (execve_com_args[i][j] == 'n')
-				j++;
-		}
-		if (execve_com_args[i][j] != '\0' && j)
+		if (execve_com_args[i][j] != '-' || execve_com_args[i][j + 1] != 'n')
 			break ;
-		i++;
+		j++;
+		j += ft_strspn(&execve_com_args[i][j], "n");
+		if (execve_com_args[i][j] == '\0')
+			i++;
+		else
+			break ;
 	}
 	if (i > 0)
 		*nl_flag = 0;
