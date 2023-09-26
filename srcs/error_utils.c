@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 14:45:32 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 17:49:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,14 @@ void	redirect_error_print(const char *filename)
 		msh_error(filename);
 }
 
-void	access_error_print(const char *exec_name)
+// Change prev_ret to new previous return in structure.
+
+void	set_err_code(t_cominfo *cominfo, int err_code)
+{
+	cominfo->env_ret->prev_ret = err_code;
+}
+
+void	access_error_print(const char *exec_name, t_cominfo *cominfo)
 {
 	int	ret;
 
@@ -72,13 +79,16 @@ void	access_error_print(const char *exec_name)
 		if (ret == 1)
 		{
 			errno = EISDIR;
-			msh_error(exec_name);
+			return (msh_error(exec_name), set_err_code(cominfo, 126));
 		}
 		else if (ret == -1)
-			msh_error(exec_name);
+			return (msh_error(exec_name), set_err_code(cominfo, 126));
 		else if (access(exec_name, F_OK | X_OK))
-			msh_error(exec_name);
+			return (msh_error(exec_name), set_err_code(cominfo, 126));
 	}
 	else
+	{
 		ft_dprintf(2, "%s: command not found\n", exec_name);
+		cominfo->env_ret->prev_ret = 127;
+	}
 }

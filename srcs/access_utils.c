@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 13:45:34 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:35:27 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ static char	*search_env(char *exec_name, t_cominfo *cominfo,
 	if (!execve_command)
 		return (NULL);
 	if (!execve_command[0])
-		return (free(execve_command), access_error_print(exec_name), NULL);
+		return (free(execve_command), access_error_print(exec_name, cominfo), NULL);
 	return (execve_command);
 }
 
