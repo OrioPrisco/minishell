@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 15:35:10 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 15:41:15 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,35 @@
 #include "path.h"
 #include "error.h"
 #include "utils.h"
+#include "minishell.h"
+
+/*	
+**	dup2 to least greater than or equal to 10
+**	
+**/
+
+static int	dup_to_lget(t_vector *vec_fds, int fd)
+{
+	size_t	i;
+	int		greatest;
+	int		ret;
+
+	i = 0;
+	ret = 0;
+	greatest = 10;
+	while (i < vec_fds->size)
+	{
+		if (((int *)vec_fds->data)[i] >= greatest)
+			greatest = ((int *)vec_fds->data)[i] + 1;
+		i++;
+	}
+	ret = dup2(fd, greatest);
+	close(fd);
+	if (ret < 0)
+		return (ret);
+	((int *)vec_fds->data)[vec_fds->size - 1] = greatest;
+	return (0);
+}
 
 static int	redir_stdout_token_found(t_owned_token *owned_token,
 							t_vector *vec_fds, char *fn_start)
@@ -36,6 +65,29 @@ static int	redir_stdout_token_found(t_owned_token *owned_token,
 	if (vector_append(vec_fds, &fd))
 		return (vector_free(vec_fds, close_fd), 1);
 	return (dup_to_lget(vec_fds, fd));
+}
+
+static int	redir_stdin_token_found(const char *filename)
+{
+	int		open_fd;
+
+	open_fd = open(filename, O_RDONLY);
+	if (open_fd < 0)
+		msh_error(filename);
+	dup2(open_fd, 0);
+	close(open_fd);
+	return (0);
+}
+
+int	cleanup_pipes(t_pipe_info *pipeinfo)
+{
+	if (pipeinfo->pipefd[0])
+		close (pipeinfo->pipefd[0]);
+	if (pipeinfo->pipefd[1])
+		close (pipeinfo->pipefd[1]);
+	if (pipeinfo->old_pipe != -1)
+		close (pipeinfo->old_pipe);
+	return (0);
 }
 
 /*	
