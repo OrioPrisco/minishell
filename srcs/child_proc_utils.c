@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 14:52:35 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 15:32:46 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include "tokens.h"
 #include "error.h"
+#include "utils.h"
 
 static int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 {
@@ -71,7 +72,7 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	open_heredocs(com_seg.tokens->data, com_seg.start, com_seg.stop);
 	if (vec_fds.size > 0)
 		dup2(((int *)vec_fds.data)[vec_fds.size - 1], 1);
-	vector_free(&vec_fds, free_fds);
+	vector_free(&vec_fds, close_fd);
 	cleanup_pipes(pipeinfo);
 	exec_command(cominfo, com_seg);
 	msh_exit(cominfo, 0, 0);

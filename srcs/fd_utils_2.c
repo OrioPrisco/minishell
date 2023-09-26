@@ -16,6 +16,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "error.h"
+#include "minishell.h"
 
 /*	
 **	dup2 to least greater than or equal to 10

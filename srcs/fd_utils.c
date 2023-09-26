@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 14:43:51 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 15:35:10 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include "path.h"
 #include "error.h"
+#include "utils.h"
 
 static int	redir_stdout_token_found(t_owned_token *owned_token,
 							t_vector *vec_fds, char *fn_start)
@@ -31,9 +32,9 @@ static int	redir_stdout_token_found(t_owned_token *owned_token,
 	else
 		fd = open(fn_start, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (fd < 0)
-		return (vector_free(vec_fds, free_fds), perror(fn_start), fd);
+		return (vector_free(vec_fds, close_fd), perror(fn_start), fd);
 	if (vector_append(vec_fds, &fd))
-		return (vector_free(vec_fds, free_fds), 1);
+		return (vector_free(vec_fds, close_fd), 1);
 	return (dup_to_lget(vec_fds, fd));
 }
 
@@ -68,12 +69,4 @@ int	open_redirects(t_vector *tokens, int start, int stop, t_vector *vec_fds)
 		i++;
 	}
 	return (0);
-}
-
-void	free_fds(void *to_close)
-{
-	int	*current;
-
-	current = to_close;
-	close(*current);
 }

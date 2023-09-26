@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 09:08:51 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 14:26:32 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:11:07 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "env_var.h"
+#include "utils.h"
 
 static bool	check_for_redirects(t_vector *tokens, int start, int stop)
 {
@@ -53,7 +54,7 @@ int	check_and_open_redirects(t_vector *tokens, t_vector *vec_fds,
 	{
 		ret = open_redirects(tokens, start, stop, vec_fds);
 		if (ret)
-			return (vector_free(vec_fds, free_fds), ret);
+			return (vector_free(vec_fds, close_fd), ret);
 	}
 	return (0);
 }
