@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 13:19:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/26 13:45:34 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_exec_name(t_owned_token *token)
 	while (token->type != T_END && token->type != T_PIPE)
 	{
 		if (is_redirect_type(token->type))
-			token = token + 2;
+			token = token + 1;
 		else if (token->type == T_STR)
 			return (token->str);
 		token++;
