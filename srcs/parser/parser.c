@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/22 15:46:06 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/24 19:08:25 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,16 @@ bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 	vector_init(&command, sizeof(char));
 	vector_init(dest, sizeof(t_owned_token));
 	ret = parse_line_int(line_cpy, dest, env_ret, rlinfo_com);
-	if (dest->size > 1 && ret == -1 && g_sig_triggered != HD_SIGINT)
-		env_ret->prev_ret = PARSE_ERROR;
-	else if (dest->size > 1 && g_sig_triggered != HD_SIGINT)
-		env_ret->prev_ret = SUCCESS;
-	else if (dest->size > 1 && g_sig_triggered == HD_SIGINT)
-		env_ret->prev_ret = SIGINT_RECEIVED;
-	if (dest->size > 1 && (ret == 1 || env_ret->prev_ret != SUCCESS))
-		vector_clear(&command);
-	if (dest->size == 1)
+	if (dest->size == 1 && ((t_owned_token *)dest->data)[0].type == T_END)
 		vector_free(dest, free_owned_token);
+	else if (ret == -1 && g_sig_triggered != HD_SIGINT)
+		env_ret->prev_ret = PARSE_ERROR;
+	else if (g_sig_triggered != HD_SIGINT)
+		env_ret->prev_ret = SUCCESS;
+	else if (g_sig_triggered == HD_SIGINT)
+		env_ret->prev_ret = SIGINT_RECEIVED;
+	if (ret == 1)
+		vector_clear(&command);
 	*parsed = vector_move_data(&command);
 	return (free(line_cpy), ret == 1);
 }
