@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/18 16:02:38 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 18:21:36 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	parse_hd(t_vector *dest, const t_token *tok,
 	to_merge = seek_tokens_to_merge(tok + 1);
 	if (to_merge == -1)
 		return (-1);
-	if (merge_tokens(&hd_sep, tok + 1, to_merge, env_ret))
+	if (merge_tokens(&hd_sep, tok + 1, to_merge, NULL))
 		return (0);
 	ret = open_heredoc(hd_sep, env_ret, rlinfo_com);
 	free(hd_sep);
