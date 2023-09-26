@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:39:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 13:45:15 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:12:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	env_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 	return (0);
 }
 
-int	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
+void	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
 {
 	char	*ptr;
 	long	num;
@@ -54,14 +54,18 @@ int	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
 			cominfo->env_ret->prev_ret, save_hist);
 	}
 	if (execve_com_args[1] && execve_com_args[2])
+	{
 		ft_dprintf(2, "minishell: exit: too many arguments\n");
+		return (table_free(execve_com_args));
+	}
 	num = ft_strtol(execve_com_args[1], &ptr, 10);
-	if (!ft_strtol_check_int(execve_com_args[1], ptr, num))
+	if (*ptr == '\0' && !ft_strtol_check_int(execve_com_args[1], ptr, num))
 	{
 		table_free(execve_com_args);
 		msh_exit(cominfo, num, save_hist);
 	}
 	ft_dprintf(2, "minishell: exit: %s: numeric argument required\n",
 		execve_com_args[1]);
-	return (0);
+	table_free(execve_com_args);
+	msh_exit(cominfo, 2, save_hist);
 }
