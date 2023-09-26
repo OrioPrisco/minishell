@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:04:51 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 13:18:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,12 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
 		return (-1);
-	if (!ft_strcmp(exec_name, "exit"))
-		msh_exit(cominfo, 0, 1);
 	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
 		return (msh_error("malloc"), -1);
-	return (builtin_commands(exec_name, execve_com_args,
-			&cominfo->env_ret->env_vec));
+	if (!ft_strcmp(exec_name, "exit"))
+		exit_msh(cominfo, execve_com_args, 1);
+	return (builtin_commands(exec_name, execve_com_args, cominfo));
 }
 
 int	check_for_builtins(const char *exec_name)
@@ -73,25 +72,30 @@ int	check_for_builtins(const char *exec_name)
 }
 
 int	builtin_commands(char *execve_command, char **execve_com_args,
-			t_vector *env_vec)
+			t_cominfo *cominfo)
 {
 	int	ret;
 
 	ret = 0;
 	if (!ft_strcmp(execve_command, "echo"))
-		ret = echo_msh(execve_command, execve_com_args, env_vec->data);
-	if (!ft_strcmp(execve_command, "cd"))
-		ret = cd_msh(execve_com_args, env_vec);
-	if (!ft_strcmp(execve_command, "pwd"))
-		ret = pwd_msh(execve_command, execve_com_args, env_vec->data);
-	if (!ft_strcmp(execve_command, "export"))
-		ret = export_msh(execve_command, execve_com_args, env_vec);
-	if (!ft_strcmp(execve_command, "unset"))
-		ret = unset_msh(execve_command, execve_com_args, env_vec);
-	if (!ft_strcmp(execve_command, "env"))
-		ret = env_msh(execve_command, execve_com_args, env_vec);
-	if (!ft_strcmp(execve_command, "exit"))
-		return (table_free(execve_com_args), 0);
+		ret = echo_msh(execve_command, execve_com_args,
+				cominfo->env_ret->env_vec.data);
+	else if (!ft_strcmp(execve_command, "cd"))
+		ret = cd_msh(execve_com_args, &cominfo->env_ret->env_vec);
+	else if (!ft_strcmp(execve_command, "pwd"))
+		ret = pwd_msh(execve_command, execve_com_args,
+				cominfo->env_ret->env_vec.data);
+	else if (!ft_strcmp(execve_command, "export"))
+		ret = export_msh(execve_command, execve_com_args,
+				&cominfo->env_ret->env_vec);
+	else if (!ft_strcmp(execve_command, "unset"))
+		ret = unset_msh(execve_command, execve_com_args,
+				&cominfo->env_ret->env_vec);
+	else if (!ft_strcmp(execve_command, "env"))
+		ret = env_msh(execve_command, execve_com_args,
+				&cominfo->env_ret->env_vec);
+	else if (!ft_strcmp(execve_command, "exit"))
+		ret = exit_msh(cominfo, execve_com_args, 0);
 	return (table_free(execve_com_args), ret);
 }
 
