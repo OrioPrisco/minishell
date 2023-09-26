@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:20:03 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 13:19:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 		msh_error("malloc");
 	if (check_for_builtins(exec_name))
 		builtins_cleanup(cominfo, &com_segment,
-			builtin_commands(exec_name, execve_com_args,
-				&cominfo->env_ret->env_vec));
+			builtin_commands(exec_name, execve_com_args, cominfo));
 	execve_command = search_env(exec_name, cominfo, &com_segment);
 	if (!execve_command)
 	{

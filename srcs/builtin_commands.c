@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:05:16 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/22 18:35:14 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "env_var.h"
 #include <stdlib.h>
 #include "error.h"
+#include "utils.h"
 
 int	cd_msh(char **execve_com_args, t_vector *env_vec)
 {
@@ -96,15 +97,11 @@ int	echo_msh(char *execve_command, char **execve_com_args, char **envp)
 
 	i = 1;
 	new_line = 1;
-	if (!execve_com_args[1])
-		return (0);
 	(void) execve_command;
 	(void) envp;
-	if (!ft_strcmp(execve_com_args[1], "-n"))
-	{
-		i++;
-		new_line = 0;
-	}
+	if (execve_com_args[1])
+		if (!ft_strcmp(execve_com_args[1], "-n"))
+			new_line = i++,0;
 	while (execve_com_args[i])
 	{
 		ft_printf("%s", execve_com_args[i]);
