@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 14:33:16 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 14:45:32 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <readline/readline.h>
 #include "path.h"
 #include "ft_printf.h"
+#include <errno.h>
 
 void	msh_error(const char *message)
 {
@@ -53,7 +54,10 @@ void	access_error_print(const char *exec_name)
 	{
 		ret = is_directory(exec_name);
 		if (ret == 1)
-			ft_dprintf(2, "%s: Is a directory\n", exec_name);
+		{
+			errno = EISDIR;
+			msh_error(exec_name);
+		}
 		else if (ret == -1)
 			msh_error(exec_name);
 		else if (access(exec_name, F_OK | X_OK))
