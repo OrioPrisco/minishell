@@ -6,12 +6,12 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 15:32:46 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 15:44:31 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "child.h"
-#include "filedescriptors.h"
+#include "redirects.h"
 #include <unistd.h>
 #include "tokens.h"
 #include "error.h"

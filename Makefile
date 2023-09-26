@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/26 15:38:36 by OrioPrisc        ###   ########.fr        #
+#    Updated: 2023/09/26 15:44:15 by OrioPrisc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRC				=	minishell.c \
 					signal_utils.c \
 					ast_utils.c \
 					utils.c \
-					fd_utils.c \
+					redirects.c \
 					pipe_loop.c \
 					fork_utils.c \
 					fork_utils_2.c \

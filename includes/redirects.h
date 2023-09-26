@@ -6,12 +6,12 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 15:41:27 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 15:42:17 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILEDESCRIPTORS_H
-# define FILEDESCRIPTORS_H
+#ifndef REDIRECTS_H
+# define REDIRECTS_H
 
 # include <stdbool.h>
 
