@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 13:23:36 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 14:52:35 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	if (ret)
 		msh_exit(cominfo, 1, 0);
 	open_heredocs(com_seg.tokens->data, com_seg.start, com_seg.stop);
-	redir_stdout_and_clean(&vec_fds, pipeinfo);
+	if (vec_fds.size > 0)
+		dup2(((int *)vec_fds.data)[vec_fds.size - 1], 1);
+	vector_free(&vec_fds, free_fds);
+	cleanup_pipes(pipeinfo);
 	exec_command(cominfo, com_seg);
 	msh_exit(cominfo, 0, 0);
 }
