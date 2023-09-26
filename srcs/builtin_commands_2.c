@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:39:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 14:30:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:17:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "utils.h"
 #include "error.h"
 #include "env_var.h"
+#include "ft_readline.h"
+#include "tokens.h"
 
 int	unset_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 {
@@ -68,4 +70,12 @@ void	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
 	}
 	table_free(execve_com_args);
 	msh_exit(cominfo, num, save_hist);
+}
+
+void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg, int ret)
+{
+	vector_free(com_seg->tokens, free_owned_token);
+	vector_free(&cominfo->env_ret->env_vec, free_str);
+	ft_rl_clear(cominfo->rlinfo);
+	msh_exit(cominfo, ret, 0);
 }

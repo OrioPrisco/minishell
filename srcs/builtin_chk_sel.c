@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 17:08:51 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:16:56 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "utils.h"
 #include "builtins.h"
 #include "env_var.h"
-#include "ft_readline.h"
 #include "vector.h"
 #include "tokens.h"
 #include "error.h"
@@ -126,12 +125,4 @@ int	builtin_commands(char *execve_command, char **execve_com_args,
 	else if (!ft_strcmp(execve_command, "exit"))
 		exit_msh(cominfo, execve_com_args, 0);
 	return (table_free(execve_com_args), ret);
-}
-
-void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg, int ret)
-{
-	vector_free(com_seg->tokens, free_owned_token);
-	vector_free(&cominfo->env_ret->env_vec, free_str);
-	ft_rl_clear(cominfo->rlinfo);
-	msh_exit(cominfo, ret, 0);
 }
