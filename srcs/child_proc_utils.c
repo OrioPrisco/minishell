@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 15:44:31 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 16:33:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 	return (0);
 }
 
-static void	open_heredocs(t_owned_token *tok, size_t start, size_t stop)
+void	open_heredocs(t_owned_token *tok, size_t start, size_t stop)
 {
 	size_t	i;
 
