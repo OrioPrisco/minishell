@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:21:43 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 13:20:17 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,13 @@
 typedef struct s_vector		t_vector;
 typedef struct s_pipe_info	t_pipe_info;
 
-//	fd_cloexec is a flag that indicates the fd should be closed when execve
-//	returns succussfully
-
-typedef struct s_fds
-{
-	int				fd;
-	int				fd_cloexec;
-	char			*fn;
-}			t_fds;
-
 //	fd_utils.c
 int		open_redirects(t_vector *tokens, int start, int stop,
 			t_vector *vec_fds);
-void	free_fds(void *t_fds);
+void	free_fds(void *to_close);
 
 //	fd_utils_2.c
-void	print_open_redirects(t_fds *fds, int size);
-int		dup_to_lget(t_vector *vec_fds, t_fds *current);
+int		dup_to_lget(t_vector *vec_fds, int fd);
 int		redir_stdin_token_found(const char *current);
 bool	redir_stdout_and_clean(t_vector *vec_fds, t_pipe_info *pipeinfo);
 

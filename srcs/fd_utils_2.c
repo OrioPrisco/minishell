@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:27:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:08:26 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 13:21:40 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,37 +18,11 @@
 #include "error.h"
 
 /*	
-**	mostly for debugging to view fds vector data
-**	
-**/
-
-void	print_open_redirects(t_fds *fds, int size)
-{
-	int	i;
-
-	i = 0;
-	if (size == 0 || fds == NULL)
-	{
-		ft_printf("No open fds.\n");
-		return ;
-	}
-	while (i < size)
-	{
-		if (fds[i].fn)
-		{
-			ft_printf("#%d: fd: %d, fn: %s, fd_cloexec: %d\n",
-				(i + 1), fds[i].fd, fds[i].fn, fds[i].fd_cloexec);
-		}
-		i++;
-	}
-}
-
-/*	
 **	dup2 to least greater than or equal to 10
 **	
 **/
 
-int	dup_to_lget(t_vector *vec_fds, t_fds *current)
+int	dup_to_lget(t_vector *vec_fds, int fd)
 {
 	size_t	i;
 	int		greatest;
@@ -59,15 +33,15 @@ int	dup_to_lget(t_vector *vec_fds, t_fds *current)
 	greatest = 10;
 	while (i < vec_fds->size)
 	{
-		if (((t_fds *)vec_fds->data)[i].fd >= greatest)
-			greatest = ((t_fds *)vec_fds->data)[i].fd + 1;
+		if (((int *)vec_fds->data)[i] >= greatest)
+			greatest = ((int *)vec_fds->data)[i] + 1;
 		i++;
 	}
-	ret = dup2(current->fd, greatest);
+	ret = dup2(fd, greatest);
+	close(fd);
 	if (ret < 0)
 		return (ret);
-	close(current->fd);
-	((t_fds *)vec_fds->data)[vec_fds->size - 1].fd = greatest;
+	((int *)vec_fds->data)[vec_fds->size - 1] = greatest;
 	return (0);
 }
 
@@ -99,7 +73,7 @@ bool	redir_stdout_and_clean(t_vector *vec_fds, t_pipe_info *pipeinfo)
 	last = 1;
 	if (vec_fds->size > 0)
 	{
-		last = ((t_fds *)vec_fds->data + vec_fds->size - 1)->fd;
+		last = ((int *)vec_fds->data)[vec_fds->size - 1];
 		dup2(last, 1);
 	}
 	vector_free(vec_fds, free_fds);

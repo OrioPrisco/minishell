@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:20:27 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 13:23:36 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	t_vector	vec_fds;
 	int			ret;
 
-	vector_init(&vec_fds, sizeof(t_fds));
+	vector_init(&vec_fds, sizeof(int));
 	if (pipeinfo->pipefd[0] != 0 && pipeinfo->pipefd[1] != 0)
 		pipe_dups(&com_seg, pipeinfo);
 	ret = check_and_open_redirects(com_seg.tokens, &vec_fds, com_seg.start,

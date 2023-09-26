@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:21:24 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 13:23:11 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,55 +17,22 @@
 #include "tokens.h"
 #include "vector.h"
 #include <stdlib.h>
-
-static int	open_trunc(t_fds *fds, const char *fn, int flags)
-{
-	fds->fn = ft_strdup(fn);
-	if (!fds->fn)
-		return (1);
-	fds->fd = open(fn, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	if (fds->fd < 0)
-		return (1);
-	if (flags == 1)
-		fds->fd_cloexec = 1;
-	return (0);
-}
-
-static int	open_append(t_fds *fds, const char *fn, int flags)
-{
-	fds->fn = ft_strdup(fn);
-	if (!fds->fn)
-		return (1);
-	fds->fd = open(fn, O_CREAT | O_WRONLY | O_APPEND, 0666);
-	if (fds->fd < 0)
-		return (1);
-	if (flags == 1)
-		fds->fd_cloexec = 1;
-	return (0);
-}
+#include <stdio.h>
 
 static int	redir_stdout_token_found(t_owned_token *owned_token,
 							t_vector *vec_fds, char *fn_start)
 {
-	int		(*redir)(t_fds *, const char *, int);
-	int		ret;
-	t_fds	current;
+	int		fd;
 
-	ret = 0;
-	ft_bzero(&current, sizeof(t_fds));
 	if (owned_token->type == T_REDIRECT_STDOUT)
-		redir = &open_trunc;
-	if (owned_token->type == T_REDIRECT_STDOUT_APPEND)
-		redir = &open_append;
-	ret = (*redir)(&current, fn_start, 1);
-	if (!ret)
-	{
-		if (vector_append(vec_fds, &current))
-			return (vector_free(vec_fds, free_fds), 1);
-	}
+		fd = open(fn_start, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	else
-		return (vector_free(vec_fds, free_fds), ret);
-	return (dup_to_lget(vec_fds, &current));
+		fd = open(fn_start, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	if (fd < 0)
+		return (vector_free(vec_fds, free_fds), perror(fn_start), fd);
+	if (vector_append(vec_fds, &fd))
+		return (vector_free(vec_fds, free_fds), 1);
+	return (dup_to_lget(vec_fds, fd));
 }
 
 /*	
@@ -84,9 +51,7 @@ int	open_redirects(t_vector *tokens, int start, int stop, t_vector *vec_fds)
 	while (i < stop)
 	{
 		current = (t_owned_token *)tokens->data + i;
-		if (current->type == T_REDIRECT_STDOUT
-			|| current->type == T_REDIRECT_STDOUT_APPEND
-			|| current->type == T_REDIRECT_STDIN)
+		if (is_redirect_type(current->type) && current->type != T_HEREDOC)
 		{
 			if (current->type == T_REDIRECT_STDIN)
 				ret = redir_stdin_token_found(current[1].str);
@@ -101,11 +66,10 @@ int	open_redirects(t_vector *tokens, int start, int stop, t_vector *vec_fds)
 	return (0);
 }
 
-void	free_fds(void *to_free)
+void	free_fds(void *to_close)
 {
-	t_fds	*current;
+	int	*current;
 
-	current = to_free;
-	close(current->fd);
-	free(current->fn);
+	current = to_close;
+	close(*current);
 }
