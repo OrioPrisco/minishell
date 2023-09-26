@@ -46,6 +46,22 @@ void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his)
 	exit(ret_code);
 }
 
+void	redirect_error_print(const char *filename)
+{
+	int	ret;
+
+	ret = is_directory(filename);
+	if (ret == 1)
+	{
+		errno = EISDIR;
+		msh_error(filename);
+	}
+	else if (ret == -1)
+		msh_error(filename);
+	else if (access(filename, F_OK))
+		msh_error(filename);
+}
+
 void	access_error_print(const char *exec_name)
 {
 	int	ret;
