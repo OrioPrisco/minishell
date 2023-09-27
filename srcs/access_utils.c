@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 18:41:16 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/27 13:54:16 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	if (!execve_command)
 	{
 		table_free(execve_com_args);
-		msh_exit(cominfo, 1, 0);
+		msh_exit(cominfo, cominfo->env_ret->prev_ret, 0);
 	}
 	signal_assign(SIGQUIT, SIG_DFL);
 	execve(execve_command, execve_com_args,

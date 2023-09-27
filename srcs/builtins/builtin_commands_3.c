@@ -6,9 +6,15 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 13:36:32 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 13:41:14 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:47:04 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
+#include "vector.h"
+#include "builtins.h"
+#include "env_var.h"
+#include "ft_printf.h"
 
 int	export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 {

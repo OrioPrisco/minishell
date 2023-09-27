@@ -6,10 +6,11 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 17:49:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:10:22 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "error.h"
 #include "minishell.h"
 #include "vector.h"
 #include "libft.h"
@@ -82,7 +83,7 @@ void	access_error_print(const char *exec_name, t_cominfo *cominfo)
 			return (msh_error(exec_name), set_err_code(cominfo, 126));
 		}
 		else if (ret == -1)
-			return (msh_error(exec_name), set_err_code(cominfo, 126));
+			return (msh_error(exec_name), set_err_code(cominfo, 127));
 		else if (access(exec_name, F_OK | X_OK))
 			return (msh_error(exec_name), set_err_code(cominfo, 126));
 	}
