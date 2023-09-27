@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fd_utils_3.c                                       :+:      :+:    :+:   */
+/*   filedescriptors.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/07 14:54:41 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 15:24:27 by OrioPrisc        ###   ########.fr       */
+/*   Created: 2023/07/07 12:23:35 by dpentlan          #+#    #+#             */
+/*   Updated: 2023/09/26 15:42:17 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "filedescriptors.h"
-#include <unistd.h>
-#include "minishell.h"
+#ifndef REDIRECTS_H
+# define REDIRECTS_H
 
-int	cleanup_pipes(t_pipe_info *pipeinfo)
-{
-	if (pipeinfo->pipefd[0])
-		close (pipeinfo->pipefd[0]);
-	if (pipeinfo->pipefd[1])
-		close (pipeinfo->pipefd[1]);
-	if (pipeinfo->old_pipe != -1)
-		close (pipeinfo->old_pipe);
-	return (0);
-}
+# include <stdbool.h>
+
+typedef struct s_vector		t_vector;
+typedef struct s_pipe_info	t_pipe_info;
+
+//	fd_utils.c
+int		open_redirects(t_vector *tokens, int start, int stop,
+			t_vector *vec_fds);
+int		cleanup_pipes(t_pipe_info *pipeinfo);
+
+#endif

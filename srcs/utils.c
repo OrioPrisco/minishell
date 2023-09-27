@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:34:07 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/22 16:05:23 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 15:08:54 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "ft_printf.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void	free_str(void *data)
 {
@@ -72,4 +73,12 @@ int	compare_str(void *a, void *b)
 	astr = a;
 	bstr = b;
 	return (-ft_fake_strcoll(*astr, *bstr));
+}
+
+void	close_fd(void *to_close)
+{
+	int	*current;
+
+	current = to_close;
+	close(*current);
 }

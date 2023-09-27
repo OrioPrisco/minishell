@@ -6,15 +6,16 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:20:27 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 16:33:08 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "child.h"
-#include "filedescriptors.h"
+#include "redirects.h"
 #include <unistd.h>
 #include "tokens.h"
 #include "error.h"
+#include "utils.h"
 
 static int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 {
@@ -28,7 +29,7 @@ static int	pipe_dups(t_com_segment *com_seg, t_pipe_info *pipeinfo)
 	return (0);
 }
 
-static void	open_heredocs(t_owned_token *tok, size_t start, size_t stop)
+void	open_heredocs(t_owned_token *tok, size_t start, size_t stop)
 {
 	size_t	i;
 
@@ -61,7 +62,7 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	t_vector	vec_fds;
 	int			ret;
 
-	vector_init(&vec_fds, sizeof(t_fds));
+	vector_init(&vec_fds, sizeof(int));
 	if (pipeinfo->pipefd[0] != 0 && pipeinfo->pipefd[1] != 0)
 		pipe_dups(&com_seg, pipeinfo);
 	ret = check_and_open_redirects(com_seg.tokens, &vec_fds, com_seg.start,
@@ -69,7 +70,10 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	if (ret)
 		msh_exit(cominfo, 1, 0);
 	open_heredocs(com_seg.tokens->data, com_seg.start, com_seg.stop);
-	redir_stdout_and_clean(&vec_fds, pipeinfo);
+	if (vec_fds.size > 0)
+		dup2(((int *)vec_fds.data)[vec_fds.size - 1], 1);
+	vector_free(&vec_fds, close_fd);
+	cleanup_pipes(pipeinfo);
 	exec_command(cominfo, com_seg);
 	msh_exit(cominfo, 0, 0);
 }

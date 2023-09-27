@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 12:59:31 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/22 16:03:01 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/26 17:37:18 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,6 @@ typedef enum e_error {
 
 void	msh_error(const char *message);
 void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his);
+void	access_error_print(const char *exec_name, t_cominfo *cominfo);
+void	redirect_error_print(const char *filename);
 #endif
