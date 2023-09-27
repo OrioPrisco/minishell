@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/26 15:44:15 by OrioPrisc        ###   ########.fr        #
+#    Updated: 2023/09/27 14:47:56 by dpentlan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,10 +27,12 @@ SRC				=	minishell.c \
 					fork_utils.c \
 					fork_utils_2.c \
 					access_utils.c \
-					builtin_chk_sel.c \
-					builtin_commands.c \
-					builtin_commands_2.c \
-					builtin_utils.c \
+					builtins/builtin_chk_sel.c \
+					builtins/builtin_commands.c \
+					builtins/builtin_commands_2.c \
+					builtins/builtin_commands_3.c \
+					builtins/builtin_cd.c \
+					builtins/builtin_utils.c \
 					child_proc_utils.c \
 					path_utils.c\
 					parser/parse_redirect.c \

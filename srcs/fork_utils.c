@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 14:18:51 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:33:40 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	msh_wait(t_vector *pids, int *ret_status)
 
 	current_pid = 0;
 	wstatus = 0;
+	if (pids->size == 0)
+		return (0);
 	while (pids->size > 0)
 	{
 		current_pid = *((int *)pids->data);
