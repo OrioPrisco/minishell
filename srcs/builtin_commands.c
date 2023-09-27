@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 13:01:23 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:21:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	echo_msh(char *execve_command, char **execve_com_args, char **envp)
 	{
 		ft_printf("%s", execve_com_args[i]);
 		i++;
-		if (execve_com_args[i])// && !execve_com_args[i - 1])
+		if (execve_com_args[i])
 			ft_printf(" ");
 	}
 	if (new_line == 1)
