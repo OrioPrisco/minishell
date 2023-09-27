@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/24 18:16:27 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/28 11:58:31 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,29 @@
 #include "parser.h"
 #include "error.h"
 #include <stdlib.h>
+#include "ft_printf.h"
+
+int	increase_shlvl(t_env_ret	*env_ret)
+{
+	long	parsed;
+	char	*str;
+
+	parsed = ft_strtol(get_env_varnul(env_ret, "SHLVL", 5), NULL, 10);
+	parsed++;
+	if (((int)parsed) < 0)
+		parsed = 0;
+	if (((int)parsed) >= 1000)
+	{
+		ft_dprintf(2,
+			"minishell: warning: shell level (%d) too high, resetting to 1\n",
+			(int)parsed);
+		parsed = 1;
+	}
+	str = ft_itoa(parsed);
+	if (!str || add_key_value_to_env_vec("SHLVL=", str, &env_ret->env_vec))
+		return (free(str), -1);
+	return (0);
+}
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 {
@@ -42,7 +65,7 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 	}
 	if (vector_null_term(env_vec))
 		return (vector_free(env_vec, free_str), -1);
-	return (0);
+	return (increase_shlvl(env_ret));
 }
 
 /*	
