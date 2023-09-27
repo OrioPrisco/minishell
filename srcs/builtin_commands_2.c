@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:39:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 12:22:52 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:33:57 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
 			cominfo->env_ret->prev_ret, save_hist);
 	}
 	num = ft_strtol(execve_com_args[1], &ptr, 10);
-	if (*ptr != '\0')
+	if (*ptr != '\0' || !ft_strtol_check_long(execve_com_args[1], ptr, num))
 	{
 		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n",
 			execve_com_args[1]);
