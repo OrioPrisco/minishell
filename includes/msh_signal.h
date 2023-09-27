@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 12:51:37 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/19 16:01:15 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/27 18:02:45 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef enum e_trigger {
 
 //	signal_utils.c
 void	sigint_handler_parent(int signum);
+void	sigint_handler_failed_hd(int signum);
 void	sigint_handler_child(int signum);
 void	sigint_handler_heredoc(int signum);
 int		signal_assign(int signal, void (*f)(int));

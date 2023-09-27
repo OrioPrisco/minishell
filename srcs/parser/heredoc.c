@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/22 15:50:27 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/27 18:11:00 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 	{
 		str_input = ft_readline(rlinfo_com.rlinfo, "heredoc> ");
 		if (!str_input)
-			return (-1);
+			return (signal_assign(SIGINT, sigint_handler_failed_hd), -1);
 		input_len = ft_strcspn(str_input, "\n");
 		ft_rl_add_offset(rlinfo_com.rlinfo, input_len
 			+ (str_input[input_len] == '\n'));
@@ -108,8 +108,8 @@ int	open_heredoc(const char *limiter, const t_env_ret *env_ret,
 		return (close(stdin_dup), close(pipefd[0]), close(pipefd[1]), -1);
 	ret = here_doc_input_loop(pipefd[1], limiter, env_ret, rlinfo_com);
 	close(pipefd[1]);
-	if (signal_assign(SIGINT, sigint_handler_parent))
-		return (close(pipefd[0]), close(stdin_dup), -1);
+	if (ret != -1)
+		signal_assign(SIGINT, sigint_handler_parent);
 	dup2(stdin_dup, STDIN_FILENO);
 	close(stdin_dup);
 	if (ret == 1)
