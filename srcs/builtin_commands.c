@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 13:51:48 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:21:06 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,23 +90,40 @@ int	export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 
 // echo should handle echo -nnn -nnnnnnn hi and return hi
 
+static int	echo_arg_parsing(char **execve_com_args, int *nl_flag)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	execve_com_args++;
+	while (execve_com_args[i])
+	{
+		j = 0;
+		if (execve_com_args[i][j] != '-' || execve_com_args[i][j + 1] != 'n')
+			break ;
+		j++;
+		j += ft_strspn(&execve_com_args[i][j], "n");
+		if (execve_com_args[i][j] == '\0')
+			i++;
+		else
+			break ;
+	}
+	if (i > 0)
+		*nl_flag = 0;
+	return (i);
+}
+
 int	echo_msh(char *execve_command, char **execve_com_args, char **envp)
 {
 	int	i;
 	int	new_line;
 
-	i = 1;
-	new_line = 1;
 	(void) execve_command;
 	(void) envp;
-	if (execve_com_args[1])
-	{
-		if (!ft_strcmp(execve_com_args[1], "-n"))
-		{
-			i++;
-			new_line = 0;
-		}
-	}
+	i = 1;
+	new_line = 1;
+	i += echo_arg_parsing(execve_com_args, &new_line);
 	while (execve_com_args[i])
 	{
 		ft_printf("%s", execve_com_args[i]);
