@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/27 13:31:11 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/27 16:41:20 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	process_one_token(t_vector *dest, const t_token *tok,
 	if (tok->type == T_PIPE)
 		return (parse_pipe(dest, tok));
 	if (is_textexpr_type(tok->type))
-		return (parse_text(dest, tok, env_ret));
+		return (parse_text(dest, tok, env_ret, 0));
 	ft_dprintf(2, "No muncher for type %s\n", token_type_to_str(tok->type));
 	return (-1);
 }
