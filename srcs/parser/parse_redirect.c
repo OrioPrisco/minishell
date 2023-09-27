@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/26 18:21:36 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/27 17:16:39 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	parse_redirect(t_vector *dest, const t_token *tok,
 {
 	t_owned_token	token;
 	const t_token	*next;
+	int				ret;
 
 	token = (t_owned_token){NULL, tok->type, 0};
 	next = next_tok(tok);
@@ -65,5 +66,8 @@ int	parse_redirect(t_vector *dest, const t_token *tok,
 		return (parse_hd(dest, tok, env_ret, rlinfo_com));
 	if (vector_append(dest, &token))
 		return (0);
-	return (1);
+	ret = parse_text(dest, tok + 1, env_ret, 1);
+	if (ret == 0 || ret == -1)
+		return (ret);
+	return (ret + 1);
 }
