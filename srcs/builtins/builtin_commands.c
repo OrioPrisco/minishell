@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 13:21:06 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:40:32 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ int	export_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 	}
 	return (0);
 }
-
-// echo should handle echo -nnn -nnnnnnn hi and return hi
 
 static int	echo_arg_parsing(char **execve_com_args, int *nl_flag)
 {
