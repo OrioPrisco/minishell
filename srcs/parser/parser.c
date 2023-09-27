@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/24 19:08:25 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/27 13:31:11 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 		vector_free(dest, free_owned_token);
 	else if (ret == -1 && g_sig_triggered != HD_SIGINT)
 		env_ret->prev_ret = PARSE_ERROR;
-	else if (g_sig_triggered != HD_SIGINT)
-		env_ret->prev_ret = SUCCESS;
 	else if (g_sig_triggered == HD_SIGINT)
 		env_ret->prev_ret = SIGINT_RECEIVED;
 	if (ret == 1)
