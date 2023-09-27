@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 17:47:53 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/18 13:15:14 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/27 16:13:21 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@ bool	is_wildcard_expr(const t_token	*tok, int to_merge)
 			return (1);
 	}
 	return (0);
+}
+
+bool	is_only_vars(const t_token *tok, size_t to_merge)
+{
+	if (to_merge && tok->type == T_SPACE)
+	{
+		to_merge--;
+		tok++;
+	}
+	while (to_merge--)
+		if (tok->type != T_VAR)
+			return (0);
+	return (1);
 }
 
 // -1 means parse  error
@@ -48,6 +61,8 @@ int	parse_text(t_vector *dest, const t_token *tok,
 	}
 	if (merge_tokens(&text, tok, to_merge, env_ret))
 		return (0);
+	if (!*text && is_only_vars(tok, to_merge))
+		return (free(text), to_merge);
 	token = (t_owned_token){text, T_STR, 0};
 	if (vector_append(dest, &token))
 		return (free(text), 0);
