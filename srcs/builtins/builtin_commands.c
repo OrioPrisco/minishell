@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 14:48:51 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:38:55 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,26 @@
 #include "error.h"
 #include "utils.h"
 
-int	pwd_msh(char *execve_command, char **execve_com_args, char **envp)
+int	pwd_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 {
-	char	*cwd;
+	const char	*cwd;
+	int			flag;
 
 	cwd = 0;
+	flag = 0;
 	(void) execve_command;
 	(void) execve_com_args;
-	(void) envp;
-	cwd = getcwd(NULL, 0);
+	cwd = get_env_var_no_special(env_vec->data, "PWD", 3);
 	if (!cwd)
-		return (msh_error("getcwd"), -1);
+	{
+		cwd = getcwd(NULL, 0);
+		if (!cwd)
+			return (msh_error("getcwd"), -1);
+		flag = 1;
+	}
 	ft_printf("%s\n", cwd);
-	free(cwd);
+	if (flag)
+		free((void *)cwd);
 	return (0);
 }
 
