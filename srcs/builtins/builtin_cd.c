@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 14:47:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 17:32:58 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 18:03:11 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "error.h"
 #include "utils.h"
 
-char	*cd_getcwd(t_vector *env_vec)
+static char	*cd_getcwd(t_vector *env_vec)
 {
 	char	*ret;
 	char	*cwd;
@@ -36,7 +36,7 @@ char	*cd_getcwd(t_vector *env_vec)
 	return (ret);
 }
 
-int	cd_impl(const char *path, t_vector *env_vec, int print_cwd)
+static int	cd_impl(const char *path, t_vector *env_vec, int print_cwd)
 {
 	char		*cwd;
 	int			ret;
@@ -59,19 +59,53 @@ int	cd_impl(const char *path, t_vector *env_vec, int print_cwd)
 	return (free(cwd), 0);
 }
 
+// static int	cd_special_cases(char **execve_com_args, char **path,
+// 				t_vector *env_vec, int *print_cwd)
+// {
+// 	if (!execve_com_args[1])
+// 	{
+// 		*path = (char *)get_env_var_no_special(env_vec->data, "HOME", 4);
+// 		if (!*path)
+// 			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
+// 		if (!ft_strcmp(*path, ""))
+// 			return (0);
+// 	}
+// 	else if (!ft_strcmp(execve_com_args[1], "-"))
+// 	{
+// 		*path = (char *)get_env_var_no_special(env_vec->data, "HOME", 4);
+// 		if (!*path)
+// 			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
+// 		*print_cwd = 1;
+// 	}
+// 	else if (!ft_strcmp(execve_com_args[1], "--"))
+// 	{
+// 		*path = (char *)get_env_var_no_special(env_vec->data, "HOME", 4);
+// 		if (!path)
+// 			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
+// 		if (!ft_strcmp(*path, ""))
+// 			return (0);
+// 	}
+// 	else if (!ft_strcmp(execve_com_args[1], "---"))
+// 		return (ft_putstr_fd("minishell: cd: --: invalid option\n", 2), 2);
+// 	return (0);
+// }
+
 int	cd_arg_parse_msh(char **execve_com_args, t_vector *env_vec)
 {
-	int			ret;
+	//int			ret;
 	int			print_cwd;
-	const char	*path;
+	char		*path;
 
 	print_cwd = 0;
 	if (execve_com_args[1] && execve_com_args[2])
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
 	path = execve_com_args[1];
+	//ret = cd_special_cases(execve_com_args, &path, env_vec, &print_cwd);
+	// if (ret)
+	// 	return (ret);
 	if (!execve_com_args[1])
 	{
-		path = get_env_var_no_special(env_vec->data, "HOME", 4);
+		path = (char *)get_env_var_no_special(env_vec->data, "HOME", 4);
 		if (!path)
 			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
 		if (!ft_strcmp(path, ""))
@@ -79,14 +113,14 @@ int	cd_arg_parse_msh(char **execve_com_args, t_vector *env_vec)
 	}
 	else if (!ft_strcmp(execve_com_args[1], "-"))
 	{
-		path = get_env_var_no_special(env_vec->data, "HOME", 4);
+		path = (char *)get_env_var_no_special(env_vec->data, "HOME", 4);
 		if (!path)
 			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
 		print_cwd = 1;
 	}
 	else if (!ft_strcmp(execve_com_args[1], "--"))
 	{
-		path = get_env_var_no_special(env_vec->data, "HOME", 4);
+		path = (char *)get_env_var_no_special(env_vec->data, "HOME", 4);
 		if (!path)
 			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
 		if (!ft_strcmp(path, ""))
@@ -94,6 +128,5 @@ int	cd_arg_parse_msh(char **execve_com_args, t_vector *env_vec)
 	}
 	else if (!ft_strcmp(execve_com_args[1], "---"))
 		return (ft_putstr_fd("minishell: cd: --: invalid option\n", 2), 2);
-	ret = cd_impl(path, env_vec, print_cwd);
-	return (ret);
+	return (cd_impl(path, env_vec, print_cwd));
 }
