@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:24:26 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 14:05:37 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:50:16 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		builtin_commands(char *execve_command, char **execve_com_args,
 void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg, int ret);
 
 int		echo_msh(char *execve_command, char **execve_com_args, char **envp);
-int		cd_msh(char **execve_com_args, t_vector *env_vec);
+int		cd_arg_parse_msh(char **execve_com_args, t_vector *env_vec);
 int		pwd_msh(char *execve_command, char **execve_com_args, char **envp);
 int		export_msh(char *execve_command, char **execve_com_args,
 			t_vector *env_vec);
