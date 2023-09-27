@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 14:47:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 17:19:42 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 17:32:58 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,10 @@ char	*cd_getcwd(t_vector *env_vec)
 	{
 		ret = getcwd(NULL, 0);
 		if (!ret)
-			return (msh_error("getcwd"), NULL);
+			return (ft_strdup(""));
 	}
 	else
-	{
-		ret = ft_strdup(cwd);
-		if (!ret)
-			return (NULL);
-	}
+		return (ft_strdup(cwd));
 	return (ret);
 }
 
@@ -49,10 +45,11 @@ int	cd_impl(const char *path, t_vector *env_vec, int print_cwd)
 	if (!cwd)
 		return (msh_error("malloc"), -1);
 	if (chdir(path))
-		return (msh_error(path), 1);
+		return (msh_error(path), free(cwd), 1);
 	ret = add_key_value_to_env_vec("OLDPWD=", cwd, env_vec);
 	if (ret)
-		return (ret);
+		return (free(cwd), ret);
+	free(cwd);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (msh_error("malloc"), -1);
