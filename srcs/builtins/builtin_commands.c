@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 12:52:13 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 13:45:56 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:47:10 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	cd_msh(char **execve_com_args, t_vector *env_vec)
 	const char	*path;
 	char		*cwd;
 
+	if (execve_com_args[2])
+		return (ft_putstr_fd("minishell: cd: too many arguments", 2), 1);
 	path = execve_com_args[1];
 	if (!execve_com_args[1])
 	{
