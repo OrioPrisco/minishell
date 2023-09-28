@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 14:10:22 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/28 14:09:21 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ void	set_err_code(t_cominfo *cominfo, int err_code)
 
 void	access_error_print(const char *exec_name, t_cominfo *cominfo)
 {
-	int	ret;
+	int			ret;
+	const char	*path;
 
-	if (ft_strchr(exec_name, '/'))
+	path = get_env_var(cominfo->env_ret, "PATH", 4);
+	if (ft_strchr(exec_name, '/') || !path || !*path)
 	{
 		ret = is_directory(exec_name);
 		if (ret == 1)

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/28 13:55:20 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/28 14:10:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,7 @@ static char	*check_access(const char *const *path, const char *command)
 {
 	char	*temp;
 
-	if (!path)
-	{
-		if (!access(command, F_OK | X_OK) && !is_directory(command))
-			return (ft_strdup(command));
-		return (NULL);
-	}
-	if (ft_strchr(command, '/'))
+	if (ft_strchr(command, '/') || !path || !*path)
 	{
 		if (!access(command, F_OK | X_OK) && !is_directory(command))
 			return (ft_strdup(command));
@@ -114,21 +108,22 @@ static char	*access_loop(const char *command, t_env_ret *env_ret)
 	const char	*path;
 	char		*command_path;
 
-	path = get_env_var(env_ret, "PATH", ft_strlen("PATH"));
+	path = get_env_var(env_ret, "PATH", 4);
 	if (!path)
 	{
 		command_path = check_access(NULL, command);
 		if (!command_path)
+			return (NULL);
+		if (!command_path[0])
 		{
 			env_ret->prev_ret = 127;
-			msh_error(command);
-			return (0);
+			return (command_path);
 		}
 		return (command_path);
 	}
 	path_tab = ft_split(path, ':');
 	if (!path_tab)
-		return (0);
+		return (NULL);
 	command_path = check_access((const char **)path_tab, command);
 	return (table_free(path_tab), command_path);
 }
