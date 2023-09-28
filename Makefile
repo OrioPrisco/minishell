@@ -6,15 +6,13 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/27 14:47:56 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/09/28 11:53:58 by OrioPrisc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC				=	cc
 
 SRC				=	minishell.c \
-					get_env_var.c \
-					env_var_utils.c \
 					tokens_utils.c \
 					prompt_utils.c \
 					error_utils.c \
@@ -32,7 +30,6 @@ SRC				=	minishell.c \
 					builtins/builtin_commands_2.c \
 					builtins/builtin_commands_3.c \
 					builtins/builtin_cd.c \
-					builtins/builtin_utils.c \
 					child_proc_utils.c \
 					path_utils.c\
 					parser/parse_redirect.c \
@@ -45,6 +42,9 @@ SRC				=	minishell.c \
 					parser/parser.c \
 					parser/heredoc.c \
 					ft_readline.c \
+					env_var/get_var.c \
+					env_var/utils.c \
+					env_var/set_var.c \
 
 NAME			=	minishell
 
