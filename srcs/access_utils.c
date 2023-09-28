@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/28 14:10:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/28 14:16:03 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,7 @@ static char	*access_loop(const char *command, t_env_ret *env_ret)
 		if (!command_path)
 			return (NULL);
 		if (!command_path[0])
-		{
 			env_ret->prev_ret = 127;
-			return (command_path);
-		}
 		return (command_path);
 	}
 	path_tab = ft_split(path, ':');
