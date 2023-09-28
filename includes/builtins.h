@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:24:26 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/28 11:54:55 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/28 18:28:48 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ int		unset_msh(char *execve_command, char **execve_com_args,
 			t_vector *env_vec);
 int		env_msh(char *execve_command, char **execve_com_args,
 			t_vector *env_vec);
-void	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist);
+int		exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist);
 
 #endif
