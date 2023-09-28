@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/27 18:11:00 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/28 17:29:30 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*expand_env_var(const char *str, const t_env_ret *env_ret)
 */
 // TODO : substitute env vars
 static int	here_doc_input_loop(int pipefd, const char *limiter,
-		const t_env_ret *env_ret, t_rlinfo_com rlinfo_com)
+		t_rlinfo_com rlinfo_com)
 {
 	char		*expanded;
 	const char	*str_input;
@@ -70,7 +70,7 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 			return (vector_append(rlinfo_com.command, "\n")
 				|| vector_append_elems
 				(rlinfo_com.command, str_input, input_len));
-		expanded = expand_env_var(str_input, env_ret);
+		expanded = expand_env_var(str_input, rlinfo_com.env_ret);
 		if (vector_append(rlinfo_com.command, "\n") || vector_append_elems
 			(rlinfo_com.command, str_input, input_len))
 			return (free(expanded), 1);
@@ -91,7 +91,7 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		-1 on malloc  error.
 **/
 // TODO : handle signals
-int	open_heredoc(const char *limiter, const t_env_ret *env_ret,
+int	open_heredoc(const char *limiter,
 		t_rlinfo_com rlinfo_com)
 {
 	int			ret;
@@ -106,7 +106,7 @@ int	open_heredoc(const char *limiter, const t_env_ret *env_ret,
 		return (close(stdin_dup), perror("pipe"), -1);
 	if (signal_assign(SIGINT, sigint_handler_heredoc))
 		return (close(stdin_dup), close(pipefd[0]), close(pipefd[1]), -1);
-	ret = here_doc_input_loop(pipefd[1], limiter, env_ret, rlinfo_com);
+	ret = here_doc_input_loop(pipefd[1], limiter, rlinfo_com);
 	close(pipefd[1]);
 	if (ret != -1)
 		signal_assign(SIGINT, sigint_handler_parent);
