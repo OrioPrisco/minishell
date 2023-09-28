@@ -6,11 +6,12 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/28 14:09:21 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:04:47 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "error.h"
+#include "ft_readline.h"
 #include "minishell.h"
 #include "vector.h"
 #include "libft.h"
@@ -44,6 +45,7 @@ void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his)
 		vector_free(cominfo->tokens, free_owned_token);
 	vector_free(&cominfo->com_list, free_str);
 	vector_free(&cominfo->env_ret->env_vec, free_str);
+	ft_rl_clear(cominfo->rlinfo);
 	exit(ret_code);
 }
 

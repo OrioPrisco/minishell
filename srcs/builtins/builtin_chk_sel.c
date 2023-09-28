@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 16:32:41 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:36:11 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 	if (!execve_com_args)
 		return (msh_error("malloc"), -1);
 	if (!ft_strcmp(exec_name, "exit"))
-		return (exit_msh(cominfo, execve_com_args, 1), 0);
+		return (exit_msh(cominfo, execve_com_args, 1));
 	return (prefork_redirects(&com_segment, cominfo, exec_name,
 			execve_com_args));
 }
@@ -123,6 +123,6 @@ int	builtin_commands(char *execve_command, char **execve_com_args,
 		ret = env_msh(execve_command, execve_com_args,
 				&cominfo->env_ret->env_vec);
 	else if (!ft_strcmp(execve_command, "exit"))
-		exit_msh(cominfo, execve_com_args, 0);
+		ret = exit_msh(cominfo, execve_com_args, 0);
 	return (table_free(execve_com_args), ret);
 }

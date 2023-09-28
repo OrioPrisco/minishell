@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:39:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 13:33:57 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:29:13 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	env_msh(char *execve_command, char **execve_com_args, t_vector *env_vec)
 	return (0);
 }
 
-void	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
+int	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
 {
 	char	*ptr;
 	long	num;
@@ -66,10 +66,11 @@ void	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
 	if (execve_com_args[1] && execve_com_args[2])
 	{
 		ft_dprintf(2, "minishell: exit: too many arguments\n");
-		return (table_free(execve_com_args));
+		return (table_free(execve_com_args), 1);
 	}
 	table_free(execve_com_args);
 	msh_exit(cominfo, num, save_hist);
+	return (0);
 }
 
 void	builtins_cleanup(t_cominfo *cominfo, t_com_segment *com_seg, int ret)
