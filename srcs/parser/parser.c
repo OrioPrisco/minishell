@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/27 16:41:20 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/28 17:21:33 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,16 @@
 // could theoritcally use an array of function pointers,
 //  but there are gaps in the token_type enum
 static int	process_one_token(t_vector *dest, const t_token *tok,
-				const t_env_ret *env_ret, t_rlinfo_com rlinfocom)
+				t_rlinfo_com rlinfocom)
 {
 	if (tok->type == T_SPACE)
 		return (1);
 	if (is_redirect_type(tok->type))
-		return (parse_redirect(dest, tok, env_ret, rlinfocom));
+		return (parse_redirect(dest, tok, rlinfocom));
 	if (tok->type == T_PIPE)
 		return (parse_pipe(dest, tok));
 	if (is_textexpr_type(tok->type))
-		return (parse_text(dest, tok, env_ret, 0));
+		return (parse_text(dest, tok, rlinfocom.env_ret, 0));
 	ft_dprintf(2, "No muncher for type %s\n", token_type_to_str(tok->type));
 	return (-1);
 }
@@ -49,7 +49,7 @@ static int	process_one_token(t_vector *dest, const t_token *tok,
 //returns -1 on parsing error, frees the vector, and prints an error to stderr
 //returns  0 on success, and the vector will be populated
 static int	parse_line_int(const char *line, t_vector *dest,
-				const t_env_ret *env_ret, t_rlinfo_com rlinfo_com)
+				t_rlinfo_com rlinfo_com)
 {
 	t_vector		vec_token;
 	t_token			*token;
@@ -57,13 +57,13 @@ static int	parse_line_int(const char *line, t_vector *dest,
 	t_owned_token	tok;
 
 	vector_init(&vec_token, sizeof(t_token));
-	if (split_to_tokens(line, &vec_token, rlinfo_com))
+	if (split_to_tokens(line, &vec_token, rlinfo_com, 0))
 		return (vector_clear(&vec_token), 1);
 	token = vec_token.data;
 	consumed = 0;
 	while (token->type != T_END)
 	{
-		consumed = process_one_token(dest, token, env_ret, rlinfo_com);
+		consumed = process_one_token(dest, token, rlinfo_com);
 		if (consumed <= 0)
 			return (vector_clear(&vec_token), vector_free(dest,
 					free_owned_token), consumed);
@@ -88,10 +88,10 @@ bool	parse_line(char **parsed, t_vector *dest, t_env_ret *env_ret,
 	if (!line_cpy)
 		return (1);
 	g_sig_triggered = NONE;
-	rlinfo_com = (t_rlinfo_com){rlinfo, &command};
+	rlinfo_com = (t_rlinfo_com){rlinfo, &command, env_ret};
 	vector_init(&command, sizeof(char));
 	vector_init(dest, sizeof(t_owned_token));
-	ret = parse_line_int(line_cpy, dest, env_ret, rlinfo_com);
+	ret = parse_line_int(line_cpy, dest, rlinfo_com);
 	if (dest->size == 1 && ((t_owned_token *)dest->data)[0].type == T_END)
 		vector_free(dest, free_owned_token);
 	else if (ret == -1 && g_sig_triggered != HD_SIGINT)

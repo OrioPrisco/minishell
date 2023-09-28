@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/20 19:49:57 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/28 17:53:56 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "vector.h"
 #include "ft_readline.h"
 #include "parser_int.h"
+#include "env_var.h"
 
 typedef enum e_state
 {
@@ -69,8 +70,22 @@ static	t_token	get_one_token(t_state	*state, const char *str)
 	return (get_one_token_cont(state, str));
 }
 
-bool	finish_lex(t_rlinfo_com rlinfo_com, const char *str, const char *og_str)
+t_token	get_one_token_var(const char *var)
 {
+	if (*var == '*')
+		return ((t_token){{var, ft_strspn(var, "*")}, T_WILDCARD});
+	if (*var == '/')
+		return ((t_token){{var, 1}, T_DIR_SEP});
+	if (ft_strchr(" \t", *var))
+		return ((t_token){{var, ft_strspn(var, "\t ")}, T_SPACE});
+	return ((t_token){{var, ft_strcspn(var, "\t */")}, T_STR});
+}
+
+bool	finish_lex(t_rlinfo_com rlinfo_com, const char *str, const char *og_str,
+			bool is_var)
+{
+	if (is_var)
+		return (0);
 	if (vector_append_elems(rlinfo_com.command, og_str, str - og_str))
 		return (1);
 	if (*str == '\n')
@@ -87,7 +102,7 @@ bool	finish_lex(t_rlinfo_com rlinfo_com, const char *str, const char *og_str)
 // returns 0 on success and populates the vector
 // returns 1 on error and frees the vector
 bool	split_to_tokens(const char *str, t_vector *vec_token,
-			t_rlinfo_com rlinfo_com)
+			t_rlinfo_com rlinfo_com, bool is_var)
 {
 	t_token		curr;
 	t_state		state;
@@ -95,18 +110,23 @@ bool	split_to_tokens(const char *str, t_vector *vec_token,
 
 	og_str = str;
 	state = NORMAL;
-	vector_init(vec_token, sizeof(t_token));
 	while (*str)
 	{
-		curr = get_one_token(&state, str);
-		if (vector_append(vec_token, &curr))
+		curr = get_one_token_var(str);
+		if (!is_var)
+			curr = get_one_token(&state, str);
+		if (((curr.type != T_VAR || state != N)
+				&& vector_append(vec_token, &curr))
+			|| (curr.type == T_VAR && state == NORMAL && split_to_tokens
+				(get_env_varnul(rlinfo_com.env_ret, curr.strview.start,
+						curr.strview.size), vec_token, rlinfo_com, 1)))
 			return (vector_clear(vec_token), 1);
 		str = curr.strview.start + curr.strview.size;
 		if (curr.type == T_END)
-			return (finish_lex(rlinfo_com, str, og_str), 0);
+			return (finish_lex(rlinfo_com, str, og_str, is_var), 0);
 	}
-	curr = (t_token){{str, 0}, T_END};
+	curr = (t_token){{str, 0}, T_END * !is_var + T_VAR * is_var};
 	if (vector_append(vec_token, &curr))
 		return (vector_clear(vec_token), 1);
-	return (finish_lex(rlinfo_com, str, og_str), 0);
+	return (finish_lex(rlinfo_com, str, og_str, is_var), 0);
 }

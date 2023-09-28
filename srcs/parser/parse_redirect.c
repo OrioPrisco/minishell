@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/27 17:16:39 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/28 17:22:21 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static const t_token	*next_tok(const t_token *tok)
 }
 
 int	parse_hd(t_vector *dest, const t_token *tok,
-		const t_env_ret *env_ret, t_rlinfo_com rlinfo_com)
+		t_rlinfo_com rlinfo_com)
 {
 	t_owned_token	token;
 	int				to_merge;
@@ -36,7 +36,7 @@ int	parse_hd(t_vector *dest, const t_token *tok,
 		return (-1);
 	if (merge_tokens(&hd_sep, tok + 1, to_merge, NULL))
 		return (0);
-	ret = open_heredoc(hd_sep, env_ret, rlinfo_com);
+	ret = open_heredoc(hd_sep, rlinfo_com);
 	free(hd_sep);
 	if (ret < 0)
 		return (ret + 1);
@@ -51,7 +51,7 @@ int	parse_hd(t_vector *dest, const t_token *tok,
 // 0  means malloc error
 // could possibly put the filename in the redir token here
 int	parse_redirect(t_vector *dest, const t_token *tok,
-		const t_env_ret *env_ret, t_rlinfo_com rlinfo_com)
+		t_rlinfo_com rlinfo_com)
 {
 	t_owned_token	token;
 	const t_token	*next;
@@ -63,10 +63,10 @@ int	parse_redirect(t_vector *dest, const t_token *tok,
 		return (ft_dprintf(2, "Parse error near %s\n",
 				token_type_to_str(next->type)), -1);
 	if (tok->type == T_HEREDOC)
-		return (parse_hd(dest, tok, env_ret, rlinfo_com));
+		return (parse_hd(dest, tok, rlinfo_com));
 	if (vector_append(dest, &token))
 		return (0);
-	ret = parse_text(dest, tok + 1, env_ret, 1);
+	ret = parse_text(dest, tok + 1, rlinfo_com.env_ret, 1);
 	if (ret == 0 || ret == -1)
 		return (ret);
 	return (ret + 1);
