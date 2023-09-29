@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:13:21 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/28 17:20:57 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/29 12:51:08 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,20 @@ typedef struct s_rlinfo_com {
 
 // tokenizer
 
+typedef enum e_state
+{
+	NORMAL,
+	QUOTE,
+	DQUOTE,
+	N = NORMAL,
+	Q = QUOTE,
+	DQ = DQUOTE,
+}	t_state;
+
+bool		split_var_to_tokens(const char *var, t_vector *dest,
+				t_state state);
 bool		split_to_tokens(const char *str, t_vector *vec_token,
-				t_rlinfo_com rlinfo_com, bool is_var);
+				t_rlinfo_com rlinfo_com);
 
 // parse_line_internals
 int			parse_redirect(t_vector *dest, const t_token *tok,

@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/28 13:57:10 by dpentlan         ###   ########.fr        #
+#    Updated: 2023/09/29 12:55:15 by OrioPrisc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRC				=	minishell.c \
 					parser/parse_wildcard.c \
 					parser/wildcards.c \
 					parser/lexer.c \
+					parser/lex_var.c \
 					parser/merge_tokens.c \
 					parser/parser.c \
 					parser/heredoc.c \
