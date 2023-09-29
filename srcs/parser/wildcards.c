@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 18:29:42 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/18 13:16:19 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/29 13:48:54 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,24 @@
 // 0 means malloc error
 // returns tokens munched
 static int	merge_text(const t_token *src, char **dest,
-	const t_env_ret *env, int to_merge)
+	int to_merge)
 {
 	t_vector	sbuilder;
-	const char	*text;
 	int			max_merge;
 
 	max_merge = to_merge;
 	vector_init(&sbuilder, sizeof(char));
 	while (to_merge && src->type != T_WILDCARD && src->type != T_DIR_SEP)
 	{
-		if (src->type == T_VAR)
-		{
-			text = get_env_varnul(env, src->strview.start, src->strview.size);
-			if (vector_append_elems(&sbuilder, text, ft_strlen(text)))
-				return (vector_clear(&sbuilder), 0);
-		}
-		else
+		if (src->type == T_STR)
 			if (vector_append_elems(&sbuilder,
 					src->strview.start, src->strview.size))
 				return (vector_clear(&sbuilder), 0);
 		src++;
 		to_merge--;
 	}
+	if (sbuilder.size == 0)
+		return (*dest = NULL, max_merge - to_merge);
 	if (vector_null_term(&sbuilder))
 		return (vector_clear(&sbuilder), 0);
 	*dest = vector_move_data(&sbuilder);
@@ -58,7 +53,7 @@ static int	merge_text(const t_token *src, char **dest,
 // returns 0 on sucess
 // returns 1 on error
 bool	compile_wildcard_expr(const t_token *src, t_vector *dest,
-			const t_env_ret *env, int to_merge)
+			int to_merge)
 {
 	t_owned_token	token;
 	int				merged;
@@ -71,14 +66,14 @@ bool	compile_wildcard_expr(const t_token *src, t_vector *dest,
 		token = (t_owned_token){NULL, T_STR, 0};
 		if (src[merged].type != T_WILDCARD && src[merged].type != T_DIR_SEP)
 		{
-			ret = merge_text(src + merged, &token.str, env, to_merge - merged);
+			ret = merge_text(src + merged, &token.str, to_merge - merged);
 			if (ret == 0)
 				return (0);
 			merged += ret;
 		}
 		else
 			token = (t_owned_token){NULL, src[merged++].type, 0};
-		if (vector_append(dest, &token))
+		if ((token.type != T_STR || token.str) && vector_append(dest, &token))
 			return (vector_free(dest, free_owned_token), 1);
 	}
 	token = (t_owned_token){NULL, T_END, 0};

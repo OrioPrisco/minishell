@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 17:47:53 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/28 17:59:28 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/29 13:43:21 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	parse_text(t_vector *dest, const t_token *tok,
 		return (-1);
 	if (is_wildcard_expr(tok, to_merge))
 	{
-		ret = parse_wildcard(dest, tok, env_ret, to_merge);
+		ret = parse_wildcard(dest, tok, to_merge);
 		if (ret == 0 || ret != -1)
 			return (ret);
 	}
