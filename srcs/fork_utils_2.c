@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:44:53 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/22 16:23:37 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/29 15:22:44 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,29 +53,31 @@ static int	multi_fork(t_com_segment com_seg, t_cominfo *cominfo,
 	return (0);
 }
 
-int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
+bool	single_fork(t_cominfo *cominfo, t_vector *pids,
 		t_pipe_info *pipeinfo)
 {
 	int				pid;
 	int				size;
 
 	size = 0;
-	while (((t_owned_token *)tokens->data + size)->type != T_END)
+	while (((t_owned_token *)cominfo->tokens->data + size)->type != T_END)
 		size++;
-	if (check_for_builtins_pre_fork((t_com_segment){tokens, 0, size, size}))
-		return (builtins_pre_fork((t_com_segment){tokens, 0, size, size},
+	if (check_for_builtins_pre_fork(
+			(t_com_segment){cominfo->tokens, 0, size, size}))
+		return (builtins_pre_fork(
+				(t_com_segment){cominfo->tokens, 0, size, size},
 			cominfo));
 	signal_assign(SIGINT, sigint_handler_child);
 	pid = fork();
 	if (pid < 0)
-		return (msh_error("fork"), -1);
+		return (msh_error("fork"), 1);
 	if (pid == 0)
-		single_command((t_com_segment){tokens, 0, size, size}, cominfo,
-			pipeinfo);
+		single_command(
+			(t_com_segment){cominfo->tokens, 0, size, size}, cominfo, pipeinfo);
 	else
 	{
 		if (vector_append(pids, (int *)&pid))
-			return (msh_error("malloc"), -1);
+			return (msh_error("malloc"), 1);
 	}
 	return (0);
 }
@@ -89,7 +91,7 @@ int	single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 		
 */
 
-int	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
+bool	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 		t_pipe_info *pipeinfo)
 {
 	int				size;
@@ -106,15 +108,15 @@ int	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
 		if (((t_owned_token *)tokens->data + i)->type == T_PIPE)
 		{
 			if (pipe(pipeinfo->pipefd))
-				return (msh_error("pipe"), -1);
+				return (msh_error("pipe"), 1);
 			if (multi_fork((t_com_segment){tokens, j, i, size}, cominfo,
 				pids, pipeinfo))
-				return (-1);
+				return (1);
 			j = i + 1;
 		}
 	}
 	if (multi_fork((t_com_segment){tokens, j, i, size},
 		cominfo, pids, pipeinfo))
-		return (-1);
+		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:24:26 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/28 18:28:48 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/29 15:35:25 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "minishell.h"
 
 bool	check_for_builtins_pre_fork(t_com_segment com_segment);
-int		builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo);
+bool	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo);
 int		check_for_builtins(const char *exec_name);
 int		builtin_commands(char *execve_command, char **execve_com_args,
 			t_cominfo *cominfo);

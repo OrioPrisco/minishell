@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 16:46:14 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/29 16:51:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 static void	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 				t_cominfo *cominfo)
 {
-	if (init_envp_vec(envp, env_ret))
-		msh_exit(cominfo, 1, 0);
-	if (load_in_history(env_ret))
-		msh_exit(cominfo, 1, 0);
 	signal_assign(SIGINT, sigint_handler_parent);
 	signal_assign(SIGQUIT, SIG_IGN);
 	ft_rl_init(rlinfo);
@@ -91,6 +87,10 @@ static void	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 	vector_init(&cominfo->com_list, sizeof(char *));
 	cominfo->env_ret = env_ret;
 	cominfo->rlinfo = rlinfo;
+	if (init_envp_vec(envp, env_ret))
+		msh_exit(cominfo, 1, 0);
+	if (load_in_history(env_ret))
+		msh_exit(cominfo, 1, 0);
 }
 
 /*	
@@ -125,7 +125,8 @@ void	prompt_loop(char **envp)
 				free(command), msh_exit(&cominfo, 1, 1));
 		if (owned_tokens.size == 0)
 			continue ;
-		env_ret.prev_ret = tree_crawler(&owned_tokens, &cominfo);
+		if (tree_crawler(&owned_tokens, &cominfo))
+			msh_exit(&cominfo, 1, 1);
 		vector_free(&owned_tokens, free_owned_token);
 	}
 }

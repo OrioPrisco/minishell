@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/28 18:36:11 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/29 15:45:41 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	check_for_builtins_pre_fork(t_com_segment com_segment)
 	return (0);
 }
 
-int	prefork_redirects(t_com_segment *com_segment, t_cominfo *cominfo,
+bool	prefork_redirects(t_com_segment *com_segment, t_cominfo *cominfo,
 					char *exec_name, char **execve_com_args)
 {
 	int			ret;
@@ -54,20 +54,21 @@ int	prefork_redirects(t_com_segment *com_segment, t_cominfo *cominfo,
 	ret = check_and_open_redirects(com_segment->tokens, &vec_fds,
 			com_segment->start, com_segment->stop);
 	if (ret)
-		msh_exit(cominfo, 1, 0);
+		return (ret == 1);
 	open_heredocs(com_segment->tokens->data, com_segment->start,
 		com_segment->stop);
 	if (vec_fds.size > 0)
 		dup2(((int *)vec_fds.data)[vec_fds.size - 1], 1);
-	ret = builtin_commands(exec_name, execve_com_args, cominfo);
+	cominfo->env_ret->prev_ret = builtin_commands(exec_name,
+			execve_com_args, cominfo);
 	close(1);
 	vector_free(&vec_fds, close_fd);
 	dup2(original_stdout, STDOUT_FILENO);
 	close(original_stdout);
-	return (ret);
+	return (0);
 }
 
-int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
+bool	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 {
 	char		**execve_com_args;
 	char		*exec_name;
@@ -75,10 +76,10 @@ int	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 	exec_name = get_exec_name(
 			(t_owned_token *)com_segment.tokens->data + com_segment.start);
 	if (!exec_name)
-		return (-1);
+		return (1);
 	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
-		return (msh_error("malloc"), -1);
+		return (msh_error("malloc"), 1);
 	if (!ft_strcmp(exec_name, "exit"))
 		return (exit_msh(cominfo, execve_com_args, 1));
 	return (prefork_redirects(&com_segment, cominfo, exec_name,
