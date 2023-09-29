@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 15:27:43 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/29 16:50:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	msh_wait(t_vector *pids, int *ret_status);
 int		print_execve_args(char **execve_com_args);
 char	**construct_execve_args(t_com_segment com_seg);
 bool	single_fork(t_cominfo *cominfo, t_vector *pids,
-		t_pipe_info *pipeinfo);
+			t_pipe_info *pipeinfo);
 bool	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
-		t_pipe_info *pipeinfo);
+			t_pipe_info *pipeinfo);
 
 //	access_utils.c
 void	print_access_debug(char *execve_command);
