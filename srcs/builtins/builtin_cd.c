@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 14:47:39 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/27 18:11:54 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/29 17:08:31 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ static int	cd_special_cases(char **execve_com_args, char **path,
 	}
 	else if (!ft_strcmp(execve_com_args[1], "-"))
 	{
-		*path = (char *)get_env_var_no_special(env_vec->data, "HOME", 4);
+		*path = (char *)get_env_var_no_special(env_vec->data, "OLDPWD", 6);
 		if (!*path)
-			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
+			return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2), 1);
 		*print_cwd = 1;
 	}
 	else if (!ft_strcmp(execve_com_args[1], "---"))
