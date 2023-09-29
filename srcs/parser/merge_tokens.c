@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/26 21:44:54 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/09/29 12:55:45 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 #include "libft.h"
 #include "ft_printf.h"
 #include "parser_int.h"
-
-typedef enum e_state {
-	NORMAL,
-	QUOTE,
-	DQUOTE,
-}	t_state;
 
 // seeks the end/space token and make sure there are no unterminated (d)quote
 // returns -1 on parse error

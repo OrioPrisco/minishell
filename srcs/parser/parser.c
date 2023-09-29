@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 11:27:24 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/28 17:21:33 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/29 12:56:02 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	parse_line_int(const char *line, t_vector *dest,
 	t_owned_token	tok;
 
 	vector_init(&vec_token, sizeof(t_token));
-	if (split_to_tokens(line, &vec_token, rlinfo_com, 0))
+	if (split_to_tokens(line, &vec_token, rlinfo_com))
 		return (vector_clear(&vec_token), 1);
 	token = vec_token.data;
 	consumed = 0;
