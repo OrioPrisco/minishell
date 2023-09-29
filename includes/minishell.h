@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:08:04 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 14:35:33 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/09/29 15:27:43 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,22 @@ int		load_in_history(const t_env_ret *env_ret);
 int		history_loop_logic(t_vector *com_list, char *str);
 
 //	ast_utils.c
-int		tree_crawler(t_vector *tokens, t_cominfo *cominfo);
+bool	tree_crawler(t_vector *tokens, t_cominfo *cominfo);
 int		check_and_open_redirects(t_vector *tokens, t_vector *vec_fds,
 			int start, int stop);
 
 //	pipe_loop.c
 int		pipe_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pipes);
-int		fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
+bool	fork_loop(t_vector *tokens, t_cominfo *cominfo, t_vector *pids);
 
 //	fork_utils.c
-int		msh_wait(t_vector *pids, int *ret_status);
+void	msh_wait(t_vector *pids, int *ret_status);
 int		print_execve_args(char **execve_com_args);
 char	**construct_execve_args(t_com_segment com_seg);
-int		single_fork(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
-			t_pipe_info *pipeinfo);
-int		pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
-			t_pipe_info *pipeinfo);
+bool	single_fork(t_cominfo *cominfo, t_vector *pids,
+		t_pipe_info *pipeinfo);
+bool	pipe_setup(t_vector *tokens, t_cominfo *cominfo, t_vector *pids,
+		t_pipe_info *pipeinfo);
 
 //	access_utils.c
 void	print_access_debug(char *execve_command);
