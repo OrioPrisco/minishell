@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 16:14:09 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/09/29 16:51:53 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	increase_shlvl(t_env_ret	*env_ret)
 	str = ft_itoa(parsed);
 	if (!str || add_key_value_to_env_vec("SHLVL=", str, &env_ret->env_vec))
 		return (free(str), -1);
-	return (0);
+	return (free(str), 0);
 }
 
 static int	init_envp_vec(char **envp, t_env_ret *env_ret)
