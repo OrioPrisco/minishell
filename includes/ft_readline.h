@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 15:21:31 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/20 19:48:33 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/10/01 01:20:15 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 typedef struct s_ft_rl {
 	char	*line;
-	int		offset;
+	size_t	offset;
+	size_t	line_no;
 }	t_ft_rl;
 
 t_ft_rl		*ft_rl_init(t_ft_rl *rlinfo);
