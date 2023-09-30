@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/10/01 19:23:41 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/10/01 19:24:20 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,16 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 	const char	*str_input;
 	size_t		limiter_len;
 	size_t		ret;
+	size_t		line_no;
 
+	line_no = rlinfo_com.rlinfo->line_no;
 	limiter_len = ft_strlen(limiter);
 	while (1)
 	{
 		str_input = ft_readline(rlinfo_com.rlinfo, "heredoc> ");
 		if (!str_input && g_sig_triggered != HD_SIGINT)
 			return (ft_dprintf(2, "%s%d%s%s')\n",
-					g_message1, 42, g_message2, limiter), 0);
+					g_message1, line_no, g_message2, limiter), 0);
 		if (!str_input)
 			return (-1);
 		ret = here_doc_append(pipefd, rlinfo_com, limiter, limiter_len);
