@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/10/01 19:24:20 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/10/01 19:24:47 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static char	*expand_env_var(const char *str, const t_env_ret *env_ret)
 **	here_doc_append
 **	RETURN
 **		 1 on malloc error
+**		-1 on EINTR
 **		 0 on end (success)
 **		 2 on continue
 */
@@ -77,7 +78,7 @@ static int	here_doc_append(int pipefd, t_rlinfo_com rlinfo_com,
 	errno = 0;
 	if (write(pipefd, expanded, ft_strlen(expanded)) == -1
 		|| write(pipefd, "\n", 1) == -1)
-		return (free(expanded), (errno == EINTR) * 2 - (errno != EINTR));
+		return (free(expanded), -(errno == EINTR) + (errno != EINTR));
 	free(expanded);
 	return (2);
 }
