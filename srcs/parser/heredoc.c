@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/10/01 19:24:47 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/10/01 19:25:47 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 	limiter_len = ft_strlen(limiter);
 	while (1)
 	{
-		str_input = ft_readline(rlinfo_com.rlinfo, "heredoc> ");
+		str_input = ft_readline(rlinfo_com.rlinfo, "heredoc> ",
+				sigint_handler_heredoc, SIG_DFL);
 		if (!str_input && g_sig_triggered != HD_SIGINT)
 			return (ft_dprintf(2, "%s%d%s%s')\n",
 					g_message1, line_no, g_message2, limiter), 0);
@@ -128,7 +129,6 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		-2 on parsing error.
 		-1 on malloc  error.
 **/
-// TODO : handle signals
 int	open_heredoc(const char *limiter,
 		t_rlinfo_com rlinfo_com)
 {
@@ -142,10 +142,9 @@ int	open_heredoc(const char *limiter,
 		return (perror("dup"), -1);
 	if (pipe(pipefd))
 		return (close(stdin_dup), perror("pipe"), -1);
-	if (signal_assign(SIGINT, sigint_handler_heredoc))
-		return (close(stdin_dup), close(pipefd[0]), close(pipefd[1]), -1);
 	ret = here_doc_input_loop(pipefd[1], limiter, rlinfo_com);
 	close(pipefd[1]);
+	signal_assign(SIGINT, sigint_handler_failed_hd);
 	if (ret != -1)
 		signal_assign(SIGINT, sigint_handler_parent);
 	dup2(stdin_dup, STDIN_FILENO);

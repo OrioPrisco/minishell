@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 16:51:53 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/01 18:58:04 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	prompt_loop(char **envp)
 	while (1)
 	{
 		g_sig_triggered = NONE;
-		if (!ft_readline(&rlinfo, "minishell> "))
+		if (!ft_readline(&rlinfo, "minishell> ", NULL, SIG_DFL))
 			msh_exit(&cominfo, env_ret.prev_ret, 1);
 		if (g_sig_triggered == PARENT_SIGINT)
 			env_ret.prev_ret = SIGINT_RECEIVED;
