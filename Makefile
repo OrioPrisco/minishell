@@ -6,7 +6,7 @@
 #    By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 11:29:48 by OrioPrisc         #+#    #+#              #
-#    Updated: 2023/09/29 12:55:15 by OrioPrisc        ###   ########.fr        #
+#    Updated: 2023/10/02 16:38:55 by OrioPrisco       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRC				=	minishell.c \
 					parser/merge_tokens.c \
 					parser/parser.c \
 					parser/heredoc.c \
+					parser/error.c \
 					ft_readline.c \
 					env_var/get_var.c \
 					env_var/utils.c \

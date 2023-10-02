@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:07:23 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/28 17:22:21 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/02 16:37:49 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ int	parse_redirect(t_vector *dest, const t_token *tok,
 	token = (t_owned_token){NULL, tok->type, 0};
 	next = next_tok(tok);
 	if (!is_textexpr_type(next->type))
-		return (ft_dprintf(2, "Parse error near %s\n",
-				token_type_to_str(next->type)), -1);
+		return (syntax_error(next->type), -1);
 	if (tok->type == T_HEREDOC)
 		return (parse_hd(dest, tok, rlinfo_com));
 	if (vector_append(dest, &token))
