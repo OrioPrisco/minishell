@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/28 17:29:30 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/01 19:25:47 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include "msh_signal.h"
 #include <signal.h>
 #include <stdlib.h>
+#include "ft_printf.h"
+#include <errno.h>
 
 static char	*expand_env_var(const char *str, const t_env_ret *env_ret)
 {
@@ -45,37 +47,74 @@ static char	*expand_env_var(const char *str, const t_env_ret *env_ret)
 }
 
 /*
-**	here_doc_input_loop
-**	
+**	here_doc_append
+**	RETURN
+**		 1 on malloc error
+**		-1 on EINTR
+**		 0 on end (success)
+**		 2 on continue
 */
-// TODO : substitute env vars
+static int	here_doc_append(int pipefd, t_rlinfo_com rlinfo_com,
+				const char *limiter, size_t limiter_len)
+{
+	size_t		input_len;
+	char		*expanded;
+	const char	*str_input;
+
+	str_input = rlinfo_com.rlinfo->line + rlinfo_com.rlinfo->offset;
+	input_len = ft_strcspn(str_input, "\n");
+	ft_rl_add_offset(rlinfo_com.rlinfo, input_len
+		+ (str_input[input_len] == '\n'));
+	if (!ft_strncmp(str_input, limiter, limiter_len))
+		return (vector_append(rlinfo_com.command, "\n")
+			|| vector_append_elems
+			(rlinfo_com.command, str_input, input_len));
+	expanded = expand_env_var(str_input, rlinfo_com.env_ret);
+	if (!expanded)
+		return (1);
+	if (vector_append(rlinfo_com.command, "\n") || vector_append_elems
+		(rlinfo_com.command, str_input, input_len))
+		return (free(expanded), 1);
+	errno = 0;
+	if (write(pipefd, expanded, ft_strlen(expanded)) == -1
+		|| write(pipefd, "\n", 1) == -1)
+		return (free(expanded), -(errno == EINTR) + (errno != EINTR));
+	free(expanded);
+	return (2);
+}
+
+static const char	*g_message1 = "minishell: warning: here-document at line ";
+static const char	*g_message2 = " delimited by end-of-file (wanted `";
+
+/*
+**	here_doc_input_loop
+**	RETURN
+**		 1 on malloc error
+**		-1 on parsing error
+**		 0 on success
+*/
 static int	here_doc_input_loop(int pipefd, const char *limiter,
 		t_rlinfo_com rlinfo_com)
 {
-	char		*expanded;
 	const char	*str_input;
-	size_t		input_len;
 	size_t		limiter_len;
+	size_t		ret;
+	size_t		line_no;
 
+	line_no = rlinfo_com.rlinfo->line_no;
 	limiter_len = ft_strlen(limiter);
 	while (1)
 	{
-		str_input = ft_readline(rlinfo_com.rlinfo, "heredoc> ");
+		str_input = ft_readline(rlinfo_com.rlinfo, "heredoc> ",
+				sigint_handler_heredoc, SIG_DFL);
+		if (!str_input && g_sig_triggered != HD_SIGINT)
+			return (ft_dprintf(2, "%s%d%s%s')\n",
+					g_message1, line_no, g_message2, limiter), 0);
 		if (!str_input)
-			return (signal_assign(SIGINT, sigint_handler_failed_hd), -1);
-		input_len = ft_strcspn(str_input, "\n");
-		ft_rl_add_offset(rlinfo_com.rlinfo, input_len
-			+ (str_input[input_len] == '\n'));
-		if (!ft_strncmp(str_input, limiter, limiter_len))
-			return (vector_append(rlinfo_com.command, "\n")
-				|| vector_append_elems
-				(rlinfo_com.command, str_input, input_len));
-		expanded = expand_env_var(str_input, rlinfo_com.env_ret);
-		if (vector_append(rlinfo_com.command, "\n") || vector_append_elems
-			(rlinfo_com.command, str_input, input_len))
-			return (free(expanded), 1);
-		free((write(pipefd, expanded, ft_strlen(expanded)), expanded));
-		write(pipefd, "\n", 1);
+			return (-1);
+		ret = here_doc_append(pipefd, rlinfo_com, limiter, limiter_len);
+		if (ret != 2)
+			return (ret);
 	}
 }
 
@@ -90,7 +129,6 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 		-2 on parsing error.
 		-1 on malloc  error.
 **/
-// TODO : handle signals
 int	open_heredoc(const char *limiter,
 		t_rlinfo_com rlinfo_com)
 {
@@ -104,10 +142,9 @@ int	open_heredoc(const char *limiter,
 		return (perror("dup"), -1);
 	if (pipe(pipefd))
 		return (close(stdin_dup), perror("pipe"), -1);
-	if (signal_assign(SIGINT, sigint_handler_heredoc))
-		return (close(stdin_dup), close(pipefd[0]), close(pipefd[1]), -1);
 	ret = here_doc_input_loop(pipefd[1], limiter, rlinfo_com);
 	close(pipefd[1]);
+	signal_assign(SIGINT, sigint_handler_failed_hd);
 	if (ret != -1)
 		signal_assign(SIGINT, sigint_handler_parent);
 	dup2(stdin_dup, STDIN_FILENO);
