@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:22:52 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/29 12:55:45 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/02 16:36:38 by OrioPrisco       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	seek_tokens_to_merge(const t_token *src)
 	}
 	if (state != NORMAL)
 	{
-		ft_dprintf(2, "Error unterminated (d)quote\n");
+		syntax_error(T_END);
 		return (-1);
 	}
 	return (to_munch);
