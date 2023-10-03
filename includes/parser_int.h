@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:13:21 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/29 13:43:09 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/03 12:17:33 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ int			parse_wildcard(t_vector *dest, const t_token *tok,
 int			seek_tokens_to_merge(const t_token *src);
 int			open_heredoc(const char *limiter,
 				t_rlinfo_com rlinfo_com);
+void		syntax_error(t_token_type type);
 
 #endif
