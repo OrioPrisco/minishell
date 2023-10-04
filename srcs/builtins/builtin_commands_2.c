@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:39:33 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/28 18:29:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:02:40 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	exit_msh(t_cominfo *cominfo, char **execve_com_args, int save_hist)
 	if (execve_com_args[1] && execve_com_args[2])
 	{
 		ft_dprintf(2, "minishell: exit: too many arguments\n");
-		return (table_free(execve_com_args), 1);
+		return (1);
 	}
 	table_free(execve_com_args);
 	msh_exit(cominfo, num, save_hist);

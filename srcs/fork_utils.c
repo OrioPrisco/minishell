@@ -6,13 +6,14 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 15:26:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:02:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "tokens.h"
 #include "vector.h"
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "ft_printf.h"
@@ -20,6 +21,11 @@
 #include "utils.h"
 #include "msh_signal.h"
 #include <stdlib.h>
+
+void	sigint_noop(int signum)
+{
+	(void) signum;
+}
 
 /*
 **	msh_wait
@@ -35,16 +41,22 @@ void	msh_wait(t_vector *pids, int *ret_status)
 	wstatus = 0;
 	if (pids->size == 0)
 		return ;
+	signal_assign(SIGINT, sigint_noop);
 	while (pids->size > 0)
 	{
 		current_pid = *((int *)pids->data);
-		waitpid(current_pid, &wstatus, 0);
-		vector_pop_n(pids, 0, 1);
+		if (waitpid(current_pid, &wstatus, 0) == current_pid)
+			vector_pop_n(pids, 0, 1);
 	}
 	signal_assign(SIGINT, sigint_handler_parent);
 	*ret_status = WEXITSTATUS(wstatus);
-	if (WIFSIGNALED(wstatus))
-		*ret_status = wstatus;
+	if (!WIFSIGNALED(wstatus))
+		return ;
+	*ret_status = wstatus;
+	if (WTERMSIG(wstatus) == SIGSEGV)
+		ft_dprintf(2, "Segmentation Fault (core dumped)\n");
+	if (WTERMSIG(wstatus) == SIGQUIT)
+		ft_dprintf(2, "Quit (core dumped)\n");
 }
 
 /*
