@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:21:36 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 16:33:45 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:44:05 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	redir_stdin_token_found(const char *filename)
 
 	open_fd = open(filename, O_RDONLY);
 	if (open_fd < 0)
-		msh_error(filename);
+		return (msh_error(filename), 1);
 	dup2(open_fd, 0);
 	close(open_fd);
 	return (0);
