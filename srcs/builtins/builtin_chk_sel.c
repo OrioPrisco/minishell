@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 15:45:41 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:06:32 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ bool	builtins_pre_fork(t_com_segment com_segment, t_cominfo *cominfo)
 	execve_com_args = construct_execve_args(com_segment);
 	if (!execve_com_args)
 		return (msh_error("malloc"), 1);
-	if (!ft_strcmp(exec_name, "exit"))
-		return (exit_msh(cominfo, execve_com_args, 1));
 	return (prefork_redirects(&com_segment, cominfo, exec_name,
 			execve_com_args));
 }
