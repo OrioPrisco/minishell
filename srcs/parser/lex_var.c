@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 12:39:10 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/09/29 13:00:42 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/04 12:25:02 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_token	get_one_token_var(const char *var, t_state state)
 {
-	if (*var == '*')
+	if (state == N && *var == '*')
 		return ((t_token){{var, ft_strspn(var, "*")}, T_WILDCARD});
 	if (*var == '/')
 		return ((t_token){{var, 1}, T_DIR_SEP});
@@ -24,7 +24,7 @@ t_token	get_one_token_var(const char *var, t_state state)
 		return ((t_token){{var, ft_strspn(var, "\t ")}, T_SPACE});
 	if (state != DQ)
 		return ((t_token){{var, ft_strcspn(var, "\t */")}, T_STR});
-	return ((t_token){{var, ft_strcspn(var, "*/")}, T_STR});
+	return ((t_token){{var, ft_strcspn(var, "/")}, T_STR});
 }
 
 // NULL str means var expanded to nothing

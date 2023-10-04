@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/10/01 19:25:47 by OrioPrisco       ###   ########.fr       */
+/*   Updated: 2023/10/04 12:23:03 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ static int	here_doc_append(int pipefd, t_rlinfo_com rlinfo_com,
 static const char	*g_message1 = "minishell: warning: here-document at line ";
 static const char	*g_message2 = " delimited by end-of-file (wanted `";
 
+static void	sigint_noop(int signum)
+{
+	(void)signum;
+}
+
 /*
 **	here_doc_input_loop
 **	RETURN
@@ -106,7 +111,7 @@ static int	here_doc_input_loop(int pipefd, const char *limiter,
 	while (1)
 	{
 		str_input = ft_readline(rlinfo_com.rlinfo, "heredoc> ",
-				sigint_handler_heredoc, SIG_DFL);
+				sigint_handler_heredoc, sigint_noop);
 		if (!str_input && g_sig_triggered != HD_SIGINT)
 			return (ft_dprintf(2, "%s%d%s%s')\n",
 					g_message1, line_no, g_message2, limiter), 0);
