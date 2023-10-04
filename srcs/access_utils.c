@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 16:39:35 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:51:46 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,4 +186,5 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 	signal_assign(SIGQUIT, SIG_DFL);
 	execve(execve_command, execve_com_args,
 		(char **)cominfo->env_ret->env_vec.data);
+	return (table_free(execve_com_args), free(execve_command));
 }
