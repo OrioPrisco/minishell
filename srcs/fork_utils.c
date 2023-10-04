@@ -6,13 +6,14 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/29 15:26:13 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:28:09 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "tokens.h"
 #include "vector.h"
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "ft_printf.h"
@@ -43,8 +44,13 @@ void	msh_wait(t_vector *pids, int *ret_status)
 	}
 	signal_assign(SIGINT, sigint_handler_parent);
 	*ret_status = WEXITSTATUS(wstatus);
-	if (WIFSIGNALED(wstatus))
-		*ret_status = wstatus;
+	if (!WIFSIGNALED(wstatus))
+		return ;
+	*ret_status = wstatus;
+	if (WTERMSIG(wstatus) == SIGSEGV)
+		ft_dprintf(2, "Segmentation Fault (core dumped)\n");
+	if (WTERMSIG(wstatus) == SIGQUIT)
+		ft_dprintf(2, "Quit (core dumped)\n");
 }
 
 /*
