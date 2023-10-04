@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 16:57:40 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/26 16:33:08 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 18:35:06 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ void	single_command(t_com_segment com_seg, t_cominfo *cominfo,
 	ret = check_and_open_redirects(com_seg.tokens, &vec_fds, com_seg.start,
 			com_seg.stop);
 	if (ret)
+	{
+		cleanup_pipes(pipeinfo);
 		msh_exit(cominfo, 1, 0);
+	}
 	open_heredocs(com_seg.tokens->data, com_seg.start, com_seg.stop);
 	if (vec_fds.size > 0)
 		dup2(((int *)vec_fds.data)[vec_fds.size - 1], 1);
