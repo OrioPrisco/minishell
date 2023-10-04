@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/04 11:28:09 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:02:17 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 #include "msh_signal.h"
 #include <stdlib.h>
 
+void	sigint_noop(int signum)
+{
+	(void) signum;
+}
+
 /*
 **	msh_wait
 **	
@@ -36,11 +41,12 @@ void	msh_wait(t_vector *pids, int *ret_status)
 	wstatus = 0;
 	if (pids->size == 0)
 		return ;
+	signal_assign(SIGINT, sigint_noop);
 	while (pids->size > 0)
 	{
 		current_pid = *((int *)pids->data);
-		waitpid(current_pid, &wstatus, 0);
-		vector_pop_n(pids, 0, 1);
+		if (waitpid(current_pid, &wstatus, 0) == current_pid)
+			vector_pop_n(pids, 0, 1);
 	}
 	signal_assign(SIGINT, sigint_handler_parent);
 	*ret_status = WEXITSTATUS(wstatus);
