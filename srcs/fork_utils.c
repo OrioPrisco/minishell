@@ -6,10 +6,11 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 17:46:45 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/04 12:02:17 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 18:18:52 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "error.h"
 #include "minishell.h"
 #include "tokens.h"
 #include "vector.h"
@@ -25,6 +26,7 @@
 void	sigint_noop(int signum)
 {
 	(void) signum;
+	ft_printf("\n");
 }
 
 /*
@@ -53,6 +55,8 @@ void	msh_wait(t_vector *pids, int *ret_status)
 	if (!WIFSIGNALED(wstatus))
 		return ;
 	*ret_status = wstatus;
+	if (WTERMSIG(wstatus) == SIGINT)
+		*ret_status = SIGINT_RECEIVED;
 	if (WTERMSIG(wstatus) == SIGSEGV)
 		ft_dprintf(2, "Segmentation Fault (core dumped)\n");
 	if (WTERMSIG(wstatus) == SIGQUIT)
