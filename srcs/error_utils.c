@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/09/28 19:04:47 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:45:00 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	access_error_print(const char *exec_name, t_cominfo *cominfo)
 			errno = EISDIR;
 			return (msh_error(exec_name), set_err_code(cominfo, 126));
 		}
+		else if (errno == EACCES)
+			return (msh_error(exec_name), set_err_code(cominfo, 126));
 		else if (ret == -1)
 			return (msh_error(exec_name), set_err_code(cominfo, 127));
 		else if (access(exec_name, F_OK | X_OK))
