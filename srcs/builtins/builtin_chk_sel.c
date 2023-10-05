@@ -54,7 +54,11 @@ bool	prefork_redirects(t_com_segment *com_segment, t_cominfo *cominfo,
 	ret = check_and_open_redirects(com_segment->tokens, &vec_fds,
 			com_segment->start, com_segment->stop);
 	if (ret)
-		return (table_free(execve_com_args), close(original_stdout), ret == 1);
+	{
+		cominfo->env_ret->prev_ret = 1;
+		return (table_free(execve_com_args), close(original_stdout),
+			ret == 1);
+	}
 	open_heredocs(com_segment->tokens->data, com_segment->start,
 		com_segment->stop);
 	if (vec_fds.size > 0)
