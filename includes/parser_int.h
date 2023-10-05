@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:13:21 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/10/03 12:17:33 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/05 16:41:48 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ typedef struct s_rlinfo_com {
 
 typedef enum e_state
 {
-	NORMAL,
-	QUOTE,
-	DQUOTE,
+	NORMAL = 0,
+	QUOTE = 1 << 0,
+	DQUOTE = 1 << 1,
+	N_MASK = 0x3,
 	N = NORMAL,
 	Q = QUOTE,
 	DQ = DQUOTE,
+	N_M = N_MASK,
 }	t_state;
 
 bool		split_var_to_tokens(const char *var, t_vector *dest,
