@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/09/29 16:42:15 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/05 16:58:46 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,52 @@ static	t_token	get_one_token_cont(t_state	*state, const char *str)
 {
 	if (*str == '/')
 		return ((t_token){{str, 1}, T_DIR_SEP});
-	if (*state == DQUOTE)
+	if (*state & DQUOTE)
 		return ((t_token){{str, ft_strcspn(str, "$\"/")}, T_STR});
-	if (*state == QUOTE)
+	if (*state & QUOTE)
 		return ((t_token){{str, ft_strcspn(str, "\'/")}, T_STR});
 	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|*/")}, T_STR});
 }
 
-static	t_token	get_one_token(t_state	*state, const char *str)
+static	t_token	get_one_token_1(t_state	*state, const char *str)
 {
-	if (*state == NORMAL && *str == '\n')
+	if (!(*state & N_MASK) && *str == '\n')
 		return ((t_token){{str, 0}, T_END});
-	if (*state == NORMAL && *str == '\'')
-		return (*state = QUOTE, (t_token){{str, 1}, T_Q_START});
-	if (*state == NORMAL && *str == '\"')
-		return (*state = DQUOTE, (t_token){{str, 1}, T_DQ_START});
-	if (*state == DQUOTE && *str == '\"')
-		return (*state = NORMAL, (t_token){{str, 1}, T_DQ_END});
-	if (*state == QUOTE && *str == '\'')
-		return (*state = NORMAL, (t_token){{str, 1}, T_Q_END});
-	if (*state == NORMAL && ft_strchr(" \t", *str))
+	if (!(*state & N_MASK) && *str == '\'')
+		return (*state &= ~N_M, *state |= Q, (t_token){{str, 1}, T_Q_START});
+	if (!(*state & N_MASK) && *str == '\"')
+		return (*state &= ~N_M, *state |= DQ, (t_token){{str, 1}, T_DQ_START});
+	if (*state & DQUOTE && *str == '\"')
+		return (*state &= ~N_MASK, (t_token){{str, 1}, T_DQ_END});
+	if (*state & QUOTE && *str == '\'')
+		return (*state &= ~N_MASK, (t_token){{str, 1}, T_Q_END});
+	if (!(*state & N_MASK) && ft_strchr(" \t", *str))
 		return ((t_token){{str, ft_strspn(str, "\t ")}, T_SPACE});
-	if ((*state == NORMAL || *state == DQUOTE) && *str == '$')
+	if ((!(*state & N_MASK) || *state & DQUOTE) && *str == '$')
 		return ((t_token){{str, next_non_identifier(str) - str}, T_VAR});
-	if (*state == N && (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2)))
+	if (!(*state & N_MASK)
+		&& (!ft_strncmp(str, ">>", 2) || !ft_strncmp(str, "<<", 2)))
 		return ((t_token){{str, 2}, *(str) + 1});
-	if (*state == NORMAL && ft_strchr("<>|", *str))
+	if (!(*state & N_MASK) && ft_strchr("<>|", *str))
 		return ((t_token){{str, 1}, *str});
-	if (*state == NORMAL && *str == '*')
+	if (!(*state & N_MASK) && *str == '*')
 		return ((t_token){{str, ft_strspn(str, "*")}, T_WILDCARD});
 	return (get_one_token_cont(state, str));
+}
+
+// handles HD state logic
+static	t_token	get_one_token(t_state *state, const char *str)
+{
+	t_token	token;
+
+	token = get_one_token_1(state, str);
+	if (token.type == T_HEREDOC)
+		*state |= AFTER_HD;
+	else if (*state & AFTER_HD && is_textexpr_type(token.type))
+		*state ^= AFTER_HD | AFTER_HD_TXT;
+	else if (*state & AFTER_HD_TXT && !is_textexpr_type(token.type))
+		*state &= ~HD_MASK;
+	return (token);
 }
 
 bool	finish_lex(t_rlinfo_com rlinfo_com, const char *str, const char *og_str)
@@ -89,10 +105,11 @@ bool	split_to_tokens(const char *str, t_vector *vec_token,
 	while (*str)
 	{
 		curr = get_one_token(&state, str);
-		if (curr.type != T_VAR && vector_append(vec_token, &curr))
+		if ((curr.type != T_VAR || state & HD_MASK)
+			&& vector_append(vec_token, &curr))
 			return (vector_clear(vec_token), 1);
-		if (curr.type == T_VAR && split_var_to_tokens(
-				get_env_var(
+		if ((curr.type == T_VAR && !(state & HD_MASK))
+			&& split_var_to_tokens(get_env_var(
 					rlinfo_com.env_ret, curr.strview.start, curr.strview.size
 				), vec_token, state))
 			return (vector_clear(vec_token), 1);
