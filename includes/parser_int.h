@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:13:21 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/10/05 16:41:48 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/05 16:48:51 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ typedef enum e_state
 	QUOTE = 1 << 0,
 	DQUOTE = 1 << 1,
 	N_MASK = 0x3,
+	AFTER_HD = 1 << 2,
+	AFTER_HD_TXT = 1 << 3,
+	HD_MASK = AFTER_HD | AFTER_HD_TXT,
 	N = NORMAL,
 	Q = QUOTE,
 	DQ = DQUOTE,

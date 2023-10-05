@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users.nor  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 12:52:58 by OrioPrisco        #+#    #+#             */
-/*   Updated: 2023/10/05 16:41:12 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/05 16:58:46 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static	t_token	get_one_token_cont(t_state	*state, const char *str)
 	return ((t_token){{str, ft_strcspn(str, "$\'\" \t\n\v\f\r<>|*/")}, T_STR});
 }
 
-static	t_token	get_one_token(t_state	*state, const char *str)
+static	t_token	get_one_token_1(t_state	*state, const char *str)
 {
 	if (!(*state & N_MASK) && *str == '\n')
 		return ((t_token){{str, 0}, T_END});
@@ -59,6 +59,21 @@ static	t_token	get_one_token(t_state	*state, const char *str)
 	if (!(*state & N_MASK) && *str == '*')
 		return ((t_token){{str, ft_strspn(str, "*")}, T_WILDCARD});
 	return (get_one_token_cont(state, str));
+}
+
+// handles HD state logic
+static	t_token	get_one_token(t_state *state, const char *str)
+{
+	t_token	token;
+
+	token = get_one_token_1(state, str);
+	if (token.type == T_HEREDOC)
+		*state |= AFTER_HD;
+	else if (*state & AFTER_HD && is_textexpr_type(token.type))
+		*state ^= AFTER_HD | AFTER_HD_TXT;
+	else if (*state & AFTER_HD_TXT && !is_textexpr_type(token.type))
+		*state &= ~HD_MASK;
+	return (token);
 }
 
 bool	finish_lex(t_rlinfo_com rlinfo_com, const char *str, const char *og_str)
@@ -90,10 +105,11 @@ bool	split_to_tokens(const char *str, t_vector *vec_token,
 	while (*str)
 	{
 		curr = get_one_token(&state, str);
-		if (curr.type != T_VAR && vector_append(vec_token, &curr))
+		if ((curr.type != T_VAR || state & HD_MASK)
+			&& vector_append(vec_token, &curr))
 			return (vector_clear(vec_token), 1);
-		if (curr.type == T_VAR && split_var_to_tokens(
-				get_env_var(
+		if ((curr.type == T_VAR && !(state & HD_MASK))
+			&& split_var_to_tokens(get_env_var(
 					rlinfo_com.env_ret, curr.strview.start, curr.strview.size
 				), vec_token, state))
 			return (vector_clear(vec_token), 1);
