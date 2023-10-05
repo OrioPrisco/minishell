@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/04 16:53:51 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/04 19:24:04 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ bool	prefork_redirects(t_com_segment *com_segment, t_cominfo *cominfo,
 	ret = check_and_open_redirects(com_segment->tokens, &vec_fds,
 			com_segment->start, com_segment->stop);
 	if (ret)
-		return (close(original_stdout), ret == 1);
+	{
+		cominfo->env_ret->prev_ret = 1;
+		return (table_free(execve_com_args), close(original_stdout),
+			ret == 1);
+	}
 	open_heredocs(com_segment->tokens->data, com_segment->start,
 		com_segment->stop);
 	if (vec_fds.size > 0)
