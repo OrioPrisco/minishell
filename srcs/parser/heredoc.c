@@ -6,7 +6,7 @@
 /*   By: OrioPrisco <47635210+OrioPrisco@users      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:47:40 by OrioPrisc         #+#    #+#             */
-/*   Updated: 2023/10/04 17:16:56 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/05 17:22:30 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,11 @@ int	open_heredoc(const char *limiter,
 		signal_assign(SIGINT, sigint_handler_parent);
 	dup2(stdin_dup, STDIN_FILENO);
 	close(stdin_dup);
+	if (vector_null_term(rlinfo_com.command))
+		return (close(pipefd[0]), perror("malloc"), -1);
 	if (ret == 1)
 		return (close(pipefd[0]), perror("malloc"), -1);
 	if (ret == -1)
 		return (close(pipefd[0]), -2);
-	if (vector_null_term(rlinfo_com.command))
-		return (close(pipefd[0]), perror("malloc"), -1);
 	return (pipefd[0]);
 }
