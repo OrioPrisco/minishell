@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/05 17:45:00 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:47:55 by OrioPrisc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his)
 	if (save_his)
 	{
 		if (isatty(STDIN_FILENO))
-			ft_putstr_fd("exit\n", 1);
+			ft_putstr_fd("exit\n", 2);
 		save_history(cominfo->env_ret, &cominfo->com_list);
 	}
 	if (cominfo->tokens)
