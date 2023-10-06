@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:33:20 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/04 19:24:04 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/06 14:42:38 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	check_for_builtins_pre_fork(t_com_segment com_segment)
 }
 
 bool	prefork_redirects(t_com_segment *com_segment, t_cominfo *cominfo,
-					char *exec_name, char **execve_com_args)
+					char *exec_name, char **argv)
 {
 	int			ret;
 	t_vector	vec_fds;
@@ -54,21 +54,21 @@ bool	prefork_redirects(t_com_segment *com_segment, t_cominfo *cominfo,
 	ret = check_and_open_redirects(com_segment->tokens, &vec_fds,
 			com_segment->start, com_segment->stop);
 	if (ret)
-	{
-		cominfo->env_ret->prev_ret = 1;
-		return (table_free(execve_com_args), close(original_stdout),
-			ret == 1);
-	}
+		return (cominfo->env_ret->prev_ret = 1,
+			table_free(argv), close(original_stdout), ret == 1);
 	open_heredocs(com_segment->tokens->data, com_segment->start,
 		com_segment->stop);
 	if (vec_fds.size > 0)
 		dup2(((int *)vec_fds.data)[vec_fds.size - 1], 1);
+	vector_free(&vec_fds, close_fd);
+	if (ft_strcmp(exec_name, "exit"))
+		cominfo->env_ret->prev_ret = builtin_commands(exec_name, argv, cominfo);
 	close(1);
 	dup2(original_stdout, STDOUT_FILENO);
 	close(original_stdout);
-	vector_free(&vec_fds, close_fd);
-	cominfo->env_ret->prev_ret = builtin_commands(exec_name,
-			execve_com_args, cominfo);
+	if (!ft_strcmp(exec_name, "exit"))
+		cominfo->env_ret->prev_ret = builtin_commands(exec_name,
+				argv, cominfo);
 	return (0);
 }
 
