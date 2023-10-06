@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 16:00:37 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/04 17:51:46 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/06 17:28:14 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ void	exec_command(t_cominfo *cominfo, t_com_segment com_segment)
 		msh_exit(cominfo, cominfo->env_ret->prev_ret, 0);
 	}
 	signal_assign(SIGQUIT, SIG_DFL);
+	vector_free(cominfo->tokens, free_owned_token);
 	execve(execve_command, execve_com_args,
 		(char **)cominfo->env_ret->env_vec.data);
 	return (table_free(execve_com_args), free(execve_command));

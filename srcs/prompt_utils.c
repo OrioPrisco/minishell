@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/04 10:43:05 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:21:45 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "error.h"
 #include <stdlib.h>
 #include "ft_printf.h"
+#include <unistd.h>
 
 int	increase_shlvl(t_env_ret	*env_ret)
 {
@@ -51,6 +52,7 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 	int			i;
 	char		*buf;
 	t_vector	*env_vec;
+	int			ret;
 
 	i = 0;
 	env_vec = &env_ret->env_vec;
@@ -63,9 +65,15 @@ static int	init_envp_vec(char **envp, t_env_ret *env_ret)
 			return (free(buf), vector_free(env_vec, free_str), -1);
 		i++;
 	}
-	if (vector_null_term(env_vec))
-		return (vector_free(env_vec, free_str), -1);
-	return (increase_shlvl(env_ret));
+	buf = getcwd(NULL, 0);
+	ret = 0;
+	if (!buf)
+		msh_error("getcwd");
+	else
+		ret = add_key_value_to_env_vec("PWD=", buf, env_vec);
+	if (ret || vector_null_term(env_vec))
+		return (free(buf), vector_free(env_vec, free_str), -1);
+	return (free(buf), increase_shlvl(env_ret));
 }
 
 /*	
