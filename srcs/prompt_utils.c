@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:38:29 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/06 17:21:45 by dpentlan         ###   ########.fr       */
+/*   Updated: 2023/10/07 10:52:25 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ static void	init_prompt_loop(char **envp, t_env_ret *env_ret, t_ft_rl *rlinfo,
 {
 	signal_assign(SIGINT, sigint_handler_parent);
 	signal_assign(SIGQUIT, SIG_IGN);
+	signal_assign(SIGPIPE, SIG_IGN);
 	ft_rl_init(rlinfo);
 	ft_bzero(cominfo, sizeof(*cominfo));
 	vector_init(&cominfo->com_list, sizeof(char *));
