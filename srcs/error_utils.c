@@ -6,7 +6,7 @@
 /*   By: dpentlan <dpentlan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:58:47 by dpentlan          #+#    #+#             */
-/*   Updated: 2023/10/05 18:47:55 by OrioPrisc        ###   ########.fr       */
+/*   Updated: 2023/10/07 12:37:37 by dpentlan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "env_var.h"
 #include "tokens.h"
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <readline/readline.h>
 #include "path.h"
@@ -28,8 +29,10 @@
 
 void	msh_error(const char *message)
 {
-	ft_putstr_fd("minishell: ", 2);
-	perror(message);
+	if (!message)
+		ft_dprintf(2, "minishell: %s\n", strerror(errno));
+	else
+		ft_dprintf(2, "minishell: %s: %s\n", message, strerror(errno));
 }
 
 void	msh_exit(t_cominfo *cominfo, int ret_code, int save_his)
